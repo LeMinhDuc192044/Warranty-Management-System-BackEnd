@@ -45,6 +45,10 @@ public class WarrantyClaim {
     @Column(length = 100)
     private String email;
 
+    @Column(name = "Return_Date")
+    private LocalDate returnDate;
+
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Vehicle_VIN_ID")
     private ElectricVehicle vehicle;
@@ -56,5 +60,6 @@ public class WarrantyClaim {
     @ManyToOne
     @JoinColumn(name = "SC_TechnicianID")
     private SCTechnician technician;
+
 
 }

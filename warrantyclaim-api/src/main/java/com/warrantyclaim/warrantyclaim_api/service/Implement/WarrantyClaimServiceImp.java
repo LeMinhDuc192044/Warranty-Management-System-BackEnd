@@ -11,6 +11,7 @@ import com.warrantyclaim.warrantyclaim_api.mapper.WarrantyClaimMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.SCTechnicianRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.WarrantyClaimRepository;
+import com.warrantyclaim.warrantyclaim_api.service.EmailService;
 import com.warrantyclaim.warrantyclaim_api.service.NotificationService;
 import com.warrantyclaim.warrantyclaim_api.service.WarrantyClaimService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
     private final SCTechnicianRepository scTechnicianRepository;
     private final WarrantyClaimMapper warrantyClaimMapper;
     private final NotificationService notificationService;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -121,6 +123,12 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
         WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
                 .orElseThrow(() -> new ResourceNotFoundException("Warranty claim not found with ID: " + claimId));
 
+        //  Thêm đoạn kiểm tra ngay sau khi lấy claim
+        if (status == WarrantyClaimStatus.COMPLETED && claim.getReturnDate() == null) {
+            throw new IllegalStateException("Không thể hoàn thành khi chưa có ngày giao xe.");
+        }
+
+
         claim.setStatus(status);
         WarrantyClaim updatedClaim = warrantyClaimRepository.save(claim);
 
@@ -203,4 +211,43 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
         WarrantyClaim updatedWarrantyClaim = warrantyClaimRepository.save(claim);
         return warrantyClaimMapper.toResponseWarrantyClaim(claim);
     }
+
+
+    public void sendVehicleReadyEmail(String claimId) {
+        WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy claim với ID: " + claimId));
+
+        if (claim.getStatus() != WarrantyClaimStatus.COMPLETED) {
+            throw new IllegalStateException("Xe chưa hoàn tất bảo hành.");
+        }
+
+        if (claim.getReturnDate() == null) {
+            throw new IllegalStateException("Ngày nhận xe chưa được cập nhật.");
+        }
+
+        String to = claim.getEmail();
+        String name = claim.getCustomerName();
+        LocalDate returnDate = claim.getReturnDate();
+
+        String subject = "Thông báo nhận xe sau bảo hành";
+        String body = String.format(
+                "Chào %s,\n\nXe của bạn đã hoàn tất bảo hành và sẵn sàng nhận vào ngày %s.\n\nTrân trọng,\nTrung tâm bảo hành",
+                name, returnDate
+        );
+
+        emailService.sendEmail(to, subject, body);
+    }
+
+    @Override
+    public WarrantyClaimResponseDTO updateReturnDate(String claimId, LocalDate returnDate) {
+        WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy claim với ID: " + claimId));
+
+        claim.setReturnDate(returnDate);
+        WarrantyClaim updatedClaim = warrantyClaimRepository.save(claim);
+
+        return warrantyClaimMapper.toResponseWarrantyClaim(updatedClaim);
+    }
+
+
 }

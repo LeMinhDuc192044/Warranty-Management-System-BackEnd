@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -93,4 +94,23 @@ public class WarrantyClaimController {
         WarrantyClaimResponseDTO response = warrantyClaimService.assignScTech(claimId, scTechId);
         return ResponseEntity.ok(response);
     }
+
+
+    @PostMapping("/claims/{id}/notify-customer")
+    public ResponseEntity<?> notifyCustomer(@PathVariable String id) {
+        warrantyClaimService.sendVehicleReadyEmail(id);
+        return ResponseEntity.ok(new MessageResponse("Email đã được gửi cho khách hàng."));
+
+    }
+
+
+    @PatchMapping("/{claimId}/return-date")
+    public ResponseEntity<WarrantyClaimResponseDTO> updateReturnDate(
+            @PathVariable String claimId,
+            @RequestParam LocalDate returnDate) {
+        WarrantyClaimResponseDTO response = warrantyClaimService.updateReturnDate(claimId, returnDate);
+        return ResponseEntity.ok(response);
+    }
+
+
 }
