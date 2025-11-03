@@ -40,6 +40,11 @@ public class ReportController {
         return ResponseEntity.ok(reportService.updateStatus(id, status));
     }
 
+    @PatchMapping("/{id}/image")
+    public ResponseEntity<ReportDTO> updateImage(@PathVariable String id, @RequestParam String image) {
+        return ResponseEntity.ok(reportService.updateImage(id, image));
+    }
+
     @GetMapping
     @Operation(summary = "Get all reports")
     public ResponseEntity<List<ReportDTO>> getAllReports() {

@@ -16,7 +16,9 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Mã OTP khôi phục mật khẩu");
-        message.setText("Mã OTP của bạn là: " + otp);
+        message.setText("Xin chào,\n\nMã OTP của bạn là: " + otp + "\nMã này có hiệu lực trong 5 phút.\n\nTrân trọng.");
+        message.setFrom("your_email@gmail.com");
         mailSender.send(message);
     }
 }
+

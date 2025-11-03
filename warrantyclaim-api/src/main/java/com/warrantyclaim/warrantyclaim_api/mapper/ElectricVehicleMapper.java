@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ElectricVehicleMapper {
 
     public ElectricVehicle toEntityElectricVehicle(VehicleCreateDTO vehicleCreateDTO) {
-        if (vehicleCreateDTO == null) {
+        if(vehicleCreateDTO == null) {
             return null;
         }
 
@@ -25,7 +25,7 @@ public class ElectricVehicleMapper {
         electricVehicle.setStatus(vehicleCreateDTO.getStatus());
 
         return electricVehicle;
-    }
+     }
 
     public ElectricVehicleListResponseDTO toListResponseDTO(ElectricVehicle vehicle) {
         if (vehicle == null) {
@@ -41,7 +41,7 @@ public class ElectricVehicleMapper {
         dto.setEmail(vehicle.getEmail());
         dto.setPurchaseDate(vehicle.getPurchaseDate());
         dto.setStatus(vehicle.getStatus());
-
+        dto.setPicture(vehicle.getPicture());
         // Simplified vehicle type info
         if (vehicle.getVehicleType() != null) {
             dto.setVehicleTypeId(vehicle.getVehicleType().getId());
@@ -60,6 +60,7 @@ public class ElectricVehicleMapper {
         dto.setId(vehicle.getId());
         dto.setName(vehicle.getName());
         dto.setTotalKm(vehicle.getTotalKm());
+        dto.setPicture(vehicle.getPicture());
         dto.setPurchaseDate(vehicle.getPurchaseDate());
         dto.setOwner(vehicle.getOwner());
         dto.setPhoneNumber(vehicle.getPhoneNumber());
@@ -96,7 +97,6 @@ public class ElectricVehicleMapper {
         if (updatedVehicle.getName() != null) {
             electricVehicle.setName(updatedVehicle.getName());
         }
-
 
         if (updatedVehicle.getEmail() != null) {
             electricVehicle.setEmail(updatedVehicle.getEmail());

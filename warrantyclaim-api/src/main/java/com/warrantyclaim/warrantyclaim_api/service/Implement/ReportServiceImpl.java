@@ -84,7 +84,10 @@ public class ReportServiceImpl implements ReportService {
             report.setError(request.getError());
         }
 
-        
+        if(request.getImage() != null) {
+            report.setImage(request.getImage());
+        }
+
         return reportMapper.toDTO(reportRepository.save(report));
     }
 
@@ -148,4 +151,14 @@ public class ReportServiceImpl implements ReportService {
         return reportMapper.toDTO(report);
     }
 
+    @Override
+    @Transactional
+    public ReportDTO updateImage(String reportId, String image) {
+        Report report = reportRepository.findById(reportId)
+                .orElseThrow(() -> new ResourceNotFoundException("Report not found with id: " + reportId));
+
+        report.setImage(image);
+        reportRepository.save(report);
+        return reportMapper.toDTO(report);
+    }
 }

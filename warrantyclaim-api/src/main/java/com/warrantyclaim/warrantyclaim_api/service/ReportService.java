@@ -17,4 +17,5 @@ public interface ReportService {
     ReportDTO assignRecall(String reportId, String recallId);
     ReportDTO assignWarrantyClaim(String reportId, String warrantyClaimId);
     public ReportDTO updateStatus(String reportId, ReportStatus status);
+    public ReportDTO updateImage(String reportId, String image);
 }

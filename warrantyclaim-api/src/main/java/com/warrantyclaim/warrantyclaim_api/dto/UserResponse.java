@@ -49,21 +49,8 @@ public class UserResponse {
     public String getBranchOffice() { return branchOffice; }
     public void setBranchOffice(String branchOffice) { this.branchOffice = branchOffice; }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
-    public String getBranchOffice() {
-        return branchOffice;
-    }
-
-    public void setBranchOffice(String branchOffice) {
-        this.branchOffice = branchOffice;
-    }
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;

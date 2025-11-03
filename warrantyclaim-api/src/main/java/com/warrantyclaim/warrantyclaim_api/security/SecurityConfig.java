@@ -53,7 +53,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/login",
-                                "/v3/api-docs/roles",
+                                "/api/auth/forgot-password",
+                                "/api/auth/verify-otp",
+                                "/api/auth/reset-password",
+                                "/api/permissions/roles",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
@@ -61,17 +64,15 @@ public class SecurityConfig {
                                 "/api/ElectricVehicle/**",
                                 "/api/ServiceCampaigns/**",
                                 "/api/parts-requests/**",
+                                "/api/parts/inventory/**",
                                 "/api/recalls/**",
                                 "/api/reports/**",
-                                "/api/warranty-policies/**",
-                                "/api/shipping/tracking/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
+                                "/api/warranty-policies/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(restAuthHandlers)
-                        .accessDeniedHandler(restAuthHandlers)
-                )
+                        .accessDeniedHandler(restAuthHandlers))
                 .authenticationProvider(authenticationProvider(userDetailsService(null)))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -99,10 +100,22 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*")); // Cho phép tất cả domain (có thể giới hạn sau)
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // ✅ FIX: Chỉ định cụ thể origins thay vì "*" khi dùng allowCredentials
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:5174",
+                "http://localhost:5175",
+                "http://localhost:3000"));
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
+
+        // ✅ FIX: Set false vì dùng JWT trong header, không cần cookies
         config.setAllowCredentials(false);
+
+        // Cache preflight request 1 giờ
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
