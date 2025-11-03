@@ -41,11 +41,12 @@ public class ProductsSparePartsEVMController {
         return ResponseEntity.ok(products);
     }
 
-    @PostMapping("/transfer/{partScId}")
-    public ResponseEntity<String> transferFromScToEvm(@PathVariable String partScId) {
+    @PostMapping("/transfer/{partEvmId}")
+    public ResponseEntity<String> transferFromScToEvm(@PathVariable String partEvmId,
+                                                      @RequestParam OfficeBranch officeBranch) {
 
-        service.transferFromScOfficeBranchToEVM(partScId);
-        return ResponseEntity.ok("Transfer successful for SC ID: " + partScId);
+        service.transferFromEVMToScOfficeBranch(partEvmId, officeBranch);
+        return ResponseEntity.ok("Transfer successful for SC ID: " + partEvmId);
     }
 
 

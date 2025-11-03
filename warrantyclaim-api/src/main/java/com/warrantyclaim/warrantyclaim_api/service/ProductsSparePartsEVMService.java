@@ -3,6 +3,7 @@ package com.warrantyclaim.warrantyclaim_api.service;
 import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountEVMResponse;
 import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMRequest;
 import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMResponse;
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface ProductsSparePartsEVMService {
     public List<PartTypeCountEVMResponse> countEvmPartByType(String partId);
 
     public List<ProductsSparePartsEVMResponse> searchProductsByName(String name);
-    public void transferFromScOfficeBranchToEVM(String partScId);
+    public void transferFromEVMToScOfficeBranch(String partScId, OfficeBranch officeBranch);
 }
