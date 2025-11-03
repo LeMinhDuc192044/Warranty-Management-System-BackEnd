@@ -36,19 +36,19 @@ public class ProductsSparePartsEVMMapper {
     }
 
 
-    public ProductsSparePartsEVM transferScToEVM(ProductsSparePartsSC productsSparePartsSC) {
-        if(productsSparePartsSC == null) {
+    public ProductsSparePartsSC transferScToSC(ProductsSparePartsEVM productsSparePartsEVM) {
+        if(productsSparePartsEVM == null) {
             return null;
         }
 
-        ProductsSparePartsEVM productsSparePartsEVM = new ProductsSparePartsEVM();
-        productsSparePartsEVM.setId(productsSparePartsSC.getId());
-        productsSparePartsEVM.setName(productsSparePartsSC.getName());
-        productsSparePartsEVM.setCondition(productsSparePartsSC.getCondition());
-        productsSparePartsEVM.setVehicleType(productsSparePartsSC.getVehicleType());
+        ProductsSparePartsSC productsSparePartsSC = new ProductsSparePartsSC();
+        productsSparePartsSC.setId(productsSparePartsEVM.getId());
+        productsSparePartsSC.setName(productsSparePartsEVM.getName());
+        productsSparePartsSC.setCondition(productsSparePartsEVM.getCondition());
+        productsSparePartsSC.setVehicleType(productsSparePartsEVM.getVehicleType());
         // Transfer type in service layer
 
-        return productsSparePartsEVM;
+        return productsSparePartsSC;
     }
 
     public ProductsSparePartsEVMResponse toResponse(ProductsSparePartsEVM product) {

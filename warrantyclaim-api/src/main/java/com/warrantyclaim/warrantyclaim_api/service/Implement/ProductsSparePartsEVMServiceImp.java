@@ -16,6 +16,7 @@ import com.warrantyclaim.warrantyclaim_api.mapper.ProductsSparePartsEVMMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ProductsSparePartsEVMRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.ProductsSparePartsSCRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.ProductsSparePartsTypeEVMRepository;
+import com.warrantyclaim.warrantyclaim_api.repository.ProductsSparePartsTypeSCRepository;
 import com.warrantyclaim.warrantyclaim_api.service.ProductsSparePartsEVMService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMService {
     private final ProductsSparePartsEVMRepository repository;
     private final ProductsSparePartsTypeEVMRepository partTypeRepository;
+    private final ProductsSparePartsTypeSCRepository partsTypeSCRepository;
     private final ProductsSparePartsEVMMapper mapper;
     private final ProductsSparePartsSCRepository scRepository;
 
@@ -63,28 +65,31 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     }
 
     @Transactional
-    public void transferFromScOfficeBranchToEVM(String partScId) {
+    public void transferFromEVMToScOfficeBranch(String evmPartId, OfficeBranch officeBranch) {
 
-        ProductsSparePartsSC sparePartsSC = null;
-        if( partScId != null && !partScId.isEmpty()) {
-            sparePartsSC = scRepository.findById(partScId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Product SC not found with ID: " + partScId));
-            if(sparePartsSC.getCondition() != PartStatus.IN_PRODUCTION || sparePartsSC.getCondition() != PartStatus.ACTIVE) {
+        ProductsSparePartsEVM sparePartsEVM = null;
+        if(evmPartId != null && !evmPartId.isEmpty()) {
+            sparePartsEVM = repository.findById(evmPartId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Product SC not found with ID: " + evmPartId));
+            if(sparePartsEVM.getCondition() != PartStatus.IN_PRODUCTION && sparePartsEVM.getCondition() != PartStatus.ACTIVE) {
                 return;
             }
-
         }
 
+        ProductsSparePartsTypeSC productsSparePartsTypeSC = partsTypeSCRepository.getReferenceById(sparePartsEVM.getPartType().getId());
 
-        ProductsSparePartsEVM productsSparePartsEVM = mapper.transferScToEVM(sparePartsSC);
-        if(repository.findById(partScId).isPresent()) {
-            productsSparePartsEVM.setId(generatePartNumber(sparePartsSC.getVehicleType(), sparePartsSC.getPartType().getId()));
+        ProductsSparePartsSC productsSparePartsSC = mapper.transferScToSC(sparePartsEVM);
+        productsSparePartsSC.setPartType(productsSparePartsTypeSC);
+        productsSparePartsSC.setOfficeBranch(officeBranch);
+
+        if(scRepository.findById(evmPartId).isPresent()) {
+            productsSparePartsSC.setId(generatePartNumber(sparePartsEVM.getVehicleType(), sparePartsEVM.getPartType().getId()));
         }
         // Set condition instead of deleting
-        sparePartsSC.setCondition(PartStatus.TRANSFERRED);
-        scRepository.save(sparePartsSC);
+        sparePartsEVM.setCondition(PartStatus.TRANSFERRED);
 
-        repository.save(productsSparePartsEVM);
+        scRepository.save(productsSparePartsSC);
+        repository.save(sparePartsEVM);
     }
 
     @Transactional(readOnly = true)

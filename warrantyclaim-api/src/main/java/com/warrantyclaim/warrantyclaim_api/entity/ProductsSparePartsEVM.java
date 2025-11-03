@@ -30,7 +30,6 @@ public class ProductsSparePartsEVM {
     @Column(name = "Vehicle_Type")
     private VehicleType vehicleType;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "'Condition'", length = 50)
     private PartStatus condition;
