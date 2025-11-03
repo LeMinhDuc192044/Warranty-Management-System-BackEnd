@@ -356,6 +356,8 @@ public class ServiceCampaignsServiceImp implements ServiceCampaignsService {
         return mapper.toResponseDTO(updatedCampaign);
     }
 
+
+
     private String generateClaimId() {
         return "SCA-" + LocalDate.now().getYear() + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }

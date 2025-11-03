@@ -388,6 +388,7 @@ public class AuthService {
                 roleNames);
     }
 
+
     // DELETE USER
     @Transactional
     public void deleteUserById(Long id) {
