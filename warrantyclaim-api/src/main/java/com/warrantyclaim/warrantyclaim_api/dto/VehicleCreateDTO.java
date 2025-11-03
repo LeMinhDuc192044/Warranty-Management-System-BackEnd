@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -27,9 +28,6 @@ public class VehicleCreateDTO {
 
     @NotBlank(message = "Vehicle must have an owner")
     private String owner;
-
-    @NotBlank(message = "Picture must not be blank!!!!")
-    private String picture;
 
     @Email(message = "Invalid email Format!!!")
     @NotBlank(message = "Email can not be blank!!!")

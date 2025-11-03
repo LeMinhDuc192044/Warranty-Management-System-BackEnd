@@ -24,9 +24,6 @@ public class Report {
     @Column(length = 45)
     private String description;
 
-    @Column(length = 255)
-    private String image;
-
     @Column(length = 45)
     private String error;
 

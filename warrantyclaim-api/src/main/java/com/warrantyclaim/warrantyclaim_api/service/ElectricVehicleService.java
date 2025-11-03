@@ -3,11 +3,14 @@ package com.warrantyclaim.warrantyclaim_api.service;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface ElectricVehicleService {
-    public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO);
+    public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO, MultipartFile urlPicture) throws IOException;
 
-    public ElectricVehicleResponseDTO updateVehicle(String id, ElectricVehicleUpdateRequestDTO request);
+    public ElectricVehicleResponseDTO updateVehicle(String id, ElectricVehicleUpdateRequestDTO request, MultipartFile urlPicture);
 
     public ElectricVehicleResponseDTO getVehicleById(String id);
 

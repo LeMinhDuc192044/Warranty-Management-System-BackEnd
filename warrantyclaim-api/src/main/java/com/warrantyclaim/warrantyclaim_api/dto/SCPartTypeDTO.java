@@ -17,5 +17,4 @@ public class SCPartTypeDTO {
     private Integer totalAmountOfProduct;
     private Float price;
     private String manufacturer;
-    private String condition;
 }
