@@ -27,6 +27,9 @@ public class Report {
     @Column(length = 45)
     private String error;
 
+    @Column(length = 255)
+    private String image;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private ReportStatus status;
