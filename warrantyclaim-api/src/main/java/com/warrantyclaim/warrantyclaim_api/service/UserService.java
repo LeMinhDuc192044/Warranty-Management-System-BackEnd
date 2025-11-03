@@ -401,6 +401,7 @@ package com.warrantyclaim.warrantyclaim_api.service;
 
 import com.warrantyclaim.warrantyclaim_api.dto.ChangePasswordRequest;
 import com.warrantyclaim.warrantyclaim_api.dto.UpdateUserRequest;
+import com.warrantyclaim.warrantyclaim_api.dto.UpdateUserStatusRequest;
 import com.warrantyclaim.warrantyclaim_api.dto.UserResponse;
 import com.warrantyclaim.warrantyclaim_api.entity.SCStaff;
 import com.warrantyclaim.warrantyclaim_api.entity.SCAdmin;
@@ -412,6 +413,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -43,6 +43,7 @@ public class SecurityConfig {
         return new AppUserDetailsService(userRepository);
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -64,7 +65,9 @@ public class SecurityConfig {
                                 "/api/ServiceCampaigns/**",
                                 "/api/parts-requests/**",
                                 "/api/parts/inventory/**",
-                                "/api/recalls/**")
+                                "/api/recalls/**",
+                                "/api/reports/**",
+                                "/api/warranty-policies/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
@@ -118,5 +121,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 
 }

@@ -34,7 +34,6 @@ public class SCTechnician {
     @Column(name = "Date_of_Birth")
     private LocalDate dateOfBirth;
 
-
     @Column(length = 100)
     private String password;
 
@@ -43,7 +42,6 @@ public class SCTechnician {
 
     @Column(length = 100)
     private String specialty;
-
 
 
 }

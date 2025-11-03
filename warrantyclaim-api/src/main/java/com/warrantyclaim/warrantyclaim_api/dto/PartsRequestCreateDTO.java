@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PartsRequestCreateDTO {
-    @NotBlank(message = "Part number is required")
-    private String partNumber;
+//    @NotBlank(message = "Part number is required")
+//    private String partNumber;
 
     @NotBlank(message = "Part name is required")
     private String partName;

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class PartsRequestUpdateDTO {
-    private String partNumber;
+//    private String partNumber;
 
     private String partName;
 

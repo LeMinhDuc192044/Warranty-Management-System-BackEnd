@@ -63,7 +63,6 @@ public class SCPartTypeServiceImp implements SCPartTypeService {
         dto.setTotalAmountOfProduct(entity.getTotalAmountOfProduct());
         dto.setPrice(entity.getPrice());
         dto.setManufacturer(entity.getManufacturer());
-        dto.setCondition(entity.getCondition());
 
         return dto;
     }

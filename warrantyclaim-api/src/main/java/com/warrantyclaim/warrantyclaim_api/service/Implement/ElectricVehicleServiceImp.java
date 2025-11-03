@@ -3,19 +3,20 @@ package com.warrantyclaim.warrantyclaim_api.service.Implement;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
-import com.warrantyclaim.warrantyclaim_api.entity.SCStaff;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.mapper.ElectricVehicleMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleTypeRepository;
-import com.warrantyclaim.warrantyclaim_api.repository.SCStaffRepository;
 import com.warrantyclaim.warrantyclaim_api.service.ElectricVehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Service
@@ -24,18 +25,37 @@ import org.springframework.transaction.annotation.Transactional;
 public class ElectricVehicleServiceImp implements ElectricVehicleService {
     private final ElectricVehicleRepository electricVehicleRepository;
     private final ElectricVehicleMapper mapper;
-    private final SCStaffRepository scStaffRepository;
+    private ImageUploadServiceImp imageUploadServiceImp;
     private final ElectricVehicleTypeRepository electricVehicleTypeRepository;
 
     @Override
     @Transactional
-    public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO) {
+    public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO, MultipartFile urlPicture) throws IOException {
         ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleCreateDTO.getElectricVehicleTypeId())
                 .orElseThrow(() -> new ResourceNotFoundException("No vehicle type with this Id"));
+
         ElectricVehicle electricVehicle = mapper.toEntityElectricVehicle(vehicleCreateDTO);
-        electricVehicle.setVehicleType(electricVehicleType);
-        electricVehicle.setStatus(VehicleStatus.ACTIVE);
+
+        if (vehicleCreateDTO.getElectricVehicleTypeId() != null) {
+            ElectricVehicleType vehicleType = electricVehicleTypeRepository
+                    .findById(vehicleCreateDTO.getElectricVehicleTypeId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Vehicle type not found"));
+            electricVehicle.setVehicleType(vehicleType);
+        }
+
+        if(urlPicture != null && !urlPicture.isEmpty()) {
+            String imageUrl = imageUploadServiceImp.uploadImage(urlPicture);
+            electricVehicle.setPicture(imageUrl);
+        }
+
+        if(vehicleCreateDTO.getStatus() != null) {
+            electricVehicle.setStatus(vehicleCreateDTO.getStatus());
+        } else {
+            electricVehicle.setStatus(VehicleStatus.ACTIVE);
+        }
+
         electricVehicleRepository.save(electricVehicle);
+
         return mapper.toVehicleDetailInfo(electricVehicle);
     }
 
@@ -51,7 +71,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
      * Update vehicle
      */
     @Transactional
-    public ElectricVehicleResponseDTO updateVehicle(String id, ElectricVehicleUpdateRequestDTO request) {
+    public ElectricVehicleResponseDTO updateVehicle(String id, ElectricVehicleUpdateRequestDTO request, MultipartFile urlPicture) {
         // 1. Find vehicle
         ElectricVehicle vehicle = electricVehicleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Electric Vehicle not found with ID: " + id));
@@ -61,6 +81,27 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
             ElectricVehicleType vehicleType = electricVehicleTypeRepository.findById(request.getVehicleTypeId())
                     .orElseThrow(() -> new ResourceNotFoundException("Vehicle Type not found with ID: " + request.getVehicleTypeId()));
             vehicle.setVehicleType(vehicleType);
+        }
+
+
+        if (urlPicture != null && !urlPicture.isEmpty()) {
+            try {
+                // Delete old image if exists
+                if (vehicle.getPicture() != null && !vehicle.getPicture().isEmpty()) {
+                    try {
+                        imageUploadServiceImp.deleteImage(vehicle.getPicture());
+                    } catch (IOException e) {
+                        // Log but don't fail the update if old image deletion fails
+                        System.err.println("Failed to delete old image: " + e.getMessage());
+                    }
+                }
+
+                // Upload new image
+                String imageUrl = imageUploadServiceImp.uploadImage(urlPicture);
+                vehicle.setPicture(imageUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to upload image: " + e.getMessage(), e);
+            }
         }
 
         // 3. Update fields
@@ -74,8 +115,17 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     @Transactional
     public void deleteVehicle(String id) {
         // 1. Check if vehicle exists
-        if (!electricVehicleRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Electric Vehicle not found with ID: " + id);
+        ElectricVehicle vehicle = electricVehicleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Electric Vehicle not found with ID: " + id));
+
+
+        if (vehicle.getPicture() != null && !vehicle.getPicture().isEmpty()) {
+            try {
+                imageUploadServiceImp.deleteImage(vehicle.getPicture());
+            } catch (IOException e) {
+                // Log but don't fail the deletion if image deletion fails
+                System.err.println("Failed to delete image: " + e.getMessage());
+            }
         }
 
         // 2. Delete

@@ -17,6 +17,5 @@ public class EVMPartTypeDTO {
     private Integer totalAmountOfProduct;
     private Float price;
     private String manufacturer;
-    private String condition;
     private String stockStatus; // IN_STOCK, LOW_STOCK, OUT_OF_STOCK
 }

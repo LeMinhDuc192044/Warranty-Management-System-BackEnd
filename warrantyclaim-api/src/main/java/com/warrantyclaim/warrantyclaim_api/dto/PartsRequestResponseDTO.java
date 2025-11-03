@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PartsRequestResponseDTO {
     private String id;
-    private String partNumber;
+//    private String partNumber;
     private String partName; // part number ko can thiet
     private Integer quantity;
     private LocalDate requestDate;

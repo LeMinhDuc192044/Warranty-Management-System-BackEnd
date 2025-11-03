@@ -27,6 +27,9 @@ public class RecallElectricVehicle {
     @Column(name = "Vehicle_VIN_ID", length = 50)
     private String vehicleId;
 
+    @Column
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "Recall_ID", insertable = false, updatable = false)
     private Recall recall;

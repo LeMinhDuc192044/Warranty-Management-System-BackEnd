@@ -1,5 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.entity;
 
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.VehicleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,19 +26,14 @@ public class ProductsSparePartsEVM {
     @Column(name = "Name_Product", length = 100)
     private String name;
 
-    @Column(name = "Year_of_Manufacture")
-    private LocalDate yearOfManufacture;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Vehicle_Type")
+    private VehicleType vehicleType;
 
-    @Column(length = 100)
-    private String brand;
 
-    private Float price;
-
-    @Column(name = "Warranty_Period")
-    private Integer warrantyPeriod;
-
-    @Column(length = 45)
-    private String description;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "'Condition'", length = 50)
+    private PartStatus condition;
 
     @ManyToOne
     @JoinColumn(name = "ID_Products_Part_Type_EVM")

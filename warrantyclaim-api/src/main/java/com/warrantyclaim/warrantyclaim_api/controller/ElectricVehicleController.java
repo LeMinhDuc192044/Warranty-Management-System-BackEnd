@@ -10,8 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,10 +25,12 @@ import org.springframework.web.bind.annotation.*;
 public class ElectricVehicleController {
     private final ElectricVehicleService electricVehicleService;
 
-    @PostMapping
-    public ResponseEntity<VehicleDetailInfo> addElectricVehicle(@RequestBody VehicleCreateDTO vehicleCreateDTO) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<VehicleDetailInfo> addElectricVehicle(
+            @RequestParam VehicleCreateDTO vehicleCreateDTO,
+            @ModelAttribute MultipartFile urlPicture) throws IOException {
         System.out.println("✅ Controller reached: ");
-        VehicleDetailInfo vehicleCreateDetailInfo = electricVehicleService.addElectricVehicle(vehicleCreateDTO);
+        VehicleDetailInfo vehicleCreateDetailInfo = electricVehicleService.addElectricVehicle(vehicleCreateDTO, urlPicture);
         return ResponseEntity.status(HttpStatus.CREATED).body(vehicleCreateDetailInfo);
     }
 
@@ -50,14 +56,15 @@ public class ElectricVehicleController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ElectricVehicleResponseDTO> updateVehicle(
             @PathVariable String id,
-            @Valid @RequestBody ElectricVehicleUpdateRequestDTO request) {
+            @RequestParam ElectricVehicleUpdateRequestDTO request,
+            @ModelAttribute MultipartFile urlPicture) {
         System.out.println("✅ Update Controller reached for vehicle: " + id);
         System.out.println("📦 Update request data: " + request);
         System.out.println("📅 ProductionDate in request: " + request.getProductionDate());
-        ElectricVehicleResponseDTO response = electricVehicleService.updateVehicle(id, request);
+        ElectricVehicleResponseDTO response = electricVehicleService.updateVehicle(id, request, urlPicture);
         System.out.println("📤 Update response purchaseDate: " + response.getPurchaseDate());
         return ResponseEntity.ok(response);
     }
