@@ -20,6 +20,7 @@ public class VehicleDetailInfo {
     private String vehicleTypeName;
     private String modelName;
 
+
     private ElectricVehicleType electricVehicleType;
 
 }

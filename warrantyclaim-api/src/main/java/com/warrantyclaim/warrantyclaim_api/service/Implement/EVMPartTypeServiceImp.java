@@ -81,7 +81,6 @@ public class EVMPartTypeServiceImp implements EVMPartTypeService {
         dto.setTotalAmountOfProduct(entity.getTotalAmountOfProduct());
         dto.setPrice(entity.getPrice());
         dto.setManufacturer(entity.getManufacturer());
-        dto.setCondition(entity.getCondition());
         dto.setStockStatus(entity.getStockStatus());
 
         return dto;

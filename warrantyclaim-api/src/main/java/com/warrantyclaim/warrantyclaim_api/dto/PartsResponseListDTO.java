@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class PartsResponseListDTO {
 
     private String id;
-    private String partNumber;
+//    private String partNumber;
     private String partName;
     private Integer quantity;
     private LocalDate requestDate;

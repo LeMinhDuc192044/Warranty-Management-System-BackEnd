@@ -20,9 +20,9 @@ public class PartsRequest {
     @Id
     @Column(name = "RequestID", length = 50)
     private String id;
-
-    @Column(name = "PartNumber", length = 50)
-    private String partNumber;
+//
+//    @Column(name = "PartNumber", length = 50)
+//    private String partNumber;
 
     @Column(name = "PartName", length = 100)
     private String partName;

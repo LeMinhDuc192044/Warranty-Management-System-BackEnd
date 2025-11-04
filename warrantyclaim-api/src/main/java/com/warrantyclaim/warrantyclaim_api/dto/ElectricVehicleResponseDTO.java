@@ -24,4 +24,5 @@ public class ElectricVehicleResponseDTO {
 
     // Nested vehicle type info
     private VehicleTypeInfoDTO vehicleType;
+
 }

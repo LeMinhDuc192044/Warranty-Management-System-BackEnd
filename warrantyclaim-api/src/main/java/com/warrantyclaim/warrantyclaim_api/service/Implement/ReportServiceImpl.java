@@ -87,7 +87,7 @@ public class ReportServiceImpl implements ReportService {
         if(request.getImage() != null) {
             report.setImage(request.getImage());
         }
-        
+
         return reportMapper.toDTO(reportRepository.save(report));
     }
 

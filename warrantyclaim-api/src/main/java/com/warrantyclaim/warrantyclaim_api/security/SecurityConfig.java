@@ -43,6 +43,7 @@ public class SecurityConfig {
         return new AppUserDetailsService(userRepository);
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -64,7 +65,11 @@ public class SecurityConfig {
                                 "/api/ServiceCampaigns/**",
                                 "/api/parts-requests/**",
                                 "/api/parts/inventory/**",
-                                "/api/recalls/**")
+                                "/api/recalls/**",
+                                "/api/reports/**",
+                                "/api/warranty-policies/**",
+                                "/api/spare-parts/evm/**",
+                                "/api/spare-parts/sc/**")
                         .permitAll()
                         // CHỈ CHO PHÉP 3 ROLE TRUY CẬP API XEM EMAIL ĐÃ GỬI
                         .requestMatchers("/api/EmailNotifications/all-email-sent")
@@ -121,5 +126,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
 
 }
