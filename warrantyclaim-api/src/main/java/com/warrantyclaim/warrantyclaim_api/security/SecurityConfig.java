@@ -67,7 +67,9 @@ public class SecurityConfig {
                                 "/api/parts/inventory/**",
                                 "/api/recalls/**",
                                 "/api/reports/**",
-                                "/api/warranty-policies/**")
+                                "/api/warranty-policies/**",
+                                "/api/spare-parts/evm/**",
+                                "/api/spare-parts/sc/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
