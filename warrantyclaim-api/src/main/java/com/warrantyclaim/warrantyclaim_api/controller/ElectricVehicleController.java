@@ -2,7 +2,10 @@ package com.warrantyclaim.warrantyclaim_api.controller;
 
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.service.ElectricVehicleService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,13 +28,15 @@ import java.io.IOException;
 public class ElectricVehicleController {
     private final ElectricVehicleService electricVehicleService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Add new electric vehicle with picture")
     public ResponseEntity<VehicleDetailInfo> addElectricVehicle(
-            @RequestParam VehicleCreateDTO vehicleCreateDTO,
-            @ModelAttribute MultipartFile urlPicture) throws IOException {
-        System.out.println("✅ Controller reached: ");
-        VehicleDetailInfo vehicleCreateDetailInfo = electricVehicleService.addElectricVehicle(vehicleCreateDTO, urlPicture);
-        return ResponseEntity.status(HttpStatus.CREATED).body(vehicleCreateDetailInfo);
+            @ModelAttribute @Valid VehicleCreateDTO vehicleCreateDTO) throws IOException {
+
+        VehicleDetailInfo result = electricVehicleService
+                .addElectricVehicle(vehicleCreateDTO, vehicleCreateDTO.getUrlPicture());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping
