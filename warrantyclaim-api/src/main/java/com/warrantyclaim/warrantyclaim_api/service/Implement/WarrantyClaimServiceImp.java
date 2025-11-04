@@ -213,30 +213,7 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
     }
 
 
-    public void sendVehicleReadyEmail(String claimId) {
-        WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy claim với ID: " + claimId));
 
-        if (claim.getStatus() != WarrantyClaimStatus.COMPLETED) {
-            throw new IllegalStateException("Xe chưa hoàn tất bảo hành.");
-        }
-
-        if (claim.getReturnDate() == null) {
-            throw new IllegalStateException("Ngày nhận xe chưa được cập nhật.");
-        }
-
-        String to = claim.getEmail();
-        String name = claim.getCustomerName();
-        LocalDate returnDate = claim.getReturnDate();
-
-        String subject = "Thông báo nhận xe sau bảo hành";
-        String body = String.format(
-                "Chào %s,\n\nXe của bạn đã hoàn tất bảo hành và sẵn sàng nhận vào ngày %s.\n\nTrân trọng,\nTrung tâm bảo hành",
-                name, returnDate
-        );
-
-        emailService.sendEmail(to, subject, body);
-    }
 
     @Override
     public WarrantyClaimResponseDTO updateReturnDate(String claimId, LocalDate returnDate) {

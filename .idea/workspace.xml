@@ -7,8 +7,7 @@
     <list default="true" id="b90564b3-2003-4a78-aca2-c67d5c845ee2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/WarrantyClaimController.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/WarrantyClaimController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/entity/WarrantyClaim.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/entity/WarrantyClaim.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/security/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/WarrantyClaimServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/WarrantyClaimServiceImp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/WarrantyClaimService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/WarrantyClaimService.java" afterDir="false" />
     </list>
@@ -21,8 +20,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -66,7 +65,10 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.WarrantyclaimApiApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/warranty-email-return-date&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RunManager" selected="Application.WarrantyclaimApiApplication">
@@ -104,7 +106,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="622dda86-696d-4992-97bc-3d7ae05b6e69" name="Changes" comment="" />
+      <changelist id="b90564b3-2003-4a78-aca2-c67d5c845ee2" name="Changes" comment="" />
       <created>1760706566871</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

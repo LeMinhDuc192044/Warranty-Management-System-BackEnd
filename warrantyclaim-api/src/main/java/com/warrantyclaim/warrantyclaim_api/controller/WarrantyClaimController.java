@@ -96,14 +96,7 @@ public class WarrantyClaimController {
     }
 
 
-    @PostMapping("/claims/{id}/notify-customer")
-    public ResponseEntity<?> notifyCustomer(@PathVariable String id) {
-        warrantyClaimService.sendVehicleReadyEmail(id);
-        return ResponseEntity.ok(new MessageResponse("Email đã được gửi cho khách hàng."));
-
-    }
-
-
+// techni điền ngày nhận xe cho customer
     @PatchMapping("/{claimId}/return-date")
     public ResponseEntity<WarrantyClaimResponseDTO> updateReturnDate(
             @PathVariable String claimId,

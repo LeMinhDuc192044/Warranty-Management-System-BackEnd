@@ -25,7 +25,7 @@ public interface WarrantyClaimService {
 
     public WarrantyClaimResponseDTO assignScTech(String claimId, String scTechId);
 
-    public void sendVehicleReadyEmail(String claimId);
+
 
     public WarrantyClaimResponseDTO updateReturnDate(String claimId, LocalDate returnDate);
 
