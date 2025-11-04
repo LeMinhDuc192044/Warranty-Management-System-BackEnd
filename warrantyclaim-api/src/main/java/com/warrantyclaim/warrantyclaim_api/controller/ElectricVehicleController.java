@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,4 +80,13 @@ public class ElectricVehicleController {
         electricVehicleService.deleteVehicle(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    @Operation(summary = "Kiểm tra trạng thái bảo hành của xe điện theo VIN")
+    @GetMapping("/{vin}/warranty-status")
+    public ResponseEntity<List<WarrantyStatusDTO>> getWarrantyStatus(@PathVariable String vin) {
+        List<WarrantyStatusDTO> result = electricVehicleService.getWarrantyStatus(vin);
+        return ResponseEntity.ok(result);
+    }
+
 }

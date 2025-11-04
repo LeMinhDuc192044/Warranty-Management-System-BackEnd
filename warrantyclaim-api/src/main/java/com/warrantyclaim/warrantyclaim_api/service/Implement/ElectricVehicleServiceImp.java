@@ -3,6 +3,8 @@ package com.warrantyclaim.warrantyclaim_api.service.Implement;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
+import com.warrantyclaim.warrantyclaim_api.entity.WarrantyPolicy;
+import com.warrantyclaim.warrantyclaim_api.entity.WarrantyPolicyElectricVehicleType;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.mapper.ElectricVehicleMapper;
@@ -18,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -149,6 +154,39 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     public Page<ElectricVehicleListResponseDTO> getAllVehicles(Pageable pageable) {
         Page<ElectricVehicle> vehicles = electricVehicleRepository.findAll(pageable);
         return vehicles.map(mapper::toListResponseDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<WarrantyStatusDTO> getWarrantyStatus(String vin) {
+        ElectricVehicle vehicle = electricVehicleRepository.findById(vin)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy xe với VIN: " + vin));
+
+        LocalDate purchaseDate = vehicle.getPurchaseDate();
+        ElectricVehicleType type = vehicle.getVehicleType();
+
+        if (purchaseDate == null || type == null) {
+            throw new IllegalStateException("Xe chưa có đủ thông tin để kiểm tra bảo hành");
+        }
+
+        List<WarrantyStatusDTO> result = new ArrayList<>();
+
+        for (WarrantyPolicyElectricVehicleType link : type.getWarrantyPolicyElectricVehicleTypes()) {
+            WarrantyPolicy policy = link.getWarrantyPolicy();
+            LocalDate endDate = purchaseDate.plusMonths(policy.getCoverageDurationMonths());
+            boolean isValid = LocalDate.now().isBefore(endDate);
+
+            WarrantyStatusDTO dto = new WarrantyStatusDTO();
+            dto.setPolicyName(policy.getName());
+            dto.setCoverageType(policy.getCoverageTypeWarrantyPolicy().name());
+            dto.setWarrantyEndDate(endDate);
+            dto.setUnderWarranty(isValid);
+
+
+            result.add(dto);
+        }
+
+        return result;
     }
 
 }
