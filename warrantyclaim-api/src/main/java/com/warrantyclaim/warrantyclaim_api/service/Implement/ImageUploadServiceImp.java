@@ -34,12 +34,11 @@ public class ImageUploadServiceImp implements ImageUploadService {
                         "public_id", publicId,
                         "folder", "vinfast_vehicles",
                         "resource_type", "image",
-                        "transformation", ObjectUtils.asMap(
-                                "width", 800,
-                                "height", 600,
-                                "crop", "limit",
-                                "quality", "auto"
-                        )
+                        "width", 800,              // ← Direct params, not nested
+                        "height", 600,             // ← Direct params
+                        "crop", "limit",           // ← Direct params
+                        "quality", "auto"
+
                 )
         );
 

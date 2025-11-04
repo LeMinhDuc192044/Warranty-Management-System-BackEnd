@@ -25,7 +25,7 @@ import java.io.IOException;
 public class ElectricVehicleServiceImp implements ElectricVehicleService {
     private final ElectricVehicleRepository electricVehicleRepository;
     private final ElectricVehicleMapper mapper;
-    private ImageUploadServiceImp imageUploadServiceImp;
+    private final ImageUploadServiceImp imageUploadServiceImp;
     private final ElectricVehicleTypeRepository electricVehicleTypeRepository;
 
     @Override
@@ -59,6 +59,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         return mapper.toVehicleDetailInfo(electricVehicle);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public ElectricVehicleResponseDTO getVehicleById(String id) {
         ElectricVehicle vehicle = electricVehicleRepository.findById(id)
@@ -70,6 +71,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     /**
      * Update vehicle
      */
+    @Override
     @Transactional
     public ElectricVehicleResponseDTO updateVehicle(String id, ElectricVehicleUpdateRequestDTO request, MultipartFile urlPicture) {
         // 1. Find vehicle
@@ -112,6 +114,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         return mapper.toResponseDTO(updatedVehicle);
     }
 
+    @Override
     @Transactional
     public void deleteVehicle(String id) {
         // 1. Check if vehicle exists
@@ -131,7 +134,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         // 2. Delete
         electricVehicleRepository.deleteById(id);
     }
-
+    @Override
     @Transactional
     public Page<ElectricVehicleListResponseDTO> getAllVehicles(Pageable pageable) {
         Page<ElectricVehicle> vehicles = electricVehicleRepository.findAll(pageable);

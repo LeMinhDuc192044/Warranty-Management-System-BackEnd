@@ -2,6 +2,7 @@ package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,5 +45,13 @@ public class VehicleCreateDTO {
 
     @NotBlank(message = "Vehicle must have a type")
     private String electricVehicleTypeId;
+
+    @Schema(
+            description = "Vehicle image file (PNG, JPG, JPEG)",
+            type = "string",
+            format = "binary",
+            required = true
+    )
+    private MultipartFile urlPicture;
 
 }
