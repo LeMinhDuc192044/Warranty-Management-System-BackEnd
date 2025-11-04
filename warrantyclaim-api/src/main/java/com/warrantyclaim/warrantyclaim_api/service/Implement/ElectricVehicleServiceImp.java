@@ -9,6 +9,7 @@ import com.warrantyclaim.warrantyclaim_api.mapper.ElectricVehicleMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleTypeRepository;
 import com.warrantyclaim.warrantyclaim_api.service.ElectricVehicleService;
+import com.warrantyclaim.warrantyclaim_api.utils.VinUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +32,17 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     @Override
     @Transactional
     public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO, MultipartFile urlPicture) throws IOException {
-        ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleCreateDTO.getElectricVehicleTypeId())
-                .orElseThrow(() -> new ResourceNotFoundException("No vehicle type with this Id"));
+        //  Kiểm tra VIN hợp lệ
+        String vin = vehicleCreateDTO.getVehicleId();
+        if (!VinUtils.isValidVin(vin)) {
+            throw new IllegalArgumentException("Số VIN không hợp lệ. Định dạng đúng: VF[Model][Year][H|T][Serial] (17 ký tự)");
+        }
+        if (electricVehicleRepository.existsById(vin)) {
+            throw new IllegalArgumentException("Số VIN đã tồn tại trong hệ thống");
+        }
+
+//        ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleCreateDTO.getElectricVehicleTypeId())
+//                .orElseThrow(() -> new ResourceNotFoundException("No vehicle type with this Id"));
 
         ElectricVehicle electricVehicle = mapper.toEntityElectricVehicle(vehicleCreateDTO);
 

@@ -39,4 +39,5 @@ public class ElectricVehicleType {
 
     private Integer quantity;
 
+
 }
