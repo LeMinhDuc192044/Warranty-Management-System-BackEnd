@@ -17,6 +17,7 @@ public class WarrantyClaimMapper {
 
         WarrantyClaimDetailResponseDTO response = new WarrantyClaimDetailResponseDTO();
         response.setClaimId(claim.getId());
+        response.setOfficeBranch(claim.getOfficeBranch());
         response.setCustomerName(claim.getCustomerName());
         response.setCustomerPhone(claim.getCustomerPhone());
         response.setClaimDate(claim.getClaimDate());
@@ -51,6 +52,7 @@ public class WarrantyClaimMapper {
         WarrantyClaim warrantyClaim = new WarrantyClaim();
         warrantyClaim.setCustomerName(requestDTO.getCustomerName());
         warrantyClaim.setCustomerPhone(requestDTO.getPhoneNumber());
+        warrantyClaim.setOfficeBranch(requestDTO.getOfficeBranch());
         warrantyClaim.setClaimDate(requestDTO.getClaimDate());
         warrantyClaim.setIssueDescription(requestDTO.getIssueDescription());
         warrantyClaim.setEmail(requestDTO.getEmail());
@@ -75,6 +77,7 @@ public class WarrantyClaimMapper {
         response.setIssueDescription(warrantyClaim.getIssueDescription());
         response.setEmail(warrantyClaim.getEmail());
         response.setCustomerName(warrantyClaim.getCustomerName());
+        response.setOfficeBranch(warrantyClaim.getOfficeBranch());
         response.setCustomerPhone(warrantyClaim.getCustomerPhone());
         response.setStatus(warrantyClaim.getStatus());
         response.setRequiredPart(warrantyClaim.getRequiredParts());
@@ -103,6 +106,7 @@ public class WarrantyClaimMapper {
         response.setCustomerPhone(claim.getCustomerPhone());
         response.setClaimDate(claim.getClaimDate());
         response.setStatus(claim.getStatus()); // FIX: Thiếu set status
+        response.setOfficeBranch(claim.getOfficeBranch());
 
         if (claim.getVehicle() != null) {
             response.setVehicleName(claim.getVehicle().getName());
@@ -139,6 +143,10 @@ public class WarrantyClaimMapper {
 
         if (request.getRequiredParts() != null) {
             claim.setRequiredParts(request.getRequiredParts());
+        }
+
+        if(request.getOfficeBranch() != null) {
+            claim.setOfficeBranch(request.getOfficeBranch());
         }
         // Staff should be updated in service layer
     }

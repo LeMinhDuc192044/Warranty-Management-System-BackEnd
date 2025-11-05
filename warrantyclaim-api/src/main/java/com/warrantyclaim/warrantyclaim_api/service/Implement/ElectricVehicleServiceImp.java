@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 
 @Service
@@ -112,6 +113,21 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         ElectricVehicle updatedVehicle = electricVehicleRepository.save(vehicle);
 
         return mapper.toResponseDTO(updatedVehicle);
+    }
+
+    @Override
+    @Transactional
+    public ElectricVehicleResponseDTO updateReturnDate(String id, LocalDate returnDate) {
+        ElectricVehicle vehicle = electricVehicleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Electric Vehicle not found with ID: " + id));
+
+        if(vehicle.getPurchaseDate().isBefore(returnDate)) {
+            throw new RuntimeException("Return date has to be after purchaseDate");
+        }
+
+        vehicle.setReturnDate(returnDate);
+        vehicle = electricVehicleRepository.save(vehicle);
+        return mapper.toResponseDTO(vehicle);
     }
 
     @Override

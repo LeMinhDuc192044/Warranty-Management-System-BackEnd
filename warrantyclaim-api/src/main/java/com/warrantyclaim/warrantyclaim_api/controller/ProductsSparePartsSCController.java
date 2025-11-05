@@ -45,7 +45,7 @@ public class ProductsSparePartsSCController {
         return ResponseEntity.ok(service.getByOfficeBranch(branch));
     }
 
-    @PatchMapping("/{id}/vehicles")
+    @PatchMapping("/{id}/vehicles/{vehicleId}")
     public ResponseEntity<ProductsSparePartsSCResponse> mapSerialNumberToVin(@PathVariable String id,
                                                                              @PathVariable String vehicleId) {
         ProductsSparePartsSCResponse response = service.mapSerialToVehicle(id, vehicleId);

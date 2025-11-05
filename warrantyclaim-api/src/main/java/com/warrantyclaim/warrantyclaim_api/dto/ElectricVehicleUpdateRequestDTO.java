@@ -21,9 +21,11 @@ public class ElectricVehicleUpdateRequestDTO {
 
     private Float totalKm;
 
-    private LocalDate productionDate;
+    private LocalDate purchaseDate;
 
     private String owner;
+
+    private LocalDate returnDate;
 
     @Pattern(regexp = "^[0-9]{10,20}$", message = "Phone number must be 10-20 digits")
     private String phoneNumber;

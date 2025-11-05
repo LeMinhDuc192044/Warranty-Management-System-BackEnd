@@ -1,7 +1,9 @@
 package com.warrantyclaim.warrantyclaim_api.dto;
 
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.enums.WarrantyClaimStatus;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,10 @@ public class WarrantyClaimUpdateRequestDTO {
 
     @Email(message = "Invalid email format")
     private String email;
+
+    private OfficeBranch officeBranch;
+
+
 
     private String RequiredParts;
 

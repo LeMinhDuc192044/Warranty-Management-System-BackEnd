@@ -9,6 +9,7 @@ import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsTypeSC;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleType;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.mapper.ProductsSparePartsSCMapper;
@@ -124,6 +125,10 @@ public class ProductsSparePartsSCServiceImp implements ProductsSparePartsSCServi
     public ProductsSparePartsSCResponse mapSerialToVehicle(String id, String vehicleId) {
         ProductsSparePartsSC product = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+
+        if(product.getCondition() != PartStatus.IN_PRODUCTION && product.getCondition() != PartStatus.ACTIVE) {
+            throw new IllegalStateException("Part's condition has to be IN_PRODUCTION or ACTIVE to map serial to vin");
+        }
 
         if (vehicleId != null) {
             ElectricVehicle vehicle = vehicleRepository.findById(vehicleId)
