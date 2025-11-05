@@ -1,4 +1,5 @@
 package com.warrantyclaim.warrantyclaim_api.service.Implement;
+
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
@@ -7,6 +8,7 @@ import com.warrantyclaim.warrantyclaim_api.entity.*;
 import com.warrantyclaim.warrantyclaim_api.mapper.RecallMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.*;
 import com.warrantyclaim.warrantyclaim_api.service.RecallService;
+import com.warrantyclaim.warrantyclaim_api.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,12 @@ public class RecallServiceImp implements RecallService {
     @Autowired
     private ElectricVehicleTypeRepository electricVehicleTypeRepository;
 
+    @Autowired
+    private RecallVehicleProgressRepository recallProgressRepository;
+
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     @Transactional
     public RecallResponseDTO createRecall(RecallCreateDTO createDTO) {
@@ -50,26 +58,29 @@ public class RecallServiceImp implements RecallService {
             recall.setNotificationSent(false);
         }
 
-        if(createDTO.getVehicleId() != null && !createDTO.getVehicleId().isEmpty()) {
-            for(String vehicleId : createDTO.getVehicleId()) {
+        if (createDTO.getVehicleId() != null && !createDTO.getVehicleId().isEmpty()) {
+            for (String vehicleId : createDTO.getVehicleId()) {
                 ElectricVehicle electricVehicle = vehicleRepo.findById(vehicleId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleId));
+                        .orElseThrow(
+                                () -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleId));
                 recall.addElectricVehicle(electricVehicle);
             }
         }
 
-        if(createDTO.getVehicleTypeIds() != null && !createDTO.getVehicleTypeIds().isEmpty()) {
-            for(String vehicleTypeId : createDTO.getVehicleTypeIds()) {
+        if (createDTO.getVehicleTypeIds() != null && !createDTO.getVehicleTypeIds().isEmpty()) {
+            for (String vehicleTypeId : createDTO.getVehicleTypeIds()) {
                 ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleTypeId));
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Vehicle not existed with this Id " + vehicleTypeId));
                 recall.addVehicleType(electricVehicleType);
             }
         }
 
-        if(createDTO.getTechnicianIds() != null && !createDTO.getTechnicianIds().isEmpty()) {
-            for(String technicianId : createDTO.getTechnicianIds()) {
+        if (createDTO.getTechnicianIds() != null && !createDTO.getTechnicianIds().isEmpty()) {
+            for (String technicianId : createDTO.getTechnicianIds()) {
                 SCTechnician technician = scTechnicianRepo.findById(technicianId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + technicianId));
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Vehicle not existed with this Id " + technicianId));
                 recall.addTechnician(technician);
             }
         }
@@ -112,7 +123,8 @@ public class RecallServiceImp implements RecallService {
             List<ElectricVehicleType> vehicleTypes = new ArrayList<>();
             for (String vehicleTypeId : updateDTO.getVehicleTypeIds()) {
                 ElectricVehicleType vehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle type not found with ID: " + vehicleTypeId));
+                        .orElseThrow(() -> new ResourceNotFoundException(
+                                "Vehicle type not found with ID: " + vehicleTypeId));
                 vehicleTypes.add(vehicleType);
             }
             recall.setElectricVehicleTypes(vehicleTypes);
@@ -123,7 +135,8 @@ public class RecallServiceImp implements RecallService {
             List<SCTechnician> technicians = new ArrayList<>();
             for (String technicianId : updateDTO.getTechnicianIds()) {
                 SCTechnician technician = scTechnicianRepo.findById(technicianId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Technician not found with ID: " + technicianId));
+                        .orElseThrow(
+                                () -> new ResourceNotFoundException("Technician not found with ID: " + technicianId));
                 technicians.add(technician);
             }
             recall.setScTechnicians(technicians);
@@ -241,7 +254,8 @@ public class RecallServiceImp implements RecallService {
         List<ElectricVehicleType> vehicleTypes = new ArrayList<>();
         for (String vehicleTypeId : vehicleTypeIds) {
             ElectricVehicleType vehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Vehicle type not found with ID: " + vehicleTypeId));
+                    .orElseThrow(
+                            () -> new ResourceNotFoundException("Vehicle type not found with ID: " + vehicleTypeId));
             vehicleTypes.add(vehicleType);
         }
 
@@ -352,6 +366,76 @@ public class RecallServiceImp implements RecallService {
                 .orElseThrow(() -> new ResourceNotFoundException("Recall not found with ID: " + recallId));
 
         return mapper.toListReportResponseDTO(recall);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RecallsListDTO> getRecallsByDistrict(String district, Pageable pageable) {
+        Page<Recall> recalls = recallRepository.findByTargetDistrictContaining(district, pageable);
+        return recalls.map(mapper::toListDTO);
+    }
+
+    @Override
+    @Transactional
+    public RecallResponseDTO assignTechniciansByDistrict(String recallId, TechnicianAssignmentDTO assignmentDTO) {
+        Recall recall = recallRepository.findById(recallId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recall not found with ID: " + recallId));
+
+        List<SCTechnician> technicians = scTechnicianRepo.findByDistrict(assignmentDTO.getDistrict());
+
+        if (technicians.isEmpty()) {
+            throw new ResourceNotFoundException("No technicians found in district: " + assignmentDTO.getDistrict());
+        }
+
+        // Assign technicians via progress tracking (not direct relationship)
+        if (assignmentDTO.getVehicleVinIds() != null && !assignmentDTO.getVehicleVinIds().isEmpty()) {
+            for (String vinId : assignmentDTO.getVehicleVinIds()) {
+                RecallVehicleProgress progress = RecallVehicleProgress.builder()
+                        .recallId(recallId)
+                        .vehicleVinId(vinId)
+                        .assignedTechnicianId(technicians.get(0).getId())
+                        .status("ASSIGNED")
+                        .assignedAt(LocalDate.now())
+                        .build();
+                recallProgressRepository.save(progress);
+            }
+
+            for (SCTechnician tech : technicians) {
+                notificationService.sendNotification(
+                        tech.getId(),
+                        "RECALL_ASSIGNED",
+                        "Chiến dịch triệu hồi mới",
+                        "Bạn được phân công cho chiến dịch triệu hồi: " + recall.getName() +
+                                " với " + assignmentDTO.getVehicleVinIds().size() + " xe cần xử lý.");
+            }
+        }
+
+        Recall updated = recallRepository.save(recall);
+        return mapper.toRecallResponseDTO(updated);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgressDTO getRecallProgress(String recallId) {
+        Recall recall = recallRepository.findById(recallId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recall not found with ID: " + recallId));
+
+        List<RecallVehicleProgress> allProgress = recallProgressRepository.findByRecallId(recallId);
+
+        long totalVehicles = allProgress.size();
+        long completedVehicles = recallProgressRepository.countByRecallIdAndStatus(recallId, "COMPLETED");
+        long inProgressVehicles = recallProgressRepository.countByRecallIdAndStatus(recallId, "IN_PROGRESS");
+
+        return ProgressDTO.builder()
+                .id(recallId)
+                .name(recall.getName())
+                .type("RECALL")
+                .totalVehicles(totalVehicles)
+                .completedVehicles(completedVehicles)
+                .inProgressVehicles(inProgressVehicles)
+                .progressPercentage(totalVehicles > 0 ? (int) (completedVehicles * 100 / totalVehicles) : 0)
+                .status(recall.getStatus().toString())
+                .build();
     }
 
     public String generatedIdRecall() {

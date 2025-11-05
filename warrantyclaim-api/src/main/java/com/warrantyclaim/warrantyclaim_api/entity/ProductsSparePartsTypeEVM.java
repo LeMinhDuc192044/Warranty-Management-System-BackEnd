@@ -38,6 +38,9 @@ public class ProductsSparePartsTypeEVM {
     @Column(length = 100)
     private String manufacturer;
 
+    @Column(name = "`Condition`", length = 50)
+    private String condition;
+
     @Column(name = "Stock_Status", length = 20)
     private String stockStatus; // Values: IN_STOCK, LOW_STOCK, OUT_OF_STOCK
 

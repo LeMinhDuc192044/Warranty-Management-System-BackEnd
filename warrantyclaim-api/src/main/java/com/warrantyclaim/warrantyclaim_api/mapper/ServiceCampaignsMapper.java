@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class ServiceCampaignsMapper {
 
     public ServiceCampaigns toEntityServiceCampaigns(ServiceCampaignsRequestDTO requestDTO) {
-        if(requestDTO == null) {
+        if (requestDTO == null) {
             return null;
         }
 
@@ -21,9 +21,11 @@ public class ServiceCampaignsMapper {
         serviceCampaigns.setStartDate(requestDTO.getStartDate());
         serviceCampaigns.setEndDate(requestDTO.getEndDate());
         serviceCampaigns.setTypeName(requestDTO.getTypeName());
-        serviceCampaigns.setNotificationSent(requestDTO.getNotificationSent() != null ? requestDTO.getNotificationSent() : false);
-        serviceCampaigns.setStatus(requestDTO.getStatus());
+        serviceCampaigns.setRequiredParts(requestDTO.getRequiredParts());
         serviceCampaigns.setDescription(requestDTO.getDescription());
+        serviceCampaigns.setNotificationSent(
+                requestDTO.getNotificationSent() != null ? requestDTO.getNotificationSent() : false);
+        serviceCampaigns.setStatus(requestDTO.getStatus());
 
         // Note: relationships will be set in service layer
 
@@ -31,7 +33,7 @@ public class ServiceCampaignsMapper {
     }
 
     public ServiceCampaignsResponseDTO toResponseDTO(ServiceCampaigns serviceCampaigns) {
-        if(serviceCampaigns == null) {
+        if (serviceCampaigns == null) {
             return null;
         }
         ServiceCampaignsResponseDTO responseDTO = new ServiceCampaignsResponseDTO();
@@ -41,7 +43,8 @@ public class ServiceCampaignsMapper {
         responseDTO.setEndDate(serviceCampaigns.getEndDate());
         responseDTO.setTypeName(serviceCampaigns.getTypeName());
         responseDTO.setRequiredParts(serviceCampaigns.getRequiredParts());
-        responseDTO.setNotificationSent(responseDTO.getNotificationSent() != null ? serviceCampaigns.getNotificationSent() : false);
+        responseDTO.setNotificationSent(
+                responseDTO.getNotificationSent() != null ? serviceCampaigns.getNotificationSent() : false);
         responseDTO.setStatus(serviceCampaigns.getStatus());
         responseDTO.setDescription(serviceCampaigns.getDescription());
 
@@ -49,8 +52,7 @@ public class ServiceCampaignsMapper {
             responseDTO.setVehicleTypes(
                     serviceCampaigns.getVehicleTypeCampaigns().stream()
                             .map(junction -> toVehicleTypeBasic(junction.getVehicleType()))
-                            .collect(Collectors.toList())
-            );
+                            .collect(Collectors.toList()));
         }
 
         // Map technicians through junction entity
@@ -58,25 +60,24 @@ public class ServiceCampaignsMapper {
             responseDTO.setTechnicians(
                     serviceCampaigns.getTechnicianCampaigns().stream()
                             .map(junction -> toTechnicianBasic(junction.getTechnician()))
-                            .collect(Collectors.toList())
-            );
+                            .collect(Collectors.toList()));
         }
 
         return responseDTO;
     }
 
     public ReportInfoListDTO toListReportDTO(ServiceCampaigns serviceCampaigns) {
-        if(serviceCampaigns == null) {
+        if (serviceCampaigns == null) {
             return null;
         }
 
         ReportInfoListDTO reportInfoListDTO = new ReportInfoListDTO();
 
-        if(serviceCampaigns.getReports() != null) {
+        if (serviceCampaigns.getReports() != null) {
             reportInfoListDTO.setReportInfoDTOList(
                     serviceCampaigns.getReports().stream()
-                            .map(this::toReportDTO).toList()
-            );
+                            .map(this::toReportDTO)
+                            .collect(java.util.stream.Collectors.toList()));
         }
         return reportInfoListDTO;
     }
@@ -100,6 +101,8 @@ public class ServiceCampaignsMapper {
         dto.setCampaignsTypeName(entity.getTypeName());
         dto.setStartDate(entity.getStartDate());
         dto.setEndDate(entity.getEndDate());
+        dto.setRequiredParts(entity.getRequiredParts());
+        dto.setDescription(entity.getDescription());
         dto.setStatus(entity.getStatus());
         dto.setNotificationSent(entity.getNotificationSent());
 
@@ -110,6 +113,16 @@ public class ServiceCampaignsMapper {
 
         dto.setTechnicianCount(entity.getTechnicianCampaigns() != null
                 ? entity.getTechnicianCampaigns().size()
+                : 0);
+
+        // Count completed vehicles from reports
+        // Reports contain the work done by technicians on vehicles
+        dto.setCompletedVehicles(entity.getReports() != null
+                ? (int) entity.getReports().stream()
+                        .filter(report -> report.getStatus() != null &&
+                                (report.getStatus().equals("COMPLETED") ||
+                                        report.getStatus().equals("APPROVED")))
+                        .count()
                 : 0);
 
         return dto;
@@ -151,8 +164,6 @@ public class ServiceCampaignsMapper {
         // Note: relationships will be updated in service layer
     }
 
-
-
     private TechnicianBasicDTO toTechnicianBasic(SCTechnician technician) {
         if (technician == null) {
             return null;
@@ -182,7 +193,5 @@ public class ServiceCampaignsMapper {
 
         return dto;
     }
-
-
 
 }

@@ -35,7 +35,6 @@ public class WarrantyClaim {
     @Column(length = 50)
     private WarrantyClaimStatus status;
 
-
     @Column(length = 500)
     private String rejectionReason;
 
@@ -44,6 +43,10 @@ public class WarrantyClaim {
 
     @Column(length = 100)
     private String email;
+
+    @Column(name = "Return_Date")
+    private LocalDate returnDate;
+
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Vehicle_VIN_ID")

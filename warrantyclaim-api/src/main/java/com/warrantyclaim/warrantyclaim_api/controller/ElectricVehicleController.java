@@ -64,12 +64,11 @@ public class ElectricVehicleController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ElectricVehicleResponseDTO> updateVehicle(
             @PathVariable String id,
-            @RequestParam ElectricVehicleUpdateRequestDTO request,
-            @ModelAttribute MultipartFile urlPicture) {
+            @Valid @RequestBody ElectricVehicleUpdateRequestDTO request) {
         System.out.println("✅ Update Controller reached for vehicle: " + id);
         System.out.println("📦 Update request data: " + request);
         System.out.println("📅 ProductionDate in request: " + request.getProductionDate());
-        ElectricVehicleResponseDTO response = electricVehicleService.updateVehicle(id, request, urlPicture);
+        ElectricVehicleResponseDTO response = electricVehicleService.updateVehicle(id, request);
         System.out.println("📤 Update response purchaseDate: " + response.getPurchaseDate());
         return ResponseEntity.ok(response);
     }

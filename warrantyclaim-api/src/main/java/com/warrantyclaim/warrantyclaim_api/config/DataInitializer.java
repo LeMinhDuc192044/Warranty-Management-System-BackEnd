@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
+import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Set;
 
 @Configuration
@@ -22,7 +24,7 @@ public class DataInitializer {
                 admin.setUsername("EVM Admin");
                 admin.setEmail(email);
                 admin.setPassword(BCrypt.hashpw("evmadmin123", BCrypt.gensalt()));
-                admin.setRoles(Set.of(Role.EVM_ADMIN));
+                admin.setRoles(new HashSet<>(Arrays.asList(Role.EVM_ADMIN)));
                 userRepo.save(admin);
                 System.out.println("EVM_ADMIN account created");
             } else {

@@ -197,7 +197,17 @@ public class WarrantyClaimMapper {
         return info;
     }
 
+    public SparePartInfoDTO toSparePartInfo(ProductsSparePartsSC part) {
+        if (part == null)
+            return null;
 
-
+        SparePartInfoDTO info = new SparePartInfoDTO();
+        info.setPartId(part.getId());
+        info.setNameProduct(part.getName());
+        info.setBrand(part.getBrand());
+        info.setPrice(part.getPrice());
+        info.setWarrantyPeriod(part.getWarrantyPeriod());
+        return info;
+    }
 
 }
