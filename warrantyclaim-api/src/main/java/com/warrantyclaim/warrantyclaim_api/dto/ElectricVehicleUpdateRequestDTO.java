@@ -36,5 +36,6 @@ public class ElectricVehicleUpdateRequestDTO {
     private VehicleStatus status;
 
     private String vehicleTypeId;
+    private LocalDate productionDate;
 }
 

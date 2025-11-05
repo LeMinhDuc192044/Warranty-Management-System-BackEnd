@@ -4,34 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b90564b3-2003-4a78-aca2-c67d5c845ee2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/SCTechnicianController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallByTechnicianDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallVehicleDetailDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallVehicleStatusResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianCreateDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianListDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianUpdateDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/UpdateRecallVehicleStatusDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/enums/RecallVehicleStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/SCTechnicianServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/SCTechnicianService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/RecallController.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/RecallController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/entity/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/entity/Report.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallElectricVehicleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallElectricVehicleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallSCTechnicianRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallSCTechnicianRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/SCTechnicianRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/SCTechnicianRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ElectricVehicleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ElectricVehicleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/RecallServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/RecallServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/RecallService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/RecallService.java" afterDir="false" />
-    </list>
+    <list default="true" id="b90564b3-2003-4a78-aca2-c67d5c845ee2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
