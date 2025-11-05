@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ElectricVehicleMapper {
 
     public ElectricVehicle toEntityElectricVehicle(VehicleCreateDTO vehicleCreateDTO) {
-        if (vehicleCreateDTO == null) {
+        if(vehicleCreateDTO == null) {
             return null;
         }
 
@@ -25,7 +25,7 @@ public class ElectricVehicleMapper {
         electricVehicle.setStatus(vehicleCreateDTO.getStatus());
 
         return electricVehicle;
-    }
+     }
 
     public ElectricVehicleListResponseDTO toListResponseDTO(ElectricVehicle vehicle) {
         if (vehicle == null) {

@@ -11,6 +11,7 @@ import com.warrantyclaim.warrantyclaim_api.mapper.WarrantyClaimMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.SCTechnicianRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.WarrantyClaimRepository;
+import com.warrantyclaim.warrantyclaim_api.service.EmailService;
 import com.warrantyclaim.warrantyclaim_api.service.NotificationService;
 import com.warrantyclaim.warrantyclaim_api.service.WarrantyClaimService;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +33,15 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
     private final SCTechnicianRepository scTechnicianRepository;
     private final WarrantyClaimMapper warrantyClaimMapper;
     private final NotificationService notificationService;
+    private final EmailService emailService;
 
     @Override
     @Transactional
     public WarrantyClaimResponseDTO createWarrantyClaim(WarrantyClaimCreateRequestDTO warrantyClaimRequest) {
 
         ElectricVehicle electricVehicle = electricVehicleRepository.findById(warrantyClaimRequest.getVehicleId()) // for
-                                                                                                                  // testing
-                                                                                                                  // exception
+                // testing
+                // exception
                 .orElseThrow(() -> new ResourceNotFoundException("There is no Electric Vehicle with this ID!!!"));
 
         // Validate staff if provided
@@ -80,7 +82,9 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
                 .orElseThrow(() -> new ResourceNotFoundException("Warranty claim not found with ID: " + claimId));
 
         if (request.getElectricVehicleId() != null) {
-            ElectricVehicle electricVehicle = electricVehicleRepository.findById(request.getElectricVehicleId())
+            ElectricVehicle electricVehicle = electricVehicleRepository.findById(request.getElectricVehicleId()) // for
+                    // testing
+                    // exception
                     .orElseThrow(() -> new ResourceNotFoundException("There is no Electric Vehicle with this ID!!!"));
 
             claim.setVehicle(electricVehicle);

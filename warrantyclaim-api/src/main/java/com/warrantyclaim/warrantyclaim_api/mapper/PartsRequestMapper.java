@@ -30,8 +30,7 @@ public class PartsRequestMapper {
     }
 
     public VehicleBasicInfoDTO toVehicleBasicInfoDTO(ElectricVehicle vehicle) {
-        if (vehicle == null)
-            return null;
+        if (vehicle == null) return null;
         VehicleBasicInfoDTO info = new VehicleBasicInfoDTO();
         info.setVehicleId(vehicle.getId());
         info.setVehicleName(vehicle.getName());
@@ -40,7 +39,7 @@ public class PartsRequestMapper {
         info.setPicture(vehicle.getPicture());
         info.setPhoneNumber(vehicle.getPhoneNumber());
 
-        if (vehicle.getVehicleType() != null) {
+        if(vehicle.getVehicleType() != null) {
             info.setModel(vehicle.getVehicleType().getModelName());
         }
         return info;
@@ -68,7 +67,7 @@ public class PartsRequestMapper {
             dto.setPartType(toPartTypeInfo(entity.getPartType()));
         }
 
-        if (entity.getElectricVehicle() != null) {
+        if(entity.getElectricVehicle() != null) {
             dto.setVehicle(toVehicleBasicInfoDTO(entity.getElectricVehicle()));
         }
 
@@ -96,13 +95,13 @@ public class PartsRequestMapper {
             dto.setPartTypeName(entity.getPartType().getPartName());
         }
 
-        if (entity.getElectricVehicle() != null) {
+        if(entity.getElectricVehicle() != null) {
             dto.setVehicle(toVehicleBasicInfoDTO(entity.getElectricVehicle()));
         }
 
-        // if (entity.getStaff() != null) {
-        // dto.setStaffName(entity.getStaff().getAccountName());
-        // }
+//        if (entity.getStaff() != null) {
+//            dto.setStaffName(entity.getStaff().getAccountName());
+//        }
 
         return dto;
     }
