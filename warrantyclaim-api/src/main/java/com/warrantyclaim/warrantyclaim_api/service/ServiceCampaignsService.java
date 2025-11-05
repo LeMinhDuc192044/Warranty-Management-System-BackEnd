@@ -11,39 +11,18 @@ public interface ServiceCampaignsService {
     public ServiceCampaignsResponseDTO createServiceCampaigns(ServiceCampaignsRequestDTO requestDTO);
 
     public ServiceCampaignsResponseDTO getCampaignById(String id);
-
     public ServiceCampaignsResponseDTO updateCampaign(String id, ServiceCampaignsUpdateDTO request);
-
     public Page<ServiceCampaignsListDTO> getAllCampaigns(Pageable pageable);
-
     public void deleteCampaign(String id);
-
     public ServiceCampaignsResponseDTO assignVehicleTypes(String campaignId, AssignVehicleTypesDTO request);
-
     public ServiceCampaignsResponseDTO addVehicleType(String campaignId, String vehicleTypeId);
-
     public ServiceCampaignsResponseDTO removeVehicleType(String campaignId, String vehicleTypeId);
-
     public ServiceCampaignsResponseDTO assignTechnicians(String campaignId, AssignTechniciansDTO request);
-
     public ServiceCampaignsResponseDTO addTechnician(String campaignId, String technicianId);
-
     public ServiceCampaignsResponseDTO removeTechnician(String campaignId, String technicianId);
-
     public ServiceCampaignsResponseDTO updateDate(String campaignId, LocalDate startDate, LocalDate endDate);
-
     public ReportInfoListDTO getAllReport(String campaignId);
-
     public ServiceCampaignsResponseDTO updateServiceCampaignStatus(String id, ServiceCampaignsStatus statusDTO);
-
     public ServiceCampaignsResponseDTO updateNotificationSent(String id, Boolean notificationDTO);
-
-    // District-based filtering & assignment
-    public Page<ServiceCampaignsListDTO> getCampaignsByDistrict(String district, Pageable pageable);
-
-    public ServiceCampaignsResponseDTO assignTechniciansByDistrict(String campaignId,
-            TechnicianAssignmentDTO assignmentDTO);
-
-    public ProgressDTO getCampaignProgress(String campaignId);
 
 }

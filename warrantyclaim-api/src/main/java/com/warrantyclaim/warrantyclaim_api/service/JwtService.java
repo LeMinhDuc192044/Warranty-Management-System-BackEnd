@@ -19,9 +19,6 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret; // from application.properties
 
-    @Value("${jwt.expiration:604800000}") // Default 7 ngày nếu không config
-    private long jwtExpiration;
-
     private SecretKey secretKey;
 
     @PostConstruct
@@ -35,7 +32,7 @@ public class JwtService {
                 .setSubject(user.getEmail())
                 .claim("roles", user.getRoles())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration)) // Sử dụng từ config
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 ngày
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }

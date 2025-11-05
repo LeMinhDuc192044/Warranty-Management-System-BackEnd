@@ -25,8 +25,7 @@ public class ServiceCampaignsController {
     private final ServiceCampaignsService serviceCampaignsService;
 
     @PostMapping
-    public ResponseEntity<ServiceCampaignsResponseDTO> createServiceCampaigns(
-            @RequestBody ServiceCampaignsRequestDTO requestDTO) {
+    public ResponseEntity<ServiceCampaignsResponseDTO> createServiceCampaigns(@RequestBody ServiceCampaignsRequestDTO requestDTO) {
         ServiceCampaignsResponseDTO responseDTO = serviceCampaignsService.createServiceCampaigns(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
@@ -145,28 +144,5 @@ public class ServiceCampaignsController {
         return ResponseEntity.ok(response);
     }
 
-    // District-based endpoints
-    @GetMapping("/district/{district}")
-    public ResponseEntity<Page<ServiceCampaignsListDTO>> getCampaignsByDistrict(
-            @PathVariable String district,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ServiceCampaignsListDTO> response = serviceCampaignsService.getCampaignsByDistrict(district, pageable);
-        return ResponseEntity.ok(response);
-    }
 
-    @PostMapping("/{id}/assign-technicians-by-district")
-    public ResponseEntity<ServiceCampaignsResponseDTO> assignTechniciansByDistrict(
-            @PathVariable String id,
-            @Valid @RequestBody TechnicianAssignmentDTO assignmentDTO) {
-        ServiceCampaignsResponseDTO response = serviceCampaignsService.assignTechniciansByDistrict(id, assignmentDTO);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{id}/progress")
-    public ResponseEntity<ProgressDTO> getCampaignProgress(@PathVariable String id) {
-        ProgressDTO progress = serviceCampaignsService.getCampaignProgress(id);
-        return ResponseEntity.ok(progress);
-    }
 }

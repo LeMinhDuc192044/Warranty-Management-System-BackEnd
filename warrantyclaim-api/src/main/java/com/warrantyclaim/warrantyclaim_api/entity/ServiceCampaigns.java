@@ -44,9 +44,6 @@ public class ServiceCampaigns {
     @Column(name = "NotificationSent")
     private Boolean notificationSent;
 
-    @Column(name = "Target_District", length = 500)
-    private String targetDistrict; // Comma-separated districts: "Quận 1,Quận 2,Quận 3"
-
     @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ElectricVehicleTypeServiceCampaigns> vehicleTypeCampaigns = new ArrayList<>();
 
