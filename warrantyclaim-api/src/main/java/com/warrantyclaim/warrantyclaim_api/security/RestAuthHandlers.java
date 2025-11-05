@@ -11,28 +11,32 @@ public class RestAuthHandlers implements AuthenticationEntryPoint, AccessDeniedH
 
     @Override
     public void commence(HttpServletRequest req, HttpServletResponse res,
-                         org.springframework.security.core.AuthenticationException ex) {
+            org.springframework.security.core.AuthenticationException ex) {
         try {
             String auth = req.getHeader("Authorization");
-            if (auth == null || auth.isBlank()) {
+            if (auth == null || auth.trim().length() == 0) {
                 res.setStatus(401);
                 res.setContentType("application/json");
                 res.getWriter().write("{\"success\":false,\"message\":\"Missing access token\"}");
             } else {
                 res.setStatus(401);
                 res.setContentType("application/json");
-                res.getWriter().write("{\"success\":false,\"message\":\"Unauthorized – Please login to access this resource\"}");
+                res.getWriter().write(
+                        "{\"success\":false,\"message\":\"Unauthorized – Please login to access this resource\"}");
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
     public void handle(HttpServletRequest req, HttpServletResponse res,
-                       org.springframework.security.access.AccessDeniedException ex) {
+            org.springframework.security.access.AccessDeniedException ex) {
         try {
             res.setStatus(403);
             res.setContentType("application/json");
-            res.getWriter().write("{\"success\":false,\"message\":\"Forbidden – You do not have permission to perform this action\"}");
-        } catch (Exception ignored) {}
+            res.getWriter().write(
+                    "{\"success\":false,\"message\":\"Forbidden – You do not have permission to perform this action\"}");
+        } catch (Exception ignored) {
+        }
     }
 }

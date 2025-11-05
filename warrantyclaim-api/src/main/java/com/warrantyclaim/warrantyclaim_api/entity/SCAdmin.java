@@ -40,6 +40,9 @@ public class SCAdmin {
     @Column(name = "BranchOffice", length = 150)
     private String branchOffice;
 
+    @Column(name = "District", length = 100)
+    private String district;
+
     @Column(length = 100)
     private String password;
 }

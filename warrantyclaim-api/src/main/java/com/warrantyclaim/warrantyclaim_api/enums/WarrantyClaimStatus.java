@@ -4,6 +4,9 @@ public enum WarrantyClaimStatus {
     PENDING("Pending"),
     IN_PROGRESS("In Progress"),
     APPROVED("Approved"),
+    ASSIGNED_TO_TECHNICIAN("Assigned to Technician"),
+    INSPECTION_COMPLETED("Inspection Completed"),
+    PENDING_PARTS("Pending Parts"),
     REJECTED("Rejected"),
     COMPLETED("Completed"),
     CANCELLED("Cancelled");

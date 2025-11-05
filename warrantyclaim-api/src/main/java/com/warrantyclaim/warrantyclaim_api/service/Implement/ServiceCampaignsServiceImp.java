@@ -5,6 +5,7 @@ import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
 import com.warrantyclaim.warrantyclaim_api.entity.Recall;
 import com.warrantyclaim.warrantyclaim_api.entity.SCTechnician;
 import com.warrantyclaim.warrantyclaim_api.entity.ServiceCampaigns;
+import com.warrantyclaim.warrantyclaim_api.entity.CampaignVehicleProgress;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.ServiceCampaignsStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
@@ -12,6 +13,7 @@ import com.warrantyclaim.warrantyclaim_api.mapper.ServiceCampaignsMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleTypeRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.SCTechnicianRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.ServiceCampaignsRepository;
+import com.warrantyclaim.warrantyclaim_api.repository.CampaignVehicleProgressRepository;
 import com.warrantyclaim.warrantyclaim_api.service.ServiceCampaignsService;
 import com.warrantyclaim.warrantyclaim_api.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,7 @@ public class ServiceCampaignsServiceImp implements ServiceCampaignsService {
     private final ServiceCampaignsRepository repository;
     private final ElectricVehicleTypeRepository electricVehicleTypeRepository;
     private final SCTechnicianRepository scTechnicianRepository;
+    private final CampaignVehicleProgressRepository progressRepository;
     private final NotificationService notificationService;
 
     @Override
@@ -356,7 +360,80 @@ public class ServiceCampaignsServiceImp implements ServiceCampaignsService {
         return mapper.toResponseDTO(updatedCampaign);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ServiceCampaignsListDTO> getCampaignsByDistrict(String district, Pageable pageable) {
+        // targetDistrict is comma-separated: "Quận 1,Quận 2,Quận 3"
+        Page<ServiceCampaigns> campaigns = repository.findByTargetDistrictContaining(district, pageable);
+        return campaigns.map(mapper::toListDTO);
+    }
 
+    @Override
+    @Transactional
+    public ServiceCampaignsResponseDTO assignTechniciansByDistrict(String campaignId,
+            TechnicianAssignmentDTO assignmentDTO) {
+        ServiceCampaigns campaign = repository.findById(campaignId)
+                .orElseThrow(() -> new ResourceNotFoundException("Campaign not found with ID: " + campaignId));
+
+        // Find technicians matching district
+        List<SCTechnician> technicians = scTechnicianRepository.findByDistrict(assignmentDTO.getDistrict());
+
+        if (technicians.isEmpty()) {
+            throw new ResourceNotFoundException("No technicians found in district: " + assignmentDTO.getDistrict());
+        }
+
+        // Assign technicians via progress tracking (not direct relationship)
+        // Create progress tracking for each vehicle
+        if (assignmentDTO.getVehicleVinIds() != null && !assignmentDTO.getVehicleVinIds().isEmpty()) {
+            for (String vinId : assignmentDTO.getVehicleVinIds()) {
+                CampaignVehicleProgress progress = CampaignVehicleProgress.builder()
+                        .campaignId(campaignId)
+                        .vehicleVinId(vinId)
+                        .assignedTechnicianId(technicians.get(0).getId()) // Assign first technician
+                        .status("ASSIGNED")
+                        .assignedAt(LocalDate.now())
+                        .build();
+                progressRepository.save(progress);
+            }
+
+            // Send notification to technicians
+            for (SCTechnician tech : technicians) {
+                notificationService.sendNotification(
+                        tech.getId(),
+                        "CAMPAIGN_ASSIGNED",
+                        "Chiến dịch mới được giao",
+                        "Bạn được phân công cho chiến dịch: " + campaign.getTypeName() +
+                                " với " + assignmentDTO.getVehicleVinIds().size() + " xe cần kiểm tra.");
+            }
+        }
+
+        ServiceCampaigns updated = repository.save(campaign);
+        return mapper.toResponseDTO(updated);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProgressDTO getCampaignProgress(String campaignId) {
+        ServiceCampaigns campaign = repository.findById(campaignId)
+                .orElseThrow(() -> new ResourceNotFoundException("Campaign not found with ID: " + campaignId));
+
+        List<CampaignVehicleProgress> allProgress = progressRepository.findByCampaignId(campaignId);
+
+        long totalVehicles = allProgress.size();
+        long completedVehicles = progressRepository.countByCampaignIdAndStatus(campaignId, "COMPLETED");
+        long inProgressVehicles = progressRepository.countByCampaignIdAndStatus(campaignId, "IN_PROGRESS");
+
+        return ProgressDTO.builder()
+                .id(campaignId)
+                .name(campaign.getTypeName())
+                .type("CAMPAIGN")
+                .totalVehicles(totalVehicles)
+                .completedVehicles(completedVehicles)
+                .inProgressVehicles(inProgressVehicles)
+                .progressPercentage(totalVehicles > 0 ? (int) (completedVehicles * 100 / totalVehicles) : 0)
+                .status(campaign.getStatus().toString())
+                .build();
+    }
 
     private String generateClaimId() {
         return "SCA-" + LocalDate.now().getYear() + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();

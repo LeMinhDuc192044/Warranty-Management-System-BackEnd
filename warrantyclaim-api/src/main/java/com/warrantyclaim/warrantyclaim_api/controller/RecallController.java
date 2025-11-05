@@ -159,4 +159,28 @@ public class RecallController {
         return ResponseEntity.ok(response);
     }
 
+    // District-based endpoints
+    @GetMapping("/district/{district}")
+    public ResponseEntity<Page<RecallsListDTO>> getRecallsByDistrict(
+            @PathVariable String district,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<RecallsListDTO> response = recallService.getRecallsByDistrict(district, pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/assign-technicians-by-district")
+    public ResponseEntity<RecallResponseDTO> assignTechniciansByDistrict(
+            @PathVariable String id,
+            @RequestBody TechnicianAssignmentDTO assignmentDTO) {
+        RecallResponseDTO response = recallService.assignTechniciansByDistrict(id, assignmentDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/progress")
+    public ResponseEntity<ProgressDTO> getRecallProgress(@PathVariable String id) {
+        ProgressDTO progress = recallService.getRecallProgress(id);
+        return ResponseEntity.ok(progress);
+    }
 }

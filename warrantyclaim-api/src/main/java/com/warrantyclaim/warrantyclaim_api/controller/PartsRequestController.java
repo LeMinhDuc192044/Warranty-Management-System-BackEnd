@@ -1,9 +1,6 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartsRequestCreateDTO;
-import com.warrantyclaim.warrantyclaim_api.dto.PartsRequestResponseDTO;
-import com.warrantyclaim.warrantyclaim_api.dto.PartsRequestUpdateDTO;
-import com.warrantyclaim.warrantyclaim_api.dto.PartsResponseListDTO;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.service.PartsRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -96,8 +93,12 @@ public class PartsRequestController {
 
     /**
      * Approve parts request - Only EVM_STAFF and EVM_ADMIN can approve
-     * PATCH /api/parts-requests/{id}/approve
+     * 
+     * @deprecated Use POST /api/parts-requests/evm-approval instead for proper
+     *             tracking
+     *             PATCH /api/parts-requests/{id}/approve
      */
+    @Deprecated
     @PatchMapping("/{id}/approve")
     @PreAuthorize("hasAnyRole('EVM_STAFF', 'EVM_ADMIN')")
     public ResponseEntity<?> approvePartsRequest(@PathVariable String id) {
@@ -115,8 +116,12 @@ public class PartsRequestController {
 
     /**
      * Reject parts request - Only EVM_STAFF and EVM_ADMIN can reject
-     * PATCH /api/parts-requests/{id}/reject
+     * 
+     * @deprecated Use POST /api/parts-requests/evm-approval instead for proper
+     *             tracking
+     *             PATCH /api/parts-requests/{id}/reject
      */
+    @Deprecated
     @PatchMapping("/{id}/reject")
     @PreAuthorize("hasAnyRole('EVM_STAFF', 'EVM_ADMIN')")
     public ResponseEntity<?> rejectPartsRequest(
@@ -128,6 +133,53 @@ public class PartsRequestController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error rejecting request: " + e.getMessage());
+        }
+    }
+
+    /**
+     * EVM_STAFF approve/reject parts request with tracking
+     * POST /api/parts-requests/evm-approval
+     * Body: { requestId, evmStaffId, approved, rejectionReason }
+     */
+    @PostMapping("/evm-approval")
+    @PreAuthorize("hasAnyRole('EVM_STAFF', 'EVM_ADMIN')")
+    public ResponseEntity<?> evmStaffProcessRequest(@Valid @RequestBody PartsRequestApprovalDTO approvalDTO) {
+        try {
+            PartsRequestResponseDTO response;
+            if (Boolean.TRUE.equals(approvalDTO.getApproved())) {
+                response = partsRequestService.evmStaffApproveRequest(approvalDTO);
+            } else {
+                response = partsRequestService.evmStaffRejectRequest(approvalDTO);
+            }
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error processing request: " + e.getMessage());
+        }
+    }
+
+    /**
+     * SC_ADMIN confirms receiving parts (triggers inventory updates)
+     * POST /api/parts-requests/confirm-receive
+     * Body: { requestId, scAdminId }
+     */
+    @PostMapping("/confirm-receive")
+    @PreAuthorize("hasRole('SC_ADMIN')")
+    public ResponseEntity<?> scAdminConfirmReceive(@Valid @RequestBody PartsRequestReceiveDTO receiveDTO) {
+        try {
+            PartsRequestResponseDTO response = partsRequestService.scAdminConfirmReceive(receiveDTO);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error confirming receipt: " + e.getMessage());
         }
     }
 }
