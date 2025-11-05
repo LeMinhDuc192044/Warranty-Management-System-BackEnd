@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +22,10 @@ public class ElectricVehicleResponseDTO {
     private String phoneNumber;
     private String email;
     private VehicleStatus status;
+    private LocalDate returnDate;
 
     // Nested vehicle type info
     private VehicleTypeInfoDTO vehicleType;
+    private List<SparePartInfoScDTO> sparePartInfoScDTOList;
 
 }
