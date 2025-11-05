@@ -1,8 +1,10 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
 import com.warrantyclaim.warrantyclaim_api.dto.*;
+import com.warrantyclaim.warrantyclaim_api.entity.Recall;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
 import com.warrantyclaim.warrantyclaim_api.service.RecallService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,30 @@ public class RecallController {
         RecallResponseDTO response = recallService.createRecall(createDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+    // Thêm vào RecallController
+
+    @PatchMapping("/{recallId}/vehicles/{vehicleId}/status")
+    public ResponseEntity<RecallVehicleStatusResponseDTO> updateRecallVehicleStatus(
+            @PathVariable String recallId,
+            @PathVariable String vehicleId,
+            @RequestBody UpdateRecallVehicleStatusDTO statusDTO) {
+
+        RecallVehicleStatusResponseDTO response = recallService.updateRecallVehicleStatus(
+                recallId, vehicleId, statusDTO);
+
+        return ResponseEntity.ok(response);
+    }
+// Thêm vào RecallController
+
+    @GetMapping("/{recallId}/vehicles/{vehicleId}")
+    public ResponseEntity<RecallVehicleDetailDTO> getRecallVehicleDetail(
+            @PathVariable String recallId,
+            @PathVariable String vehicleId) {
+
+        RecallVehicleDetailDTO response = recallService.getRecallVehicleDetail(recallId, vehicleId);
+        return ResponseEntity.ok(response);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<RecallResponseDTO> getRecallById(@PathVariable String id) {
@@ -156,6 +182,16 @@ public class RecallController {
     @GetMapping("/{id}/reports")
     public ResponseEntity<ReportInfoListDTO> getAllReports(@PathVariable String id) {
         ReportInfoListDTO response = recallService.getAllReports(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/technicians/{technicianId}/recalls")
+    public ResponseEntity<List<RecallResponseDTO>> getRecallsByTechnicianId(@PathVariable String technicianId) {
+        List<Recall> recalls = recallService.getRecallsByTechnicianId(technicianId);
+        List<RecallResponseDTO> response = recalls.stream()
+                .map(r -> new RecallResponseDTO(r)) // tuỳ DTO em convert kiểu nào
+                .toList();
+
         return ResponseEntity.ok(response);
     }
 

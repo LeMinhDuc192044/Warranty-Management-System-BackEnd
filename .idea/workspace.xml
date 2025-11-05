@@ -5,7 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b90564b3-2003-4a78-aca2-c67d5c845ee2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/SCTechnicianController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallByTechnicianDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallVehicleDetailDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallVehicleStatusResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianCreateDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianListDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/SCTechnicianUpdateDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/UpdateRecallVehicleStatusDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/enums/RecallVehicleStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/SCTechnicianServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/SCTechnicianService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/RecallController.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/RecallController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/RecallResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/entity/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/entity/Report.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallElectricVehicleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallElectricVehicleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallSCTechnicianRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/RecallSCTechnicianRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/SCTechnicianRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/SCTechnicianRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ElectricVehicleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ElectricVehicleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/RecallServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/RecallServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/RecallService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/RecallService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +47,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -37,12 +67,12 @@
       </list>
     </option>
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/LeMinhDuc192044/Warranty-Management-System-BackEnd.git",
-    "accountId": "1b675d01-0078-492f-b8a6-94dfe11cb24f"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/LeMinhDuc192044/Warranty-Management-System-BackEnd.git&quot;,
+    &quot;accountId&quot;: &quot;36bee10b-4c3b-4c2e-b3c2-d633431595e3&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -58,14 +88,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.WarrantyclaimApiApplication.executor": "Run",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Minh-Duc",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.WarrantyclaimApiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.WarrantyclaimApiApplication">
     <configuration name="WarrantyclaimApiApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.warrantyclaim.warrantyclaim_api.WarrantyclaimApiApplication" />
@@ -113,15 +147,15 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ElectricVehicleServiceImp.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
