@@ -35,6 +35,7 @@ public class WarrantyClaim {
     @Column(length = 50)
     private WarrantyClaimStatus status;
 
+
     @Column(length = 500)
     private String rejectionReason;
 
@@ -59,5 +60,6 @@ public class WarrantyClaim {
     @ManyToOne
     @JoinColumn(name = "SC_TechnicianID")
     private SCTechnician technician;
+
 
 }

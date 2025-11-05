@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,6 @@ public class Recall {
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private EvmApprovalStatus evmApprovalStatus;
-
-    @Column(name = "Target_District", length = 500)
-    private String targetDistrict; // Comma-separated districts: "Quận 1,Quận 2,Quận 3"
 
     @OneToMany(mappedBy = "recall", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ElectricVehicleTypeRecall> vehicleTypeRecalls = new ArrayList<>();
