@@ -2,6 +2,7 @@ package com.warrantyclaim.warrantyclaim_api.entity;
 
 import com.warrantyclaim.warrantyclaim_api.enums.EvmApprovalStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,10 @@ public class Recall {
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private RecallStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Specialty")
+    private Specialty specialty;
 
     private Boolean notificationSent;
 

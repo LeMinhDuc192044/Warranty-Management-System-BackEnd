@@ -22,8 +22,8 @@ public class RecallMapper {
         recallEntity.setRequiredAction(createDTO.getRequiredAction());
         recallEntity.setEvmApprovalStatus(createDTO.getEvmApprovalStatus());
         recallEntity.setNotificationSent(false);
+        recallEntity.setSpecialty(createDTO.getSpecialty());
         recallEntity.setStartDate(createDTO.getStartDate());
-
         // Relationship in service layer
 
         return recallEntity;
@@ -36,6 +36,7 @@ public class RecallMapper {
 
         RecallResponseDTO responseDTO = new RecallResponseDTO();
         responseDTO.setId(recall.getId());
+        responseDTO.setSpecialty(recall.getSpecialty());
         responseDTO.setName(recall.getName());
         responseDTO.setStartDate(recall.getStartDate());
         responseDTO.setStatus(recall.getStatus());
@@ -103,6 +104,7 @@ public class RecallMapper {
         recallsListDTO.setRequiredAction(recall.getRequiredAction());
         recallsListDTO.setNotificationSent(recall.getNotificationSent());
         recallsListDTO.setStartDate(recall.getStartDate());
+        recallsListDTO.setSpecialty(recall.getSpecialty());
         recallsListDTO.setEvmApprovalStatus(recall.getEvmApprovalStatus());
 
         recallsListDTO.setVehicleTypeCount(recall.getVehicleTypeRecalls() != null
@@ -155,6 +157,10 @@ public class RecallMapper {
 
         if (recallRequest.getStartDate() != null) {
             recall.setStartDate(recallRequest.getStartDate());
+        }
+
+        if(recall.getSpecialty() != null) {
+            recall.setSpecialty(recallRequest.getSpecialty());
         }
 
         // relationships will be updated in service layer

@@ -2,6 +2,7 @@ package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.warrantyclaim.warrantyclaim_api.enums.EvmApprovalStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class RecallsListDTO {
 
     private String requiredAction;
     private String partsRequired;
-
+    private Specialty specialty;
 
     private RecallStatus status;
 
