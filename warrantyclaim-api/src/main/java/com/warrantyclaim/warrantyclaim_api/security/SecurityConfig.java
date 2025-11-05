@@ -74,6 +74,7 @@ public class SecurityConfig {
                         // CHỈ CHO PHÉP 3 ROLE TRUY CẬP API XEM EMAIL ĐÃ GỬI
                         .requestMatchers("/api/EmailNotifications/all-email-sent")
                         .hasAnyRole("SC_STAFF", "SC_ADMIN", "EVM_ADMIN")
+
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(restAuthHandlers)
