@@ -15,7 +15,6 @@ public class ElectricVehicleMapper {
         }
 
         ElectricVehicle electricVehicle = new ElectricVehicle();
-        electricVehicle.setPicture(vehicleCreateDTO.getPicture());
         electricVehicle.setId(vehicleCreateDTO.getVehicleId());
         electricVehicle.setName(vehicleCreateDTO.getVehicleName());
         electricVehicle.setEmail(vehicleCreateDTO.getEmail());
@@ -40,10 +39,9 @@ public class ElectricVehicleMapper {
         dto.setOwner(vehicle.getOwner());
         dto.setPhoneNumber(vehicle.getPhoneNumber());
         dto.setEmail(vehicle.getEmail());
-        dto.setPicture(vehicle.getPicture());
         dto.setPurchaseDate(vehicle.getPurchaseDate());
         dto.setStatus(vehicle.getStatus());
-
+        dto.setPicture(vehicle.getPicture());
         // Simplified vehicle type info
         if (vehicle.getVehicleType() != null) {
             dto.setVehicleTypeId(vehicle.getVehicleType().getId());
@@ -93,19 +91,11 @@ public class ElectricVehicleMapper {
         return dto;
     }
 
-    public VehicleBasicInfoDTO toListVehicle(ElectricVehicle electricVehicle) {
-
-        return null;
-    }
 
     public void updateEntityElectricVehicle(ElectricVehicleUpdateRequestDTO updatedVehicle,
-            ElectricVehicle electricVehicle) {
+                                            ElectricVehicle electricVehicle) {
         if (updatedVehicle.getName() != null) {
             electricVehicle.setName(updatedVehicle.getName());
-        }
-
-        if (updatedVehicle.getPicture() != null) {
-            electricVehicle.setPicture(updatedVehicle.getPicture());
         }
 
         if (updatedVehicle.getEmail() != null) {

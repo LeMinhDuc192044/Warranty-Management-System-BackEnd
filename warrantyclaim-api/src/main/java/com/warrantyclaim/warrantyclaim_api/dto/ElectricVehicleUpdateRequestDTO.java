@@ -21,8 +21,6 @@ public class ElectricVehicleUpdateRequestDTO {
 
     private Float totalKm;
 
-    private String picture;
-
     private LocalDate productionDate;
 
     private String owner;

@@ -22,14 +22,15 @@ public class Report {
     @Column(length = 45)
     private String description;
 
-    @Column(length = 255)
-    private String image;
-
     @Column(length = 45)
     private String error;
 
+    @Column(length = 255)
+    private String image;
+
+    @Enumerated(EnumType.STRING)
     @Column(length = 50)
-    private String status;
+    private ReportStatus status;
 
     @Column(name = "ReportName", length = 100)
     private String reportName;
@@ -75,6 +76,10 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "CampaignsID")
     private ServiceCampaigns campaign;
+
+    @OneToOne
+    @JoinColumn(name = "ClaimID")
+    private WarrantyClaim warrantyClaim;
 
     @ManyToOne
     @JoinColumn(name = "Recall_ID")

@@ -86,7 +86,6 @@ public class ServiceCampaignsMapper {
         ReportInfoDTO reportListInfoDTO = new ReportInfoDTO();
         reportListInfoDTO.setReportId(report.getId());
         reportListInfoDTO.setReportName(report.getReportName());
-        reportListInfoDTO.setImage(report.getImage());
         reportListInfoDTO.setDescription(report.getDescription());
         reportListInfoDTO.setError(report.getError());
         return reportListInfoDTO;

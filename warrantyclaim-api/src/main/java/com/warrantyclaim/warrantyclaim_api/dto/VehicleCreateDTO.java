@@ -2,10 +2,12 @@ package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -28,9 +30,6 @@ public class VehicleCreateDTO {
     @NotBlank(message = "Vehicle must have an owner")
     private String owner;
 
-    @NotBlank(message = "Picture must not be blank!!!!")
-    private String picture;
-
     @Email(message = "Invalid email Format!!!")
     @NotBlank(message = "Email can not be blank!!!")
     private String email;
@@ -46,5 +45,13 @@ public class VehicleCreateDTO {
 
     @NotBlank(message = "Vehicle must have a type")
     private String electricVehicleTypeId;
+
+    @Schema(
+            description = "Vehicle image file (PNG, JPG, JPEG)",
+            type = "string",
+            format = "binary",
+            required = true
+    )
+    private MultipartFile urlPicture;
 
 }

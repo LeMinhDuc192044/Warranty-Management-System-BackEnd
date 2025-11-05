@@ -54,4 +54,7 @@ public class ElectricVehicle {
     @ManyToOne
     @JoinColumn(name = "ID_Electric_Vehicle_Type")
     private ElectricVehicleType vehicleType;
+
+    @OneToMany(mappedBy = "electricVehicle")
+    private List<ProductsSparePartsSC> productsSparePartsSC = new ArrayList<>();
 }

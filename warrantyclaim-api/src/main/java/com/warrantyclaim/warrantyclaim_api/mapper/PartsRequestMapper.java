@@ -15,7 +15,7 @@ public class PartsRequestMapper {
         }
 
         PartsRequest entity = new PartsRequest();
-        entity.setPartNumber(dto.getPartNumber());
+//        entity.setPartNumber(dto.getPartNumber());
         entity.setPartName(dto.getPartName());
         entity.setQuantity(dto.getQuantity());
         entity.setRequestDate(dto.getRequestDate());
@@ -56,7 +56,7 @@ public class PartsRequestMapper {
 
         PartsRequestResponseDTO dto = new PartsRequestResponseDTO();
         dto.setId(entity.getId());
-        dto.setPartNumber(entity.getPartNumber());
+//        dto.setPartNumber(entity.getPartNumber());
         dto.setPartName(entity.getPartName());
         dto.setQuantity(entity.getQuantity());
         dto.setRequestDate(entity.getRequestDate());
@@ -85,7 +85,7 @@ public class PartsRequestMapper {
 
         PartsResponseListDTO dto = new PartsResponseListDTO();
         dto.setId(entity.getId());
-        dto.setPartNumber(entity.getPartNumber());
+//        dto.setPartNumber(entity.getPartNumber());
         dto.setPartName(entity.getPartName());
         dto.setQuantity(entity.getQuantity());
         dto.setRequestDate(entity.getRequestDate());
@@ -115,9 +115,9 @@ public class PartsRequestMapper {
             return;
         }
 
-        if (dto.getPartNumber() != null) {
-            entity.setPartNumber(dto.getPartNumber());
-        }
+//        if (dto.getPartNumber() != null) {
+//            entity.setPartNumber(dto.getPartNumber());
+//        }
 
         if (dto.getPartName() != null) {
             entity.setPartName(dto.getPartName());

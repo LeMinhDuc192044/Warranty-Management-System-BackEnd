@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface EVMStaffRepository extends JpaRepository<EVMStaff, String> {
 
-   Optional<EVMStaff> findByEmail(String email);
+    Optional<EVMStaff> findByEmail(String email);
     void deleteByEmail(String email);
 
 }

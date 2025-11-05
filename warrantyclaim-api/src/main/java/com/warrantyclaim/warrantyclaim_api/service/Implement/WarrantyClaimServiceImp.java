@@ -80,9 +80,7 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
                 .orElseThrow(() -> new ResourceNotFoundException("Warranty claim not found with ID: " + claimId));
 
         if (request.getElectricVehicleId() != null) {
-            ElectricVehicle electricVehicle = electricVehicleRepository.findById(request.getElectricVehicleId()) // for
-                                                                                                                 // testing
-                                                                                                                 // exception
+            ElectricVehicle electricVehicle = electricVehicleRepository.findById(request.getElectricVehicleId())
                     .orElseThrow(() -> new ResourceNotFoundException("There is no Electric Vehicle with this ID!!!"));
 
             claim.setVehicle(electricVehicle);
@@ -120,6 +118,12 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
     public WarrantyClaimResponseDTO updateClaimStatus(String claimId, WarrantyClaimStatus status) {
         WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
                 .orElseThrow(() -> new ResourceNotFoundException("Warranty claim not found with ID: " + claimId));
+
+        //  Thêm đoạn kiểm tra ngay sau khi lấy claim
+        if (status == WarrantyClaimStatus.COMPLETED && claim.getReturnDate() == null) {
+            throw new IllegalStateException("Không thể hoàn thành khi chưa có ngày giao xe.");
+        }
+
 
         claim.setStatus(status);
         WarrantyClaim updatedClaim = warrantyClaimRepository.save(claim);
@@ -203,4 +207,20 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
         WarrantyClaim updatedWarrantyClaim = warrantyClaimRepository.save(claim);
         return warrantyClaimMapper.toResponseWarrantyClaim(claim);
     }
+
+
+
+
+    @Override
+    public WarrantyClaimResponseDTO updateReturnDate(String claimId, LocalDate returnDate) {
+        WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy claim với ID: " + claimId));
+
+        claim.setReturnDate(returnDate);
+        WarrantyClaim updatedClaim = warrantyClaimRepository.save(claim);
+
+        return warrantyClaimMapper.toResponseWarrantyClaim(updatedClaim);
+    }
+
+
 }

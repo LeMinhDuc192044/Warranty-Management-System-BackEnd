@@ -44,11 +44,15 @@ public class UserService {
         this.scAdminRepo = scAdminRepo;
         this.evmStaffRepo = evmStaffRepo;
     }
-
+// SỬA LẠI CHỔ NÀY INJEC USER THÔNG QUA AuthenticationPrincipal
     @Transactional
-    public UserResponse updateUser(UpdateUserRequest req, String token) {
-        String emailFromToken = jwtService.extractUserName(token.replace("Bearer ", ""));
-        User user = userRepo.findByEmail(emailFromToken)
+//    public UserResponse updateUser(UpdateUserRequest req, String token) {
+//        String emailFromToken = jwtService.extractUserName(token.replace("Bearer ", ""));
+//        User user = userRepo.findByEmail(emailFromToken)
+//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+    public UserResponse updateUser(UpdateUserRequest req, String email) {
+        User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         user.setUsername(req.getUsername());

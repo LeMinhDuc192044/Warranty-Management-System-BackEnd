@@ -44,6 +44,7 @@ public class SecurityConfig {
         return new AppUserDetailsService(userRepository);
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -53,6 +54,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/login",
+                                "/api/auth/forgot-password",
+                                "/api/auth/verify-otp",
+                                "/api/auth/reset-password",
                                 "/api/permissions/roles",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
@@ -62,8 +66,15 @@ public class SecurityConfig {
                                 "/api/ServiceCampaigns/**",
                                 "/api/parts-requests/**",
                                 "/api/parts/inventory/**",
-                                "/api/recalls/**")
+                                "/api/recalls/**",
+                                "/api/reports/**",
+                                "/api/warranty-policies/**",
+                                "/api/spare-parts/evm/**",
+                                "/api/spare-parts/sc/**")
                         .permitAll()
+                        // CHỈ CHO PHÉP 3 ROLE TRUY CẬP API XEM EMAIL ĐÃ GỬI
+                        .requestMatchers("/api/EmailNotifications/all-email-sent")
+                        .hasAnyRole("SC_STAFF", "SC_ADMIN", "EVM_ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(restAuthHandlers)
@@ -97,7 +108,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // ✅ FIX: Chỉ định cụ thể origins thay vì "*" khi dùng allowCredentials
-        config.setAllowedOrigins(Arrays.asList(
+        config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "http://localhost:5174",
                 "http://localhost:5175",

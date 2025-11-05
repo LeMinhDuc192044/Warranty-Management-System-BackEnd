@@ -100,8 +100,8 @@
   </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/anselamkeykamona/Warranty-Management-System-BackEnd.git&quot;,
-    &quot;accountId&quot;: &quot;494bfc9d-6d98-4a7f-a33a-cc9bcdbd5c79&quot;
+    &quot;url&quot;: &quot;https://github.com/LeMinhDuc192044/Warranty-Management-System-BackEnd.git&quot;,
+    &quot;accountId&quot;: &quot;1b675d01-0078-492f-b8a6-94dfe11cb24f&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -210,5 +210,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ElectricVehicleServiceImp.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

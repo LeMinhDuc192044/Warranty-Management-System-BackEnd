@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -45,6 +43,10 @@ public class WarrantyClaim {
 
     @Column(length = 100)
     private String email;
+
+    @Column(name = "Return_Date")
+    private LocalDate returnDate;
+
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Vehicle_VIN_ID")

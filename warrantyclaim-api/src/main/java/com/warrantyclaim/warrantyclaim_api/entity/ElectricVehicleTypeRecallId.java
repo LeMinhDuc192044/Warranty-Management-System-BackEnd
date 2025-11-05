@@ -3,7 +3,7 @@ package com.warrantyclaim.warrantyclaim_api.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-    public class ElectricVehicleTypeRecallId implements Serializable {
+public class ElectricVehicleTypeRecallId implements Serializable {
 
     private String vehicleTypeId;
     private String recallId;
