@@ -3,6 +3,8 @@ package com.warrantyclaim.warrantyclaim_api.mapper;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
+import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
+import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsTypeSC;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
 import org.springframework.stereotype.Component;
 
@@ -42,10 +44,18 @@ public class ElectricVehicleMapper {
         dto.setPurchaseDate(vehicle.getPurchaseDate());
         dto.setStatus(vehicle.getStatus());
         dto.setPicture(vehicle.getPicture());
+        dto.setReturnDate(vehicle.getReturnDate());
         // Simplified vehicle type info
         if (vehicle.getVehicleType() != null) {
             dto.setVehicleTypeId(vehicle.getVehicleType().getId());
             dto.setModelName(vehicle.getVehicleType().getModelName());
+        }
+
+        if(vehicle.getProductsSparePartsSC() != null) {
+            dto.setSparePartInfoScDTOList(
+                    vehicle.getProductsSparePartsSC().stream()
+                            .map(this::toResponseDto).toList()
+            );
         }
 
         return dto;
@@ -66,10 +76,18 @@ public class ElectricVehicleMapper {
         dto.setPhoneNumber(vehicle.getPhoneNumber());
         dto.setEmail(vehicle.getEmail());
         dto.setStatus(vehicle.getStatus());
+        dto.setReturnDate(vehicle.getReturnDate());
 
         // Map vehicle type
         if (vehicle.getVehicleType() != null) {
             dto.setVehicleType(toVehicleTypeInfo(vehicle.getVehicleType()));
+        }
+
+        if(vehicle.getProductsSparePartsSC() != null) {
+            dto.setSparePartInfoScDTOList(
+                    vehicle.getProductsSparePartsSC().stream()
+                            .map(this::toResponseDto).toList()
+            );
         }
 
         return dto;
@@ -118,8 +136,15 @@ public class ElectricVehicleMapper {
             electricVehicle.setStatus(updatedVehicle.getStatus());
         }
 
-        if (updatedVehicle.getProductionDate() != null) {
-            electricVehicle.setPurchaseDate(updatedVehicle.getProductionDate());
+        if (updatedVehicle.getPurchaseDate() != null) {
+            electricVehicle.setPurchaseDate(updatedVehicle.getPurchaseDate());
+        }
+
+        if (updatedVehicle.getReturnDate() != null) {
+            if (!updatedVehicle.getReturnDate().isAfter(updatedVehicle.getPurchaseDate())) {
+                throw new IllegalArgumentException("Return date must be after purchase date!");
+            }
+            electricVehicle.setReturnDate(updatedVehicle.getReturnDate());
         }
         // Type Electric should be in vehicle service
     }
@@ -144,6 +169,19 @@ public class ElectricVehicleMapper {
         }
 
         return info;
+    }
+
+    public SparePartInfoScDTO toResponseDto(ProductsSparePartsSC entity) {
+        if (entity == null) return null;
+
+        SparePartInfoScDTO dto = new SparePartInfoScDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setVehicleType(entity.getVehicleType());
+        dto.setCondition(entity.getCondition());
+        dto.setOfficeBranch(entity.getOfficeBranch());
+
+        return dto;
     }
 
 }

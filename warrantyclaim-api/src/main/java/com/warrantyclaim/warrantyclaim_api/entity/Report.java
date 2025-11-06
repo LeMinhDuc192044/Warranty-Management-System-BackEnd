@@ -27,7 +27,7 @@ public class Report {
     @Column(length = 45)
     private String error;
 
-    @Column(length = 255)
+    @Column(columnDefinition = "LONGTEXT")
     private String image;
 
     @Enumerated(EnumType.STRING)

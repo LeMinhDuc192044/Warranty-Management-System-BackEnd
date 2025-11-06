@@ -1,10 +1,8 @@
 package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +29,9 @@ public class WarrantyClaimCreateRequestDTO { // this information for creating a 
     @NotBlank(message = "Customer name is required")
     @Size(max = 100, message = "Customer name must not exceed 100 characters")
     private String customerName;
+
+    @NotNull(message = "Office Branch is required!!!")
+    private OfficeBranch officeBranch;
 
     private String requiredPart;
 

@@ -53,10 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/login",
-                                "/api/auth/forgot-password",
-                                "/api/auth/verify-otp",
-                                "/api/auth/reset-password",
-                                "/api/permissions/roles",
+                                "/v3/api-docs/roles",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
@@ -64,12 +61,11 @@ public class SecurityConfig {
                                 "/api/ElectricVehicle/**",
                                 "/api/ServiceCampaigns/**",
                                 "/api/parts-requests/**",
-                                "/api/parts/inventory/**",
                                 "/api/recalls/**",
                                 "/api/reports/**",
                                 "/api/warranty-policies/**",
-                                "/api/spare-parts/evm/**",
-                                "/api/spare-parts/sc/**")
+                                "/api/shipping/tracking/**",
+                                "/api/sc-technicians/**")
                         .permitAll()
                         // CHỈ CHO PHÉP 3 ROLE TRUY CẬP API XEM EMAIL ĐÃ GỬI
                         .requestMatchers("/api/EmailNotifications/all-email-sent")
