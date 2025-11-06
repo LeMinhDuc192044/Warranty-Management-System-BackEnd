@@ -3,8 +3,6 @@ package com.warrantyclaim.warrantyclaim_api.service.Implement;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
-import com.warrantyclaim.warrantyclaim_api.entity.WarrantyPolicy;
-import com.warrantyclaim.warrantyclaim_api.entity.WarrantyPolicyElectricVehicleType;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.mapper.ElectricVehicleMapper;
@@ -20,9 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -127,6 +122,21 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         ElectricVehicle updatedVehicle = electricVehicleRepository.save(vehicle);
 
         return mapper.toResponseDTO(updatedVehicle);
+    }
+
+    @Override
+    @Transactional
+    public ElectricVehicleResponseDTO updateReturnDate(String id, LocalDate returnDate) {
+        ElectricVehicle vehicle = electricVehicleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Electric Vehicle not found with ID: " + id));
+
+        if(vehicle.getPurchaseDate().isBefore(returnDate)) {
+            throw new RuntimeException("Return date has to be after purchaseDate");
+        }
+
+        vehicle.setReturnDate(returnDate);
+        vehicle = electricVehicleRepository.save(vehicle);
+        return mapper.toResponseDTO(vehicle);
     }
 
     @Override

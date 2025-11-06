@@ -47,6 +47,9 @@ public class ElectricVehicle {
     @Column(length = 100)
     private String email;
 
+    @Column(name = "Return_Date")
+    private LocalDate returnDate;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private VehicleStatus status;

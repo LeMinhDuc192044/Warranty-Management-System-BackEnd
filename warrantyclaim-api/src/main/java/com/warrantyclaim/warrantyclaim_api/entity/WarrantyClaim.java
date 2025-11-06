@@ -1,5 +1,6 @@
 package com.warrantyclaim.warrantyclaim_api.entity;
 
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.enums.WarrantyClaimStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,9 @@ public class WarrantyClaim {
     @Column(length = 50)
     private WarrantyClaimStatus status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Office_Branch")
+    private OfficeBranch officeBranch;
 
     @Column(length = 500)
     private String rejectionReason;

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +37,17 @@ public class ElectricVehicleController {
                 .addElectricVehicle(vehicleCreateDTO, vehicleCreateDTO.getUrlPicture());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @PutMapping("/{id}/return-date")
+    public ResponseEntity<ElectricVehicleResponseDTO> updateReturnDate(
+            @PathVariable("id") String id,
+            @RequestParam @Valid LocalDate returnDate) {
+
+        ElectricVehicleResponseDTO response = electricVehicleService
+                .updateReturnDate(id, returnDate);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

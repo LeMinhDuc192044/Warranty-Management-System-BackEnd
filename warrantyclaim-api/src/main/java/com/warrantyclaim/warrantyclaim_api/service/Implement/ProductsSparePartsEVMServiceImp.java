@@ -72,7 +72,7 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
             sparePartsEVM = repository.findById(evmPartId)
                     .orElseThrow(() -> new ResourceNotFoundException("Product SC not found with ID: " + evmPartId));
             if(sparePartsEVM.getCondition() != PartStatus.IN_PRODUCTION && sparePartsEVM.getCondition() != PartStatus.ACTIVE) {
-                return;
+                throw new IllegalStateException("Part EVM's condition has to be IN_PRODUCTION and ACTIVE");
             }
         }
 

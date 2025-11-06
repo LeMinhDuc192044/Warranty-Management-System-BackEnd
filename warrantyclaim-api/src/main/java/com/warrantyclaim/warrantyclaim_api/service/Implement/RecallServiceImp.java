@@ -1,6 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.service.Implement;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.RecallVehicleStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.repository.SCTechnicianRepository;
 import com.warrantyclaim.warrantyclaim_api.entity.*;
@@ -39,6 +40,7 @@ public class RecallServiceImp implements RecallService {
     @Override
     @Transactional
     public RecallResponseDTO createRecall(RecallCreateDTO createDTO) {
+
 
         Recall recall = mapper.toEntityRecall(createDTO);
         recall.setId(generatedIdRecall());
@@ -356,5 +358,123 @@ public class RecallServiceImp implements RecallService {
 
     public String generatedIdRecall() {
         return "RE-" + LocalDate.now().getYear() + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+    }
+    // Thêm vào RecallServiceImpl
+
+    @Autowired
+    private RecallElectricVehicleRepository recallElectricVehicleRepository;
+
+    @Autowired
+    private ElectricVehicleRepository electricVehicleRepository; // Nếu cần lấy thông tin vehicle
+
+    @Override
+    @Transactional
+    public RecallVehicleStatusResponseDTO updateRecallVehicleStatus(
+            String recallId,
+            String vehicleId,
+            UpdateRecallVehicleStatusDTO statusDTO) {
+
+        // 1. Validate recall exists
+        Recall recall = recallRepository.findById(recallId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recall not found with id: " + recallId));
+
+        // 2. Validate vehicle exists
+        ElectricVehicle vehicle = electricVehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with id: " + vehicleId));
+
+        // 3. Find RecallElectricVehicle relationship
+        RecallElectricVehicle recallVehicle = recallElectricVehicleRepository
+                .findByRecallIdAndVehicleId(recallId, vehicleId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Vehicle " + vehicleId + " is not associated with recall " + recallId));
+
+        // 4. Validate status
+        String newStatus = statusDTO.getStatus();
+        if (newStatus == null || newStatus.trim().isEmpty()) {
+            throw new IllegalArgumentException("Status cannot be empty");
+        }
+
+        // Optional: Validate status enum
+        try {
+            RecallVehicleStatus.valueOf(newStatus.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + newStatus);
+        }
+
+        // 5. Update status
+        String oldStatus = recallVehicle.getStatus();
+        recallVehicle.setStatus(newStatus.toUpperCase());
+
+        // 6. Save
+        RecallElectricVehicle updated = recallElectricVehicleRepository.save(recallVehicle);
+
+        // 7. Build response
+        RecallVehicleStatusResponseDTO response = new RecallVehicleStatusResponseDTO();
+        response.setRecallId(recallId);
+        response.setVehicleId(vehicleId);
+        response.setStatus(updated.getStatus());
+        response.setVehicleVin(vehicle.getId());
+        response.setVehicleModel(vehicle.getName());
+        response.setMessage("Status updated successfully from " + oldStatus + " to " + newStatus);
+
+        return response;
+    }
+    // Thêm vào RecallServiceImpl
+
+    @Override
+    public RecallVehicleDetailDTO getRecallVehicleDetail(String recallId, String vehicleId) {
+        // 1. Validate recall exists
+        Recall recall = recallRepository.findById(recallId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recall not found with id: " + recallId));
+
+        // 2. Validate vehicle exists
+        ElectricVehicle vehicle = electricVehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with id: " + vehicleId));
+
+        // 3. Find RecallElectricVehicle relationship
+        RecallElectricVehicle recallVehicle = recallElectricVehicleRepository
+                .findByRecallIdAndVehicleId(recallId, vehicleId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Vehicle " + vehicleId + " is not associated with recall " + recallId));
+
+        // 4. Build response DTO
+        RecallVehicleDetailDTO dto = new RecallVehicleDetailDTO();
+
+
+
+
+        // Relationship status
+        dto.setRecallVehicleStatus(recallVehicle.getStatus());
+
+
+
+        return dto;
+    }
+    // Thêm vào RecallServiceImpl
+
+    @Autowired
+    private RecallSCTechnicianRepository recallSCTechnicianRepository;
+
+    public List<Recall> getRecallsByTechnicianId(String technicianId) {
+        return recallSCTechnicianRepository.findRecallsByTechnicianId(technicianId);
+    }
+
+    // Helper method
+    private RecallByTechnicianDTO mapToRecallByTechnicianDTO(Recall recall) {
+        RecallByTechnicianDTO dto = new RecallByTechnicianDTO();
+        dto.setRecallId(recall.getId());
+        dto.setTitle(recall.getName());
+        dto.setDescription(recall.getIssueDescription());
+        dto.setStatus(recall.getStatus());
+        dto.setStartDate(recall.getStartDate());
+        dto.setEndDate(recall.getStartDate());
+        dto.setNotificationSent(recall.getNotificationSent());
+
+
+
+        // Set severity if exists in Recall entity
+        // dto.setSeverity(recall.getSeverity());
+
+        return dto;
     }
 }
