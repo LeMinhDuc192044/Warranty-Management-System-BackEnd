@@ -101,4 +101,14 @@ public class ElectricVehicleController {
         return ResponseEntity.ok(result);
     }
 
+    // lay danh sach xe con bao hanh
+
+    @Operation(summary = "Lấy danh sách các xe còn trong thời hạn bảo hành")
+    @GetMapping("/under-warranty")
+    public ResponseEntity<List<VehicleWarrantyStatusDTO>> getVehiclesUnderWarranty() {
+        List<VehicleWarrantyStatusDTO> result = electricVehicleService.getVehiclesUnderWarranty();
+        return ResponseEntity.ok(result);
+    }
+
+
 }

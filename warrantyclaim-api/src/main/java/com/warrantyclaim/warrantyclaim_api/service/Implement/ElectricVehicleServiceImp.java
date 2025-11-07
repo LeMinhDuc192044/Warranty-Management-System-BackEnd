@@ -10,6 +10,7 @@ import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.mapper.ElectricVehicleMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleTypeRepository;
+import com.warrantyclaim.warrantyclaim_api.repository.WarrantyPolicyElectricVehicleTypeRepository;
 import com.warrantyclaim.warrantyclaim_api.service.ElectricVehicleService;
 import com.warrantyclaim.warrantyclaim_api.utils.VinUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,8 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     private final ElectricVehicleMapper mapper;
     private final ImageUploadServiceImp imageUploadServiceImp;
     private final ElectricVehicleTypeRepository electricVehicleTypeRepository;
+    private final WarrantyPolicyElectricVehicleTypeRepository warrantyPolicyEVTRepository;
+
 
     @Override
     @Transactional
@@ -203,5 +206,34 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
 
         return result;
     }
+
+// xem danh sach xe con bao hanh
+    public List<VehicleWarrantyStatusDTO> getVehiclesUnderWarranty() {
+        List<ElectricVehicle> vehicles = electricVehicleRepository.findAll();
+        List<VehicleWarrantyStatusDTO> result = new ArrayList<>();
+
+        for (ElectricVehicle ev : vehicles) {
+            List<WarrantyPolicyElectricVehicleType> links =
+                    warrantyPolicyEVTRepository.findByVehicleType(ev.getVehicleType());
+
+            for (WarrantyPolicyElectricVehicleType link : links) {
+                WarrantyPolicy policy = link.getWarrantyPolicy();
+                LocalDate endDate = ev.getPurchaseDate().plusMonths(policy.getCoverageDurationMonths());
+                if (!LocalDate.now().isAfter(endDate)) {
+                    result.add(new VehicleWarrantyStatusDTO(
+                            ev.getId(),
+                            ev.getName(),
+                            ev.getPurchaseDate(),
+                            endDate,
+                            true
+                    ));
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
 
 }
