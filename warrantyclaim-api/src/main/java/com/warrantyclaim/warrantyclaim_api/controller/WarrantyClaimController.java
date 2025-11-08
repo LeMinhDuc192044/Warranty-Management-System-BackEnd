@@ -1,6 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
 import com.warrantyclaim.warrantyclaim_api.dto.*;
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.enums.WarrantyClaimStatus;
 import com.warrantyclaim.warrantyclaim_api.service.WarrantyClaimService;
 import jakarta.validation.Valid;
@@ -104,6 +105,16 @@ public class WarrantyClaimController {
         WarrantyClaimResponseDTO response = warrantyClaimService.updateReturnDate(claimId, returnDate);
         return ResponseEntity.ok(response);
     }
+
+    // thống kê tỉ hệ hỏng theo khu vực
+
+    @GetMapping("/statistics/failure-rate")
+    public ResponseEntity<List<OfficeBranchFailureStatsDTO>> getFailureRateByOfficeBranch() {
+        List<OfficeBranchFailureStatsDTO> stats = warrantyClaimService.getFailureStatsByOfficeBranch();
+        return ResponseEntity.ok(stats);
+    }
+
+
 
 
 }

@@ -1,9 +1,11 @@
 package com.warrantyclaim.warrantyclaim_api.service.Implement;
+import java.util.Collections;
 
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.SCTechnician;
 import com.warrantyclaim.warrantyclaim_api.entity.WarrantyClaim;
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.WarrantyClaimStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
@@ -22,7 +24,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -224,6 +229,39 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
         WarrantyClaim updatedClaim = warrantyClaimRepository.save(claim);
 
         return warrantyClaimMapper.toResponseWarrantyClaim(updatedClaim);
+    }
+
+
+    // thong ke ti le hong theo khu vuc
+
+    @Override
+    public List<OfficeBranchFailureStatsDTO> getFailureStatsByOfficeBranch() {
+        List<WarrantyClaimStatus> validStatuses = List.of(
+                WarrantyClaimStatus.APPROVED,
+                WarrantyClaimStatus.REJECTED,
+                WarrantyClaimStatus.COMPLETED
+        );
+
+        long totalClaims = warrantyClaimRepository.countByStatusIn(validStatuses);
+        if (totalClaims == 0) return Collections.emptyList();
+
+        List<Object[]> rows = warrantyClaimRepository.getClaimCountByOfficeBranch(validStatuses);
+
+        return rows.stream().map(row -> {
+            OfficeBranch branch = (OfficeBranch) row[0];
+            int claimsHandled = ((Long) row[1]).intValue();
+            double failureRate = totalClaims == 0 ? 0 :
+                    Math.round(((double) claimsHandled / totalClaims) * 100.0) / 100.0;
+
+            OfficeBranchFailureStatsDTO dto = new OfficeBranchFailureStatsDTO();
+            dto.setBranchName(branch.getBranchName());
+            dto.setAddress(branch.getAddress());
+            dto.setTotalClaims((int) totalClaims);
+            dto.setClaimsHandled(claimsHandled);
+            dto.setFailureRate(failureRate);
+
+            return dto;
+        }).collect(Collectors.toList());
     }
 
 
