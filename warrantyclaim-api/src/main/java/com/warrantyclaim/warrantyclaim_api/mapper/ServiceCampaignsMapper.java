@@ -24,7 +24,7 @@ public class ServiceCampaignsMapper {
         serviceCampaigns.setNotificationSent(requestDTO.getNotificationSent() != null ? requestDTO.getNotificationSent() : false);
         serviceCampaigns.setStatus(requestDTO.getStatus());
         serviceCampaigns.setDescription(requestDTO.getDescription());
-
+        serviceCampaigns.setSpecialty(requestDTO.getSpecialty());
         // Note: relationships will be set in service layer
 
         return serviceCampaigns;
@@ -37,6 +37,7 @@ public class ServiceCampaignsMapper {
         ServiceCampaignsResponseDTO responseDTO = new ServiceCampaignsResponseDTO();
 
         responseDTO.setId(serviceCampaigns.getId());
+        responseDTO.setSpecialty(serviceCampaigns.getSpecialty());
         responseDTO.setStartDate(serviceCampaigns.getStartDate());
         responseDTO.setEndDate(serviceCampaigns.getEndDate());
         responseDTO.setTypeName(serviceCampaigns.getTypeName());
@@ -97,6 +98,7 @@ public class ServiceCampaignsMapper {
 
         ServiceCampaignsListDTO dto = new ServiceCampaignsListDTO();
         dto.setCampaignsId(entity.getId());
+        dto.setSpecialty(entity.getSpecialty());
         dto.setCampaignsTypeName(entity.getTypeName());
         dto.setStartDate(entity.getStartDate());
         dto.setEndDate(entity.getEndDate());
@@ -130,6 +132,10 @@ public class ServiceCampaignsMapper {
 
         if (dto.getEndDate() != null) {
             entity.setEndDate(dto.getEndDate());
+        }
+
+        if(dto.getSpecialty() != null) {
+            entity.setSpecialty(dto.getSpecialty());
         }
 
         if (dto.getRequiredParts() != null) {

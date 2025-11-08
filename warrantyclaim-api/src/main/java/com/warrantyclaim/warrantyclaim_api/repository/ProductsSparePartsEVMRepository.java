@@ -2,6 +2,7 @@ package com.warrantyclaim.warrantyclaim_api.repository;
 
 import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountEVMResponse;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsEVM;
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +25,14 @@ public interface ProductsSparePartsEVMRepository extends JpaRepository<ProductsS
                 GROUP BY p.partType.id
             """)
     List<PartTypeCountEVMResponse> countByType(@Param("partTypeId") String partTypeId);
+
+    @Query("SELECT p FROM ProductsSparePartsEVM p " +
+            "WHERE p.partType.id = :partTypeId " +
+            "AND p.condition IN :conditions")
+    List<ProductsSparePartsEVM> findByPartTypeIdAndConditionIn(
+            @Param("partTypeId") String partTypeId,
+            @Param("conditions") List<PartStatus> conditions
+    );
+
+
 }

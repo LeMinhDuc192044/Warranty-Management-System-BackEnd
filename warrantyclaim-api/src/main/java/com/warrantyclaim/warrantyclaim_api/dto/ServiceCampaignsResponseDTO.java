@@ -1,6 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.warrantyclaim.warrantyclaim_api.enums.ServiceCampaignsStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class ServiceCampaignsResponseDTO {
     private LocalDate endDate;
 
     private String requiredParts;
-
+    private Specialty specialty;
     private String description;
 
     private ServiceCampaignsStatus status;
