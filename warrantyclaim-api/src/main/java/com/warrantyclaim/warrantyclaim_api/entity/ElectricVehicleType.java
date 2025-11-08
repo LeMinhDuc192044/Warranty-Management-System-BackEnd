@@ -39,4 +39,8 @@ public class ElectricVehicleType {
 
     private Integer quantity;
 
+    @OneToMany(mappedBy = "vehicleType", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WarrantyPolicyElectricVehicleType> warrantyPolicyElectricVehicleTypes = new ArrayList<>();
+
+
 }

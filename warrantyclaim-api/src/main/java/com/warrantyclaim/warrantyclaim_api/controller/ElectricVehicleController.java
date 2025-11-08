@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -91,4 +92,23 @@ public class ElectricVehicleController {
         electricVehicleService.deleteVehicle(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    @Operation(summary = "Kiểm tra trạng thái bảo hành của xe điện theo VIN")
+    @GetMapping("/{vin}/warranty-status")
+    public ResponseEntity<List<WarrantyStatusDTO>> getWarrantyStatus(@PathVariable String vin) {
+        List<WarrantyStatusDTO> result = electricVehicleService.getWarrantyStatus(vin);
+        return ResponseEntity.ok(result);
+    }
+
+    // lay danh sach xe con bao hanh
+
+    @Operation(summary = "Lấy danh sách các xe còn trong thời hạn bảo hành")
+    @GetMapping("/under-warranty")
+    public ResponseEntity<List<VehicleWarrantyStatusDTO>> getVehiclesUnderWarranty() {
+        List<VehicleWarrantyStatusDTO> result = electricVehicleService.getVehiclesUnderWarranty();
+        return ResponseEntity.ok(result);
+    }
+
+
 }

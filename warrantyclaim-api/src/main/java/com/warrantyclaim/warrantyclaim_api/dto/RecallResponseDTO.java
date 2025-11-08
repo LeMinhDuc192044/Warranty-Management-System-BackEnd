@@ -1,5 +1,6 @@
 package com.warrantyclaim.warrantyclaim_api.dto;
 
+import com.warrantyclaim.warrantyclaim_api.entity.Recall;
 import com.warrantyclaim.warrantyclaim_api.enums.EvmApprovalStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
@@ -34,4 +35,10 @@ public class RecallResponseDTO {
     private List<VehicleTypeInfoDTO> vehicleTypeInfoDTOS;
     private List<VehicleBasicInfoDTO> vehicleBasicInfoDTOS;
     private List<TechnicianBasicDTO> technicianBasicDTOS;
+    public RecallResponseDTO(Recall recall) {
+        this.id = recall.getId();
+        this.name = recall.getName();
+        this.issueDescription = recall.getIssueDescription();
+        this.status = recall.getStatus();
+    }
 }
