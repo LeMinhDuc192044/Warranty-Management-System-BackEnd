@@ -1,11 +1,9 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountEVMResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCResponse;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.service.ProductsSparePartsEVMService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -94,5 +92,20 @@ public class ProductsSparePartsEVMController {
         List<ProductsSparePartsEVMResponse> products = service.searchProductsByName(name);
         return ResponseEntity.ok(products);
     }
+
+    @PostMapping("/transfer/multiple-evm-to-sc")
+    @Operation(summary = "Transfer multiple EVM parts to SC by part type")
+    public ResponseEntity<List<PartsEvmTransferMultipleResponse>> transferMultipleEVMToSC(
+            @RequestBody @Valid TransferMultipleRequest request) {
+
+        List<PartsEvmTransferMultipleResponse> result = service.transferMultipleEVMPartTypeToSC(
+                request.getQuantity(),
+                request.getPartTypeId(),
+                request.getOfficeBranch()
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
 
 }
