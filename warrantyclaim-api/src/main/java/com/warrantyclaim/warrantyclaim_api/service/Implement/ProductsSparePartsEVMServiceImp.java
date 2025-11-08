@@ -89,6 +89,8 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
 
         if(scRepository.findById(evmPartId).isPresent()) {
             productsSparePartsSC.setId(generatePartNumber(sparePartsEVM.getVehicleType(), sparePartsEVM.getPartType().getId()));
+        } else {
+            throw new IllegalStateException("this EVM part type ID " + evmPartId + " does not existed in SC." );
         }
         // Set condition instead of deleting
         sparePartsEVM.setCondition(PartStatus.TRANSFERRED);
