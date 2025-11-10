@@ -44,12 +44,12 @@ public interface ProductsSparePartsEVMRepository extends JpaRepository<ProductsS
         )
         FROM ProductsSparePartsEVM p
         WHERE p.partType.id = :partTypeId
-        AND p.condition IN :conditions
+        AND p.condition = :conditions
         GROUP BY p.partType.id, p.condition
         """)
     List<PartTypeAndPartStatusCountEVMResponse> countByTypeAndCondition(
             @Param("partTypeId") String partTypeId,
-            @Param("conditions") List<PartStatus> conditions
+            @Param("conditions") PartStatus conditions
     );
 
 

@@ -1,11 +1,9 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.SparePartInfoScDTO;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
 import com.warrantyclaim.warrantyclaim_api.service.ProductsSparePartsSCService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +48,17 @@ public class ProductsSparePartsSCController {
                                                                              @PathVariable String vehicleId) {
         ProductsSparePartsSCResponse response = service.mapSerialToVehicle(id, vehicleId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/count/type/condition")
+    public ResponseEntity<List<PartTypeAndPartStatusCountEVMResponse>> countByTypeAndCondition(
+            @RequestParam String partTypeId,
+            @RequestParam PartStatus statuses) {
+
+        List<PartTypeAndPartStatusCountEVMResponse> result =
+                service.countEvmPartByTypeAndCondition(partTypeId, statuses);
+
+        return ResponseEntity.ok(result);
     }
 
     // READ - Get All

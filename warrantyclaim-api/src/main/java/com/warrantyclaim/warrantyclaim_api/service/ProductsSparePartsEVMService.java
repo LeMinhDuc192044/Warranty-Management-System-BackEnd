@@ -22,5 +22,5 @@ public interface ProductsSparePartsEVMService {
     public List<ProductsSparePartsEVMResponse> searchProductsByName(String name);
     public void transferFromEVMToScOfficeBranch(String partScId, OfficeBranch officeBranch);
     public List<PartsEvmTransferMultipleResponse> transferMultipleEVMPartTypeToSC(Integer quantity, String partTypeId, OfficeBranch officeBranch);
-    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses);
+    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, PartStatus statuses);
 }
