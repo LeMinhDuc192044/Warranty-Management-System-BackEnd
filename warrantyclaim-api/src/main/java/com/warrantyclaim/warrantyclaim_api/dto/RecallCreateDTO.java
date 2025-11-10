@@ -2,6 +2,7 @@ package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.warrantyclaim.warrantyclaim_api.enums.EvmApprovalStatus;
 import com.warrantyclaim.warrantyclaim_api.enums.RecallStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,8 @@ public class RecallCreateDTO {
     @NotBlank(message = "Part needed to fix the issue!!!")
     private String partsRequired;
 
+    @NotNull(message = "Specialty is needed!!!")
+    private Specialty specialty;
 
     private RecallStatus status;
 
@@ -40,9 +43,11 @@ public class RecallCreateDTO {
 
     private EvmApprovalStatus evmApprovalStatus;
 
+    @NotNull(message = "Need vehicle is required!!!")
+    private List<String> vehicleId;// Gắn loại xe vào chiến dịch
+
 
     private List<String> vehicleTypeIds;
     private List<String> technicianIds;
-    private List<String> vehicleId;// Gắn loại xe vào chiến dịch
 }
 

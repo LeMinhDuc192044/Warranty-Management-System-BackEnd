@@ -3,12 +3,16 @@ package com.warrantyclaim.warrantyclaim_api.service.Implement;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicleType;
+import com.warrantyclaim.warrantyclaim_api.entity.WarrantyPolicy;
+import com.warrantyclaim.warrantyclaim_api.entity.WarrantyPolicyElectricVehicleType;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.mapper.ElectricVehicleMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleTypeRepository;
+import com.warrantyclaim.warrantyclaim_api.repository.WarrantyPolicyElectricVehicleTypeRepository;
 import com.warrantyclaim.warrantyclaim_api.service.ElectricVehicleService;
+import com.warrantyclaim.warrantyclaim_api.utils.VinUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -28,12 +34,23 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     private final ElectricVehicleMapper mapper;
     private final ImageUploadServiceImp imageUploadServiceImp;
     private final ElectricVehicleTypeRepository electricVehicleTypeRepository;
+    private final WarrantyPolicyElectricVehicleTypeRepository warrantyPolicyEVTRepository;
+
 
     @Override
     @Transactional
     public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO, MultipartFile urlPicture) throws IOException {
-        ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleCreateDTO.getElectricVehicleTypeId())
-                .orElseThrow(() -> new ResourceNotFoundException("No vehicle type with this Id"));
+        //  Kiểm tra VIN hợp lệ
+        String vin = vehicleCreateDTO.getVehicleId();
+        if (!VinUtils.isValidVin(vin)) {
+            throw new IllegalArgumentException("Số VIN không hợp lệ. Định dạng đúng: VF[Model][Year][H|T][Serial] (17 ký tự)");
+        }
+        if (electricVehicleRepository.existsById(vin)) {
+            throw new IllegalArgumentException("Số VIN đã tồn tại trong hệ thống");
+        }
+
+//        ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleCreateDTO.getElectricVehicleTypeId())
+//                .orElseThrow(() -> new ResourceNotFoundException("No vehicle type with this Id"));
 
         ElectricVehicle electricVehicle = mapper.toEntityElectricVehicle(vehicleCreateDTO);
 
@@ -156,5 +173,67 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         Page<ElectricVehicle> vehicles = electricVehicleRepository.findAll(pageable);
         return vehicles.map(mapper::toListResponseDTO);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<WarrantyStatusDTO> getWarrantyStatus(String vin) {
+        ElectricVehicle vehicle = electricVehicleRepository.findById(vin)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy xe với VIN: " + vin));
+
+        LocalDate purchaseDate = vehicle.getPurchaseDate();
+        ElectricVehicleType type = vehicle.getVehicleType();
+
+        if (purchaseDate == null || type == null) {
+            throw new IllegalStateException("Xe chưa có đủ thông tin để kiểm tra bảo hành");
+        }
+
+        List<WarrantyStatusDTO> result = new ArrayList<>();
+
+        for (WarrantyPolicyElectricVehicleType link : type.getWarrantyPolicyElectricVehicleTypes()) {
+            WarrantyPolicy policy = link.getWarrantyPolicy();
+            LocalDate endDate = purchaseDate.plusMonths(policy.getCoverageDurationMonths());
+            boolean isValid = LocalDate.now().isBefore(endDate);
+
+            WarrantyStatusDTO dto = new WarrantyStatusDTO();
+            dto.setPolicyName(policy.getName());
+            dto.setCoverageType(policy.getCoverageTypeWarrantyPolicy().name());
+            dto.setWarrantyEndDate(endDate);
+            dto.setUnderWarranty(isValid);
+
+
+            result.add(dto);
+        }
+
+        return result;
+    }
+
+// xem danh sach xe con bao hanh
+    public List<VehicleWarrantyStatusDTO> getVehiclesUnderWarranty() {
+        List<ElectricVehicle> vehicles = electricVehicleRepository.findAll();
+        List<VehicleWarrantyStatusDTO> result = new ArrayList<>();
+
+        for (ElectricVehicle ev : vehicles) {
+            List<WarrantyPolicyElectricVehicleType> links =
+                    warrantyPolicyEVTRepository.findByVehicleType(ev.getVehicleType());
+
+            for (WarrantyPolicyElectricVehicleType link : links) {
+                WarrantyPolicy policy = link.getWarrantyPolicy();
+                LocalDate endDate = ev.getPurchaseDate().plusMonths(policy.getCoverageDurationMonths());
+                if (!LocalDate.now().isAfter(endDate)) {
+                    result.add(new VehicleWarrantyStatusDTO(
+                            ev.getId(),
+                            ev.getName(),
+                            ev.getPurchaseDate(),
+                            endDate,
+                            true
+                    ));
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.warrantyclaim.warrantyclaim_api.enums.ServiceCampaignsStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,9 @@ public class ServiceCampaignsRequestDTO {
 
     @NotNull(message = "End date is required!!")
     private LocalDate endDate;
+
+    @NotNull(message = "Specialty is needed!!!")
+    private Specialty specialty;
 
     private String requiredParts;
     private String description;

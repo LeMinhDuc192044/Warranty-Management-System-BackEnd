@@ -1,13 +1,13 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountEVMResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCResponse;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
 import com.warrantyclaim.warrantyclaim_api.service.ProductsSparePartsEVMService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/api/spare-parts/evm")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-
 public class ProductsSparePartsEVMController {
 
     private final ProductsSparePartsEVMService service;
@@ -94,5 +93,41 @@ public class ProductsSparePartsEVMController {
         List<ProductsSparePartsEVMResponse> products = service.searchProductsByName(name);
         return ResponseEntity.ok(products);
     }
+<<<<<<< HEAD
+    @GetMapping("/search-by-part-type/{partTypeId}")
+    public ResponseEntity<List<ProductsSparePartsEVMResponse>> searchByPartTypeId(
+            @PathVariable String partTypeId) {
+        List<ProductsSparePartsEVMResponse> products = service.searchProductsByPartTypeId(partTypeId);
+        return ResponseEntity.ok(products);
+    }
+=======
 
+    @GetMapping("/count/Type/condition")
+    public ResponseEntity<List<PartTypeAndPartStatusCountEVMResponse>> countByTypeAndCondition(
+            @RequestParam String partTypeId,
+            @RequestParam List<PartStatus> statuses) {
+
+        List<PartTypeAndPartStatusCountEVMResponse> result =
+                service.countEvmPartByTypeAndCondition(partTypeId, statuses);
+
+        return ResponseEntity.ok(result);
+    }
+
+
+    @PostMapping("/transfer/multiple-evm-to-sc")
+    @Operation(summary = "Transfer multiple EVM parts to SC by part type")
+    public ResponseEntity<List<PartsEvmTransferMultipleResponse>> transferMultipleEVMToSC(
+            @RequestBody @Valid TransferMultipleRequest request) {
+
+        List<PartsEvmTransferMultipleResponse> result = service.transferMultipleEVMPartTypeToSC(
+                request.getQuantity(),
+                request.getPartTypeId(),
+                request.getOfficeBranch()
+        );
+
+        return ResponseEntity.ok(result);
+    }
+
+
+>>>>>>> 9aaf4b70bab68165f758ca5d0b6e8c26dbc445bc
 }

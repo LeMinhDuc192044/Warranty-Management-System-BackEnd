@@ -1,11 +1,9 @@
 package com.warrantyclaim.warrantyclaim_api.service;
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.SparePartInfoScDTO;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
 
 import java.util.List;
 
@@ -19,4 +17,11 @@ public interface ProductsSparePartsSCService {
     public void deleteProduct(String id);
     public List<PartTypeCountResponse> countPartTypeByOfficeBranch(OfficeBranch officeBranch, String partTypeId);
     public List<SparePartInfoScDTO> getByOfficeBranch(OfficeBranch officeBranch);
+<<<<<<< HEAD
+    List<ProductsSparePartsSCResponse> searchByOfficeBranchAndPartType(
+            OfficeBranch officeBranch,
+            String partTypeId);
+=======
+//    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses);
+>>>>>>> 9aaf4b70bab68165f758ca5d0b6e8c26dbc445bc
 }

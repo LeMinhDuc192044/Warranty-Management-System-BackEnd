@@ -45,12 +45,6 @@ public class PartsRequestServiceImp implements PartsRequestService {
         PartsRequest partsRequest = partsRequestMapper.toEntity(request);
 
         // 2. Validate and set vehicle using VIN
-        if (request.getVin() != null) {
-            ElectricVehicle electricVehicle = electricVehicleRepository.findById(request.getVin())
-                    .orElseThrow(() -> new ResourceNotFoundException(
-                            "Electric vehicle not found with VIN: " + request.getVin()));
-            partsRequest.setElectricVehicle(electricVehicle);
-        }
 
         // 3. Update entity
         partsRequest.setId(generateRequestId());

@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class VehicleCreateDTO {
 
-    @Pattern(regexp = "^[A-HJ-NPR-Z0-9]{17}$", message = "Invalid VIN format")
+    @Pattern(regexp = "^VF(VF5|VF6|VF7|VF8|VF9|E34)\\d{4}[HT]{1}\\d{7}$", message = "VIN không đúng định dạng VinFast")
     @NotBlank(message = "Vehicle must have a VIN")
     private String vehicleId;
 
@@ -45,6 +45,9 @@ public class VehicleCreateDTO {
 
     @NotBlank(message = "Vehicle must have a type")
     private String electricVehicleTypeId;
+
+
+
 
     @Schema(
             description = "Vehicle image file (PNG, JPG, JPEG)",
