@@ -8,6 +8,7 @@ public enum PartStatus {
     SUSPENDED("Suspended", "Part temporarily on hold due to quality or supply issues."),
     DELETED("Deleted", "Part has been removed from the system."),
     BROKEN("Broken", "Part is damaged and requires replacement or repair."),
+    REPLACED("Replaced", "Part is replaced"),
     TRANSFERRED("Transferred", "Part is transferred to EVM");
 
 
