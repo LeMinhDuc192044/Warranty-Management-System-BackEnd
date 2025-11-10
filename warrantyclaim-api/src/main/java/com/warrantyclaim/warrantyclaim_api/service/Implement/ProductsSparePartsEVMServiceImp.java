@@ -226,6 +226,7 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     //-----------------------------------Helper---------------------------------------------------------------------
 
 <<<<<<< HEAD
+
     @Transactional(readOnly = true)
     public List<ProductsSparePartsEVMResponse> searchProductsByPartTypeId(String partTypeId) {
 
@@ -238,6 +239,7 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     }
 
 =======
+
     private List<ProductsSparePartsEVM> selectRandomParts(
             List<ProductsSparePartsEVM> availableParts,
             Integer quantity) {
@@ -252,6 +254,7 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
                 .collect(Collectors.toList());
     }
 >>>>>>> 9aaf4b70bab68165f758ca5d0b6e8c26dbc445bc
+
 
     private String generatePartNumber(VehicleType model, String partTypeId) {
         String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 12).toUpperCase();
