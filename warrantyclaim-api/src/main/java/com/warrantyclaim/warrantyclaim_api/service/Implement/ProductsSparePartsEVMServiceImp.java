@@ -1,10 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.service.Implement;
 
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountEVMResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.PartsEvmTransferMultipleResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMResponse;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsEVM;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsTypeEVM;
@@ -203,8 +200,19 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     }
 
     @Transactional(readOnly = true)
-    public List<PartTypeCountEVMResponse> countEvmPartByType(String partId) {
-        return repository.countByType(partId);
+    public List<PartTypeCountEVMResponse> countEvmPartByType(String partTypeId) {
+        partTypeRepository.findById(partTypeId).
+                orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
+
+        return repository.countByType(partTypeId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses) {
+        partTypeRepository.findById(partTypeId).
+                orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
+
+        return repository.countByTypeAndCondition(partTypeId, statuses);
     }
 
 

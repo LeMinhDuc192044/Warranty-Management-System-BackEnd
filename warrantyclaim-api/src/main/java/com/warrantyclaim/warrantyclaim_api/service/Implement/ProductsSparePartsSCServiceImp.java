@@ -1,10 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.service.Implement;
 
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.SparePartInfoScDTO;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsTypeSC;
@@ -134,7 +131,23 @@ public class ProductsSparePartsSCServiceImp implements ProductsSparePartsSCServi
             ElectricVehicle vehicle = vehicleRepository.findById(vehicleId)
                     .orElseThrow(() -> new ResourceNotFoundException("Electric vehicle for product is incorrect: " + vehicleId));
             product.setElectricVehicle(vehicle);
+
+            String partTypeId = product.getPartType().getId();
+            List<ProductsSparePartsSC> previousParts = repository
+                    .findByElectricVehicleAndPartType_Id(vehicle, partTypeId);
+
+            for (ProductsSparePartsSC previousPart : previousParts) {
+                if (!previousPart.getId().equals(id)) {
+                    previousPart.setCondition(PartStatus.REPLACED);
+                    previousPart.setElectricVehicle(null);
+                    repository.save(previousPart);
+                }
+            }
+
+            product.setElectricVehicle(vehicle);
         }
+
+
 
         repository.save(product);
         return productsSparePartsSCMapper.toResponse(product);
@@ -148,6 +161,14 @@ public class ProductsSparePartsSCServiceImp implements ProductsSparePartsSCServi
                 .map(productsSparePartsSCMapper::toResponse)
                 .collect(Collectors.toList());
     }
+
+//    @Transactional(readOnly = true)
+//    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses) {
+//        partTypeRepository.findById(partTypeId).
+//                orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
+//
+//        return repository.countByTypeAndCondition(partTypeId, statuses);
+//    }
 
     // DELETE
     @Transactional
