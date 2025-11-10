@@ -225,6 +225,32 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     }
     //-----------------------------------Helper---------------------------------------------------------------------
 
+    @Transactional(readOnly = true)
+    public List<ProductsSparePartsEVMResponse> searchProductsByPartTypeId(String partTypeId) {
+
+
+        List<ProductsSparePartsEVM> products = repository.findByPartTypeId(partTypeId);
+
+        return products.stream()
+                .map(mapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    private List<ProductsSparePartsEVM> selectRandomParts(
+            List<ProductsSparePartsEVM> availableParts,
+            Integer quantity) {
+
+        // Shuffle the list to randomize selection
+        List<ProductsSparePartsEVM> shuffledParts = new ArrayList<>(availableParts);
+        Collections.shuffle(shuffledParts);
+
+        // Take first 'quantity' items
+        return shuffledParts.stream()
+                .limit(quantity)
+                .collect(Collectors.toList());
+    }
+
     private List<ProductsSparePartsEVM> selectRandomParts(
             List<ProductsSparePartsEVM> availableParts,
             Integer quantity) {

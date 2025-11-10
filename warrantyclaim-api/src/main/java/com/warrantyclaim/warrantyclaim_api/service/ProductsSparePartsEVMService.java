@@ -23,4 +23,6 @@ public interface ProductsSparePartsEVMService {
     public void transferFromEVMToScOfficeBranch(String partScId, OfficeBranch officeBranch);
     public List<PartsEvmTransferMultipleResponse> transferMultipleEVMPartTypeToSC(Integer quantity, String partTypeId, OfficeBranch officeBranch);
     public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses);
+
+    public List<ProductsSparePartsEVMResponse> searchProductsByPartTypeId(String partTypeId);
 }
