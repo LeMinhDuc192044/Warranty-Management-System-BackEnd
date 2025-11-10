@@ -22,9 +22,12 @@ public interface ProductsSparePartsEVMService {
     public List<ProductsSparePartsEVMResponse> searchProductsByName(String name);
     public void transferFromEVMToScOfficeBranch(String partScId, OfficeBranch officeBranch);
 <<<<<<< HEAD
+
     public List<ProductsSparePartsEVMResponse> searchProductsByPartTypeId(String partTypeId);
 =======
+
     public List<PartsEvmTransferMultipleResponse> transferMultipleEVMPartTypeToSC(Integer quantity, String partTypeId, OfficeBranch officeBranch);
     public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses);
 >>>>>>> 9aaf4b70bab68165f758ca5d0b6e8c26dbc445bc
+
 }
