@@ -17,9 +17,10 @@ public interface ProductsSparePartsSCService {
     public void deleteProduct(String id);
     public List<PartTypeCountResponse> countPartTypeByOfficeBranch(OfficeBranch officeBranch, String partTypeId);
     public List<SparePartInfoScDTO> getByOfficeBranch(OfficeBranch officeBranch);
-//    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses);
+
 
     List<ProductsSparePartsSCResponse> searchByOfficeBranchAndPartType(
             OfficeBranch officeBranch,
             String partTypeId);
+
 }

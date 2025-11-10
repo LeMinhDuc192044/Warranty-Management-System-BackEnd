@@ -93,7 +93,7 @@ public class ProductsSparePartsEVMController {
         List<ProductsSparePartsEVMResponse> products = service.searchProductsByName(name);
         return ResponseEntity.ok(products);
     }
-<<<<<<< HEAD
+
 
     @GetMapping("/search-by-part-type/{partTypeId}")
     public ResponseEntity<List<ProductsSparePartsEVMResponse>> searchByPartTypeId(
@@ -101,37 +101,13 @@ public class ProductsSparePartsEVMController {
         List<ProductsSparePartsEVMResponse> products = service.searchProductsByPartTypeId(partTypeId);
         return ResponseEntity.ok(products);
     }
-=======
 
 
-    @GetMapping("/count/Type/condition")
-    public ResponseEntity<List<PartTypeAndPartStatusCountEVMResponse>> countByTypeAndCondition(
-            @RequestParam String partTypeId,
-            @RequestParam List<PartStatus> statuses) {
-
-        List<PartTypeAndPartStatusCountEVMResponse> result =
-                service.countEvmPartByTypeAndCondition(partTypeId, statuses);
-
-        return ResponseEntity.ok(result);
-    }
 
 
-    @PostMapping("/transfer/multiple-evm-to-sc")
-    @Operation(summary = "Transfer multiple EVM parts to SC by part type")
-    public ResponseEntity<List<PartsEvmTransferMultipleResponse>> transferMultipleEVMToSC(
-            @RequestBody @Valid TransferMultipleRequest request) {
-
-        List<PartsEvmTransferMultipleResponse> result = service.transferMultipleEVMPartTypeToSC(
-                request.getQuantity(),
-                request.getPartTypeId(),
-                request.getOfficeBranch()
-        );
-
-        return ResponseEntity.ok(result);
-    }
 
 
->>>>>>> 9aaf4b70bab68165f758ca5d0b6e8c26dbc445bc
+
 
     @GetMapping("/count/Type/condition")
     public ResponseEntity<List<PartTypeAndPartStatusCountEVMResponse>> countByTypeAndCondition(

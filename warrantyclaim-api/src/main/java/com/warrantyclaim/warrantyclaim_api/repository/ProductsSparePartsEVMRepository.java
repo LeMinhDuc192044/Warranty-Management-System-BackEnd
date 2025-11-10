@@ -28,7 +28,9 @@ public interface ProductsSparePartsEVMRepository extends JpaRepository<ProductsS
             """)
     List<PartTypeCountEVMResponse> countByType(@Param("partTypeId") String partTypeId);
 
+
     List<ProductsSparePartsEVM> findByPartTypeId(String partTypeId);
+
 
     @Query("SELECT p FROM ProductsSparePartsEVM p " +
             "WHERE p.partType.id = :partTypeId " +
@@ -53,6 +55,7 @@ public interface ProductsSparePartsEVMRepository extends JpaRepository<ProductsS
             @Param("partTypeId") String partTypeId,
             @Param("conditions") List<PartStatus> conditions
     );
+
 
 
 
