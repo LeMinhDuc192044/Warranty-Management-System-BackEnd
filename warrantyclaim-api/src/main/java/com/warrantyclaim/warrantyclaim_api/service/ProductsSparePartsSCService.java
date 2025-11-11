@@ -18,4 +18,5 @@ public interface ProductsSparePartsSCService {
     public List<PartTypeCountResponse> countPartTypeByOfficeBranch(OfficeBranch officeBranch, String partTypeId);
     public List<SparePartInfoScDTO> getByOfficeBranch(OfficeBranch officeBranch);
     public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, PartStatus statuses);
+    public List<ProductsSparePartsSCResponse> searchByOfficeBranchAndPartType(OfficeBranch officeBranch, String partTypeId);
 }
