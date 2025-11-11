@@ -99,37 +99,37 @@ public class RecallServiceImp implements RecallService {
         mapper.updateRecallRequest(recall, updateDTO);
 
         // Update individual vehicles if provided
-        if (updateDTO.getVehicleVinIds() != null) {
-            List<ElectricVehicle> vehicles = new ArrayList<>();
-            for (String vehicleId : updateDTO.getVehicleVinIds()) {
-                ElectricVehicle vehicle = vehicleRepo.findById(vehicleId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with ID: " + vehicleId));
-                vehicles.add(vehicle);
-            }
-            recall.setElectricVehicles(vehicles);
-        }
-
-        // Update vehicle types if provided
-        if (updateDTO.getVehicleTypeIds() != null) {
-            List<ElectricVehicleType> vehicleTypes = new ArrayList<>();
-            for (String vehicleTypeId : updateDTO.getVehicleTypeIds()) {
-                ElectricVehicleType vehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle type not found with ID: " + vehicleTypeId));
-                vehicleTypes.add(vehicleType);
-            }
-            recall.setElectricVehicleTypes(vehicleTypes);
-        }
-
-        // Update technicians if provided
-        if (updateDTO.getTechnicianIds() != null) {
-            List<SCTechnician> technicians = new ArrayList<>();
-            for (String technicianId : updateDTO.getTechnicianIds()) {
-                SCTechnician technician = scTechnicianRepo.findById(technicianId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Technician not found with ID: " + technicianId));
-                technicians.add(technician);
-            }
-            recall.setScTechnicians(technicians);
-        }
+//        if (updateDTO.getVehicleVinIds() != null) {
+//            List<ElectricVehicle> vehicles = new ArrayList<>();
+//            for (String vehicleId : updateDTO.getVehicleVinIds()) {
+//                ElectricVehicle vehicle = vehicleRepo.findById(vehicleId)
+//                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with ID: " + vehicleId));
+//                vehicles.add(vehicle);
+//            }
+//            recall.setElectricVehicles(vehicles);
+//        }
+//
+//        // Update vehicle types if provided
+//        if (updateDTO.getVehicleTypeIds() != null) {
+//            List<ElectricVehicleType> vehicleTypes = new ArrayList<>();
+//            for (String vehicleTypeId : updateDTO.getVehicleTypeIds()) {
+//                ElectricVehicleType vehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
+//                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle type not found with ID: " + vehicleTypeId));
+//                vehicleTypes.add(vehicleType);
+//            }
+//            recall.setElectricVehicleTypes(vehicleTypes);
+//        }
+//
+//        // Update technicians if provided
+//        if (updateDTO.getTechnicianIds() != null) {
+//            List<SCTechnician> technicians = new ArrayList<>();
+//            for (String technicianId : updateDTO.getTechnicianIds()) {
+//                SCTechnician technician = scTechnicianRepo.findById(technicianId)
+//                        .orElseThrow(() -> new ResourceNotFoundException("Technician not found with ID: " + technicianId));
+//                technicians.add(technician);
+//            }
+//            recall.setScTechnicians(technicians);
+//        }
 
         // Save and return
         Recall updatedRecall = recallRepository.save(recall);
