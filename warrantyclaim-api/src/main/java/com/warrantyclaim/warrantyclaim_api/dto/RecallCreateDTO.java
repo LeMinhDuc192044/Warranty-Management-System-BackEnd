@@ -43,8 +43,8 @@ public class RecallCreateDTO {
 
     private EvmApprovalStatus evmApprovalStatus;
 
-    @NotNull(message = "Need vehicle is required!!!")
-    private List<String> vehicleId;// Gắn loại xe vào chiến dịch
+    @NotNull(message = "Need vehicle type is required!!!")
+    private List<String> vehicleTypeIds;// Gắn loại xe vào chiến dịch
 
 
 
