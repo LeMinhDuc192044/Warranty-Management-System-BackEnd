@@ -24,7 +24,7 @@ public class UpdateRecallRequest {
     private EvmApprovalStatus evmApprovalStatus;
     private Specialty specialty;
 
-    private List<String> vehicleVinIds;
-    private List<String> vehicleTypeIds;
-    private List<String> technicianIds;
+//    private List<String> vehicleVinIds;
+//    private List<String> vehicleTypeIds;
+//    private List<String> technicianIds;
 }
