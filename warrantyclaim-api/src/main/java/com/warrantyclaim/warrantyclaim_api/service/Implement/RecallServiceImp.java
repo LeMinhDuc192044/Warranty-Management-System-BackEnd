@@ -51,22 +51,22 @@ public class RecallServiceImp implements RecallService {
         if (recall.getNotificationSent() == null) {
             recall.setNotificationSent(false);
         }
-
-        if(createDTO.getVehicleId() != null && !createDTO.getVehicleId().isEmpty()) {
-            for(String vehicleId : createDTO.getVehicleId()) {
-                ElectricVehicle electricVehicle = vehicleRepo.findById(vehicleId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleId));
-                recall.addElectricVehicle(electricVehicle);
-            }
-        }
-
-//        if(createDTO.getVehicleTypeIds() != null && !createDTO.getVehicleTypeIds().isEmpty()) {
-//            for(String vehicleTypeId : createDTO.getVehicleTypeIds()) {
-//                ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
-//                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleTypeId));
-//                recall.addVehicleType(electricVehicleType);
+//
+//        if(createDTO.getVehicleId() != null && !createDTO.getVehicleId().isEmpty()) {
+//            for(String vehicleId : createDTO.getVehicleId()) {
+//                ElectricVehicle electricVehicle = vehicleRepo.findById(vehicleId)
+//                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleId));
+//                recall.addElectricVehicle(electricVehicle);
 //            }
 //        }
+
+        if(createDTO.getVehicleTypeIds() != null && !createDTO.getVehicleTypeIds().isEmpty()) {
+            for(String vehicleTypeId : createDTO.getVehicleTypeIds()) {
+                ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleTypeId));
+                recall.addVehicleType(electricVehicleType);
+            }
+        }
 //
 //        if(createDTO.getTechnicianIds() != null && !createDTO.getTechnicianIds().isEmpty()) {
 //            for(String technicianId : createDTO.getTechnicianIds()) {
