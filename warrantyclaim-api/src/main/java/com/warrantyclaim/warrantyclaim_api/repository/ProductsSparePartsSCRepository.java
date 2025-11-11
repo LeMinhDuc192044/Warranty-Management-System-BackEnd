@@ -16,7 +16,16 @@ import java.util.List;
 public interface ProductsSparePartsSCRepository extends JpaRepository<ProductsSparePartsSC, String> {
     List<ProductsSparePartsSC> findByNameContainingIgnoreCase(String name);
     List<ProductsSparePartsSC> findByPartType_Id(String partTypeId);
-
+    // Tìm theo OfficeBranch VÀ Part Type ID
+    List<ProductsSparePartsSC> findByOfficeBranchAndPartTypeId(
+            OfficeBranch officeBranch,
+            String partTypeId);
+    @Query("SELECT p FROM ProductsSparePartsSC p WHERE " +
+            "(:officeBranch IS NULL OR p.officeBranch = :officeBranch) AND " +
+            "(:partTypeId IS NULL OR p.partType.id = :partTypeId)")
+    List<ProductsSparePartsSC> searchByOfficeBranchAndPartType(
+            @Param("officeBranch") OfficeBranch officeBranch,
+            @Param("partTypeId") String partTypeId);
     @Query("""
     SELECT new com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountResponse(
                                                                    p.officeBranch,
