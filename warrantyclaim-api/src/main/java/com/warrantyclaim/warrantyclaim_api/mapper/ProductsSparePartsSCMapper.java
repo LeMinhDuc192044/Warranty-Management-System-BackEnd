@@ -4,6 +4,9 @@ import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ProductsSparePartsSCMapper {
     public void toEntity(ProductsSparePartsSCRequest request, ProductsSparePartsSC product) {
@@ -83,6 +86,14 @@ public class ProductsSparePartsSCMapper {
 
         return dto;
     }
+    public List<ProductsSparePartsSCResponse> toResponseList(List<ProductsSparePartsSC> products) {
+        if (products == null || products.isEmpty()) {
+            return List.of();
+        }
 
+        return products.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
 
 }

@@ -42,6 +42,16 @@ public class ProductsSparePartsSCController {
             @RequestParam OfficeBranch branch) {
         return ResponseEntity.ok(service.getByOfficeBranch(branch));
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductsSparePartsSCResponse>> search(
+            @RequestParam(required = false) OfficeBranch branch,
+            @RequestParam(required = false) String partTypeId) {
+
+        List<ProductsSparePartsSCResponse> result =
+                service.searchByOfficeBranchAndPartType(branch, partTypeId);
+
+        return ResponseEntity.ok(result);
+    }
 
     @PatchMapping("/{id}/vehicles/{vehicleId}")
     public ResponseEntity<ProductsSparePartsSCResponse> mapSerialNumberToVin(@PathVariable String id,

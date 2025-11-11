@@ -199,6 +199,18 @@ public class ProductsSparePartsSCServiceImp implements ProductsSparePartsSCServi
         return parts.length > 0 ? parts[0].toUpperCase() : "";
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductsSparePartsSCResponse> searchByOfficeBranchAndPartType(
+            OfficeBranch officeBranch,
+            String partTypeId) {
+
+        List<ProductsSparePartsSC> parts =
+                repository.searchByOfficeBranchAndPartType(officeBranch, partTypeId);
+
+        return productsSparePartsSCMapper.toResponseList(parts);
+    }
+
+
 
     private String autoGenerateModelCode(VehicleType model) {
         // Example mapping:
