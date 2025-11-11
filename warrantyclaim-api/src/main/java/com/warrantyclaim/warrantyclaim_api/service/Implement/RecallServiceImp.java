@@ -60,21 +60,21 @@ public class RecallServiceImp implements RecallService {
             }
         }
 
-        if(createDTO.getVehicleTypeIds() != null && !createDTO.getVehicleTypeIds().isEmpty()) {
-            for(String vehicleTypeId : createDTO.getVehicleTypeIds()) {
-                ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleTypeId));
-                recall.addVehicleType(electricVehicleType);
-            }
-        }
-
-        if(createDTO.getTechnicianIds() != null && !createDTO.getTechnicianIds().isEmpty()) {
-            for(String technicianId : createDTO.getTechnicianIds()) {
-                SCTechnician technician = scTechnicianRepo.findById(technicianId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + technicianId));
-                recall.addTechnician(technician);
-            }
-        }
+//        if(createDTO.getVehicleTypeIds() != null && !createDTO.getVehicleTypeIds().isEmpty()) {
+//            for(String vehicleTypeId : createDTO.getVehicleTypeIds()) {
+//                ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleTypeId)
+//                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + vehicleTypeId));
+//                recall.addVehicleType(electricVehicleType);
+//            }
+//        }
+//
+//        if(createDTO.getTechnicianIds() != null && !createDTO.getTechnicianIds().isEmpty()) {
+//            for(String technicianId : createDTO.getTechnicianIds()) {
+//                SCTechnician technician = scTechnicianRepo.findById(technicianId)
+//                        .orElseThrow(() -> new ResourceNotFoundException("Vehicle not existed with this Id " + technicianId));
+//                recall.addTechnician(technician);
+//            }
+//        }
 
         recallRepository.save(recall);
         return mapper.toRecallResponseDTO(recall);

@@ -47,7 +47,6 @@ public class RecallCreateDTO {
     private List<String> vehicleId;// Gắn loại xe vào chiến dịch
 
 
-    private List<String> vehicleTypeIds;
-    private List<String> technicianIds;
+
 }
 

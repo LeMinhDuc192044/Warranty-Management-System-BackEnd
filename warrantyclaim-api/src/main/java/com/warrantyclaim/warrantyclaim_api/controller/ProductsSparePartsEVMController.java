@@ -94,25 +94,10 @@ public class ProductsSparePartsEVMController {
         return ResponseEntity.ok(products);
     }
 
-
-    @GetMapping("/search-by-part-type/{partTypeId}")
-    public ResponseEntity<List<ProductsSparePartsEVMResponse>> searchByPartTypeId(
-            @PathVariable String partTypeId) {
-        List<ProductsSparePartsEVMResponse> products = service.searchProductsByPartTypeId(partTypeId);
-        return ResponseEntity.ok(products);
-    }
-
-
-
-
-
-
-
-
-    @GetMapping("/count/Type/condition")
+    @GetMapping("/count/type/condition")
     public ResponseEntity<List<PartTypeAndPartStatusCountEVMResponse>> countByTypeAndCondition(
             @RequestParam String partTypeId,
-            @RequestParam List<PartStatus> statuses) {
+            @RequestParam PartStatus statuses) {
 
         List<PartTypeAndPartStatusCountEVMResponse> result =
                 service.countEvmPartByTypeAndCondition(partTypeId, statuses);

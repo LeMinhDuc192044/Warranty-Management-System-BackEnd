@@ -162,13 +162,13 @@ public class ProductsSparePartsSCServiceImp implements ProductsSparePartsSCServi
                 .collect(Collectors.toList());
     }
 
-//    @Transactional(readOnly = true)
-//    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses) {
-//        partTypeRepository.findById(partTypeId).
-//                orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
-//
-//        return repository.countByTypeAndCondition(partTypeId, statuses);
-//    }
+    @Transactional(readOnly = true)
+    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, PartStatus statuses) {
+        partTypeRepository.findById(partTypeId).
+                orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
+
+        return repository.countByTypeAndCondition(partTypeId, statuses);
+    }
 
     // DELETE
     @Transactional

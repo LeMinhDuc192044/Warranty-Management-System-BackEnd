@@ -208,7 +208,7 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     }
 
     @Transactional(readOnly = true)
-    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, List<PartStatus> statuses) {
+    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, PartStatus statuses) {
         partTypeRepository.findById(partTypeId).
                 orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
 
