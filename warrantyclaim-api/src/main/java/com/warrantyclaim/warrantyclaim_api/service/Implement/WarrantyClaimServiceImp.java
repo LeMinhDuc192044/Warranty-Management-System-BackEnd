@@ -1,9 +1,11 @@
 package com.warrantyclaim.warrantyclaim_api.service.Implement;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
 import com.warrantyclaim.warrantyclaim_api.entity.SCTechnician;
+import com.warrantyclaim.warrantyclaim_api.entity.User;
 import com.warrantyclaim.warrantyclaim_api.entity.WarrantyClaim;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
@@ -12,6 +14,7 @@ import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.mapper.WarrantyClaimMapper;
 import com.warrantyclaim.warrantyclaim_api.repository.ElectricVehicleRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.SCTechnicianRepository;
+import com.warrantyclaim.warrantyclaim_api.repository.UserRepository;
 import com.warrantyclaim.warrantyclaim_api.repository.WarrantyClaimRepository;
 import com.warrantyclaim.warrantyclaim_api.service.EmailService;
 import com.warrantyclaim.warrantyclaim_api.service.NotificationService;
@@ -35,6 +38,7 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
 
     private final WarrantyClaimRepository warrantyClaimRepository;
     private final ElectricVehicleRepository electricVehicleRepository;
+    private final UserRepository userRepository;
     private final SCTechnicianRepository scTechnicianRepository;
     private final WarrantyClaimMapper warrantyClaimMapper;
     private final NotificationService notificationService;
@@ -45,9 +49,8 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
     public WarrantyClaimResponseDTO createWarrantyClaim(WarrantyClaimCreateRequestDTO warrantyClaimRequest) {
 
         ElectricVehicle electricVehicle = electricVehicleRepository.findById(warrantyClaimRequest.getVehicleId()) // for
-                // testing
-                // exception
                 .orElseThrow(() -> new ResourceNotFoundException("There is no Electric Vehicle with this ID!!!"));
+
 
         // Validate staff if provided
         // ScStaff staff = null;
@@ -264,5 +267,70 @@ public class WarrantyClaimServiceImp implements WarrantyClaimService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional
+    public WarrantyClaimResponseDTO startWork(String claimId, String technicianUsername) {
+        // 1. Tìm claim
+        WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy claim với ID: " + claimId));
+
+        // 2. Validation: Check status phải là APPROVED
+        if (claim.getStatus() != WarrantyClaimStatus.APPROVED) {
+            throw new IllegalStateException(
+                    "Chỉ có thể bắt đầu công việc khi claim đã được duyệt. Trạng thái hiện tại: " + claim.getStatus());
+        }
+
+        // 3. Validation: Check technician đã được assign chưa
+        if (claim.getTechnician() == null) {
+            throw new IllegalStateException("Claim chưa được phân công cho kỹ thuật viên nào");
+        }
+
+        // 4. Validation: Check xem technician có đúng người được assign không
+        // Lấy user từ userId của technician
+        Long technicianUserId = claim.getTechnician().getUserId();
+        if (technicianUserId == null) {
+            throw new IllegalStateException("Technician chưa liên kết với User account");
+        }
+
+        // Tìm user bằng username (email trong hệ thống)
+        User currentUser = userRepository.findByEmail(technicianUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user: " + technicianUsername));
+
+        // So sánh userId
+        if (!currentUser.getId().equals(technicianUserId)) {
+            throw new IllegalStateException(
+                    "Bạn không được phân công cho claim này. Vui lòng kiểm tra lại.");
+        }
+
+        // 5. Update status và lưu thời gian bắt đầu
+        claim.setStatus(WarrantyClaimStatus.IN_PROGRESS);
+        claim.setWorkStartTime(LocalDateTime.now());
+
+        // 6. Lưu vào database
+        WarrantyClaim updatedClaim = warrantyClaimRepository.save(claim);
+
+        // 7. Gửi notification (optional - comment out nếu method chưa có)
+        // if (claim.getCreatedByUserId() != null) {
+        // notificationService.sendWorkStartedNotification(
+        // claim.getId(),
+        // claim.getCustomerName(),
+        // currentUser.getUsernameDisplay(),
+        // claim.getCreatedByUserId()
+        // );
+        // }
+
+        return warrantyClaimMapper.toResponseWarrantyClaim(updatedClaim);
+    }
+
+    @Override
+    @Transactional
+    public void deleteClaim(String claimId) {
+        // Kiểm tra claim có tồn tại không
+        WarrantyClaim claim = warrantyClaimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy claim với ID: " + claimId));
+
+        // Xóa claim
+        warrantyClaimRepository.delete(claim);
+    }
 
 }

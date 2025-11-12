@@ -1,5 +1,6 @@
 package com.warrantyclaim.warrantyclaim_api.entity;
 
+import com.warrantyclaim.warrantyclaim_api.enums.UsageType;
 import com.warrantyclaim.warrantyclaim_api.enums.VehicleStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -34,6 +35,10 @@ public class ElectricVehicle {
 
     @Column(length = 250)
     private String picture;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Usage_Type", length = 20)
+    private UsageType usageType;
 
     @Column(name = "Purchase_Date")
     private LocalDate purchaseDate;

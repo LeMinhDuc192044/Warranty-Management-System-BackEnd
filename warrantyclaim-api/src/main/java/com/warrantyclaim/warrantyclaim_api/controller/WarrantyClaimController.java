@@ -114,6 +114,60 @@ public class WarrantyClaimController {
         return ResponseEntity.ok(stats);
     }
 
+    // SC Technical bắt đầu công việc: APPROVED → IN_PROGRESS
+    @PostMapping("/{claimId}/start-work")
+    public ResponseEntity<?> startWork(
+            @PathVariable String claimId,
+            @RequestParam String technicianUsername) {
+        try {
+            WarrantyClaimResponseDTO response = warrantyClaimService.startWork(claimId, technicianUsername);
+            return ResponseEntity.ok(response);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Có lỗi xảy ra khi bắt đầu công việc"));
+        }
+    }
+
+    // SC_ADMIN xóa yêu cầu bảo hành
+    @DeleteMapping("/{claimId}")
+    public ResponseEntity<?> deleteClaim(@PathVariable String claimId) {
+        try {
+            warrantyClaimService.deleteClaim(claimId);
+            return ResponseEntity.ok().body(new SuccessResponse("Xóa yêu cầu bảo hành thành công"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Không thể xóa yêu cầu bảo hành: " + e.getMessage()));
+        }
+    }
+
+    // Helper class for error responses
+    private static class ErrorResponse {
+        private final String message;
+
+        public ErrorResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
+    // Helper class for success responses
+    private static class SuccessResponse {
+        private final String message;
+
+        public SuccessResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 
 
 

@@ -11,23 +11,51 @@ import java.util.List;
 
 public interface WarrantyPolicyService {
     WarrantyPolicyResponseDTO createWarrantyPolicy(WarrantyPolicyCreateDTO createDTO);
+
     WarrantyPolicyResponseDTO getWarrantyPolicyById(String id);
+
     WarrantyPolicyResponseDTO updateWarrantyPolicy(String id, WarrantyPolicyUpdateDTO updateDTO);
+
     void deleteWarrantyPolicy(String id);
+
     Page<WarrantyPolicyListDTO> getAllWarrantyPolicies(Pageable pageable);
 
     // Vehicle Type Management
     WarrantyPolicyResponseDTO assignVehicleTypes(String policyId, List<String> vehicleTypeIds);
+
     public WarrantyPolicyResponseDTO addVehicleType(String policyId, String vehicleTypeId);
+
     WarrantyPolicyResponseDTO removeVehicleType(String policyId, String vehicleTypeId);
 
     // SC Spare Parts Type Management
     WarrantyPolicyResponseDTO assignSparePartsTypeSC(String policyId, List<String> sparePartsTypeSCIds);
+
     WarrantyPolicyResponseDTO addSparePartsTypeSC(String policyId, String sparePartsTypeId);
+
     WarrantyPolicyResponseDTO removeSparePartsTypeSC(String policyId, String sparePartsTypeId);
 
     // EVM Spare Parts Type Management
     WarrantyPolicyResponseDTO assignSparePartsTypeEVM(String policyId, List<String> sparePartsTypeEVMIds);
+
     WarrantyPolicyResponseDTO addSparePartsTypeEVM(String policyId, String sparePartsTypeId);
+
     WarrantyPolicyResponseDTO removeSparePartsTypeEVM(String policyId, String sparePartsTypeId);
+
+    // Warranty Eligibility Check
+    /**
+     * Kiểm tra warranty policy cho một xe dựa trên VIN
+     *
+     * @param vehicleVIN Vehicle Identification Number
+     * @return WarrantyPolicyCheckResponseDTO với thông tin policy và eligibility
+     */
+    com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO checkWarrantyEligibility(String vehicleVIN);
+
+    /**
+     * Kiểm tra warranty policy dựa trên vehicle type
+     *
+     * @param vehicleTypeId ID của loại xe
+     * @return WarrantyPolicyCheckResponseDTO
+     */
+    com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO checkWarrantyByVehicleType(
+            String vehicleTypeId);
 }

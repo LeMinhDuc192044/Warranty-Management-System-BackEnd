@@ -6,6 +6,8 @@ public enum CoverageTypeWarrantyPolicy {
     BATTERY("Battery only"),
     PARTS_ONLY("Parts only"),
     BODY("Body corrosion"),
+    POWERTRAIN("Powertrain system"),
+    EXTENDED("Extended warranty"),
     PAINT("Exterior paint"),
     SUSPENSION("Suspension system"),
     ACCESSORY("Genuine accessories"),

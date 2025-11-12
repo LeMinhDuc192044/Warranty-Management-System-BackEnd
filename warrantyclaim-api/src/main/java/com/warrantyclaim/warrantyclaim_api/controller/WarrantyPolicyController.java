@@ -144,4 +144,39 @@ public class WarrantyPolicyController {
         return ResponseEntity.ok(response);
     }
 
+    // ============= Warranty Eligibility Check =============
+
+    /**
+     * GET /api/warranty-policies/check?vehicleTypeId=xxx
+     * Kiểm tra warranty policy cho một loại xe
+     */
+    @GetMapping("/check")
+    public ResponseEntity<com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO> checkWarrantyEligibility(
+            @RequestParam String vehicleTypeId) {
+        com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO response = service
+                .checkWarrantyByVehicleType(vehicleTypeId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * GET /api/warranty-policies/check-vin/{vehicleVIN}
+     * Kiểm tra warranty policy cho một xe cụ thể bằng VIN
+     */
+    @GetMapping("/check-vin/{vehicleVIN}")
+    public ResponseEntity<com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO> checkWarrantyByVIN(
+            @PathVariable String vehicleVIN) {
+        try {
+            com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO response = service
+                    .checkWarrantyEligibility(vehicleVIN);
+            return ResponseEntity.ok(response);
+        } catch (UnsupportedOperationException e) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+                    .body(com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO.builder()
+                            .isEligible(false)
+                            .message("VIN-based checking not yet implemented")
+                            .build());
+        }
+    }
+
+
 }
