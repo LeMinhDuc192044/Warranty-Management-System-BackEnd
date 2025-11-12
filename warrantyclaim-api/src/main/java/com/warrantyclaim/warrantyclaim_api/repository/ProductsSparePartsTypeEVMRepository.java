@@ -15,4 +15,5 @@ public interface ProductsSparePartsTypeEVMRepository extends JpaRepository<Produ
      */
     @Query("SELECT DISTINCT p.partName FROM ProductsSparePartsTypeEVM p WHERE p.partName IS NOT NULL ORDER BY p.partName")
     List<String> findDistinctPartNames();
+
 }

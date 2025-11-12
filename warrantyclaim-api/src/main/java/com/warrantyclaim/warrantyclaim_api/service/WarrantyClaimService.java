@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface WarrantyClaimService {
 
@@ -28,6 +29,8 @@ public interface WarrantyClaimService {
     public WarrantyClaimResponseDTO updateReturnDate(String claimId, LocalDate returnDate);
 
     public WarrantyClaimResponseDTO startWork(String claimId, String technicianUsername);
+
+    List<OfficeBranchFailureStatsDTO> getFailureStatsByOfficeBranch();
 
     public void deleteClaim(String claimId);
 

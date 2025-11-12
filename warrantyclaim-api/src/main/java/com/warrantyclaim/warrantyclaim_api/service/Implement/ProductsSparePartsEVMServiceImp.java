@@ -1,9 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.service.Implement;
 
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountEVMResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMResponse;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsEVM;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsTypeEVM;
@@ -22,6 +20,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,6 +35,7 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     private final ProductsSparePartsTypeSCRepository partsTypeSCRepository;
     private final ProductsSparePartsEVMMapper mapper;
     private final ProductsSparePartsSCRepository scRepository;
+
 
     @Transactional
     public ProductsSparePartsEVMResponse createProduct(ProductsSparePartsEVMRequest request) {
@@ -84,6 +86,8 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
 
         if(scRepository.findById(evmPartId).isPresent()) {
             productsSparePartsSC.setId(generatePartNumber(sparePartsEVM.getVehicleType(), sparePartsEVM.getPartType().getId()));
+        } else {
+            throw new IllegalStateException("this EVM part type ID " + evmPartId + " does not existed in SC." );
         }
         // Set condition instead of deleting
         sparePartsEVM.setCondition(PartStatus.TRANSFERRED);
@@ -91,6 +95,73 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
         scRepository.save(productsSparePartsSC);
         repository.save(sparePartsEVM);
     }
+
+    @Transactional
+    public List<PartsEvmTransferMultipleResponse> transferMultipleEVMPartTypeToSC(Integer quantity, String partTypeId, OfficeBranch officeBranch) {
+        if (quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        if (partTypeId == null || partTypeId.isEmpty()) {
+            throw new IllegalArgumentException("Part Type ID is required");
+        }
+
+        if (officeBranch == null) {
+            throw new IllegalArgumentException("Office Branch is required");
+        }
+
+        List<ProductsSparePartsEVM> availableParts = repository
+                .findByPartTypeIdAndConditionIn(
+                        partTypeId,
+                        List.of(PartStatus.IN_PRODUCTION, PartStatus.ACTIVE)
+                );
+
+        if (availableParts.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No available EVM parts found with Part Type ID: " + partTypeId);
+        }
+
+        if (availableParts.size() < quantity) {
+            throw new IllegalStateException(
+                    String.format("Not enough parts available. Requested: %d, Available: %d",
+                            quantity, availableParts.size()));
+        }
+
+        List<ProductsSparePartsEVM> partsToTransfer = selectRandomParts(availableParts, quantity);
+
+        List<PartsEvmTransferMultipleResponse> responses = new ArrayList<>();
+
+        for (ProductsSparePartsEVM evmPart : partsToTransfer) {
+            try {
+                // Transfer single part
+                transferFromEVMToScOfficeBranch(evmPart.getId(), officeBranch);
+
+                // Create response
+                PartsEvmTransferMultipleResponse response = new PartsEvmTransferMultipleResponse();
+                response.setId(evmPart.getId());
+                response.setName(evmPart.getName());
+                response.setVehicleType(evmPart.getVehicleType());
+                response.setOldCondition(evmPart.getCondition());
+                response.setNewCondition(PartStatus.TRANSFERRED);
+                response.setTargetOfficeBranch(officeBranch);
+                response.setTransferredAt(LocalDateTime.now());
+                response.setSuccess(true);
+
+                responses.add(response);
+
+            } catch (Exception e) {
+                // Log error and continue with next part
+                PartsEvmTransferMultipleResponse errorResponse = new PartsEvmTransferMultipleResponse();
+                errorResponse.setId(evmPart.getId());
+                errorResponse.setSuccess(false);
+                errorResponse.setErrorMessage(e.getMessage());
+                responses.add(errorResponse);
+            }
+        }
+        return responses;
+    }
+
+
 
     @Transactional(readOnly = true)
     public ProductsSparePartsEVMResponse getProductById(String id) {
@@ -129,8 +200,19 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
     }
 
     @Transactional(readOnly = true)
-    public List<PartTypeCountEVMResponse> countEvmPartByType(String partId) {
-        return repository.countByType(partId);
+    public List<PartTypeCountEVMResponse> countEvmPartByType(String partTypeId) {
+        partTypeRepository.findById(partTypeId).
+                orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
+
+        return repository.countByType(partTypeId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PartTypeAndPartStatusCountEVMResponse> countEvmPartByTypeAndCondition(String partTypeId, PartStatus statuses) {
+        partTypeRepository.findById(partTypeId).
+                orElseThrow(() -> new ResourceNotFoundException("No available EVM parts found with Part Type ID: " + partTypeId));
+
+        return repository.countByTypeAndCondition(partTypeId, statuses);
     }
 
 
@@ -141,7 +223,38 @@ public class ProductsSparePartsEVMServiceImp implements ProductsSparePartsEVMSer
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
     }
+    //-----------------------------------Helper---------------------------------------------------------------------
 
+
+    @Transactional(readOnly = true)
+    public List<ProductsSparePartsEVMResponse> searchProductsByPartTypeId(String partTypeId) {
+
+
+        List<ProductsSparePartsEVM> products = repository.findByPartTypeId(partTypeId);
+
+        return products.stream()
+                .map(mapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+    private List<ProductsSparePartsEVM> selectRandomParts(
+            List<ProductsSparePartsEVM> availableParts,
+            Integer quantity) {
+
+        // Shuffle the list to randomize selection
+        List<ProductsSparePartsEVM> shuffledParts = new ArrayList<>(availableParts);
+        Collections.shuffle(shuffledParts);
+
+        // Take first 'quantity' items
+        return shuffledParts.stream()
+                .limit(quantity)
+                .collect(Collectors.toList());
+    }
 
     private String generatePartNumber(VehicleType model, String partTypeId) {
         String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 12).toUpperCase();

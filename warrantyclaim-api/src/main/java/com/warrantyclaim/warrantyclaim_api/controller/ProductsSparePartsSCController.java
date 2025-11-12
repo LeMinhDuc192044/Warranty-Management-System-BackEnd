@@ -1,11 +1,9 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCRequest;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.SparePartInfoScDTO;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
 import com.warrantyclaim.warrantyclaim_api.service.ProductsSparePartsSCService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,12 +42,33 @@ public class ProductsSparePartsSCController {
             @RequestParam OfficeBranch branch) {
         return ResponseEntity.ok(service.getByOfficeBranch(branch));
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductsSparePartsSCResponse>> search(
+            @RequestParam(required = false) OfficeBranch branch,
+            @RequestParam(required = false) String partTypeId) {
+
+        List<ProductsSparePartsSCResponse> result =
+                service.searchByOfficeBranchAndPartType(branch, partTypeId);
+
+        return ResponseEntity.ok(result);
+    }
 
     @PatchMapping("/{id}/vehicles/{vehicleId}")
     public ResponseEntity<ProductsSparePartsSCResponse> mapSerialNumberToVin(@PathVariable String id,
                                                                              @PathVariable String vehicleId) {
         ProductsSparePartsSCResponse response = service.mapSerialToVehicle(id, vehicleId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/count/type/condition")
+    public ResponseEntity<List<PartTypeAndPartStatusCountEVMResponse>> countByTypeAndCondition(
+            @RequestParam String partTypeId,
+            @RequestParam PartStatus statuses) {
+
+        List<PartTypeAndPartStatusCountEVMResponse> result =
+                service.countEvmPartByTypeAndCondition(partTypeId, statuses);
+
+        return ResponseEntity.ok(result);
     }
 
     // READ - Get All

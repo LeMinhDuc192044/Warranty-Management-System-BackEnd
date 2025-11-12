@@ -1,6 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.dto;
 
 import com.warrantyclaim.warrantyclaim_api.enums.ServiceCampaignsStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class ServiceCampaignsListDTO {
     private String description;
     private ServiceCampaignsStatus status;
     private Boolean notificationSent;
+    private Specialty specialty;
 
     // Count of relationships
     private Integer vehicleTypeCount;

@@ -1,11 +1,11 @@
 package com.warrantyclaim.warrantyclaim_api.repository;
 
-import com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsEVMResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.ProductsSparePartsSCResponse;
-import com.warrantyclaim.warrantyclaim_api.dto.SparePartInfoScDTO;
+import com.warrantyclaim.warrantyclaim_api.dto.*;
+import com.warrantyclaim.warrantyclaim_api.entity.ElectricVehicle;
+import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsEVM;
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
+import com.warrantyclaim.warrantyclaim_api.enums.PartStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +16,16 @@ import java.util.List;
 public interface ProductsSparePartsSCRepository extends JpaRepository<ProductsSparePartsSC, String> {
     List<ProductsSparePartsSC> findByNameContainingIgnoreCase(String name);
     List<ProductsSparePartsSC> findByPartType_Id(String partTypeId);
-
+    // Tìm theo OfficeBranch VÀ Part Type ID
+    List<ProductsSparePartsSC> findByOfficeBranchAndPartTypeId(
+            OfficeBranch officeBranch,
+            String partTypeId);
+    @Query("SELECT p FROM ProductsSparePartsSC p WHERE " +
+            "(:officeBranch IS NULL OR p.officeBranch = :officeBranch) AND " +
+            "(:partTypeId IS NULL OR p.partType.id = :partTypeId)")
+    List<ProductsSparePartsSC> searchByOfficeBranchAndPartType(
+            @Param("officeBranch") OfficeBranch officeBranch,
+            @Param("partTypeId") String partTypeId);
     @Query("""
     SELECT new com.warrantyclaim.warrantyclaim_api.dto.PartTypeCountResponse(
                                                                    p.officeBranch,
@@ -44,5 +53,26 @@ public interface ProductsSparePartsSCRepository extends JpaRepository<ProductsSp
                 WHERE p.officeBranch = :branch
             """)
     List<SparePartInfoScDTO> findByOfficeBranch(@Param("branch") OfficeBranch officeBranch);
+
+    @Query("""        
+        SELECT new com.warrantyclaim.warrantyclaim_api.dto.PartTypeAndPartStatusCountEVMResponse(
+            p.partType.id,
+            COUNT(p),
+            p.condition
+        )
+        FROM ProductsSparePartsSC p
+        WHERE p.partType.id = :partTypeId
+        AND p.condition = :conditions
+        GROUP BY p.partType.id, p.condition
+        """)
+    List<PartTypeAndPartStatusCountEVMResponse> countByTypeAndCondition(
+            @Param("partTypeId") String partTypeId,
+            @Param("conditions") PartStatus conditions
+    );
+
+    List<ProductsSparePartsSC> findByElectricVehicleAndPartType_Id(
+            ElectricVehicle vehicle,
+            String partTypeId
+    );
 
 }

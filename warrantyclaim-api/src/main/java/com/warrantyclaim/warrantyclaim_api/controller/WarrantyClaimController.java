@@ -1,6 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.controller;
 
 import com.warrantyclaim.warrantyclaim_api.dto.*;
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.enums.WarrantyClaimStatus;
 import com.warrantyclaim.warrantyclaim_api.service.WarrantyClaimService;
 import jakarta.validation.Valid;
@@ -131,6 +132,13 @@ public class WarrantyClaimController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse("Không thể xóa yêu cầu bảo hành: " + e.getMessage()));
         }
+    }
+
+    // thống kê tỉ hệ hỏng theo khu vực
+    @GetMapping("/statistics/failure-rate")
+    public ResponseEntity<List<OfficeBranchFailureStatsDTO>> getFailureRateByOfficeBranch() {
+        List<OfficeBranchFailureStatsDTO> stats = warrantyClaimService.getFailureStatsByOfficeBranch();
+        return ResponseEntity.ok(stats);
     }
 
     // Helper class for error responses

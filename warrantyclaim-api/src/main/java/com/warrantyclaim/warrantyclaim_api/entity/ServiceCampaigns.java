@@ -1,6 +1,7 @@
 package com.warrantyclaim.warrantyclaim_api.entity;
 
 import com.warrantyclaim.warrantyclaim_api.enums.ServiceCampaignsStatus;
+import com.warrantyclaim.warrantyclaim_api.enums.Specialty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,9 @@ public class ServiceCampaigns {
 
     @Column(name = "Description", length = 500)
     private String description;
+
+    @Column(name = "Specialty")
+    private Specialty specialty;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Status", length = 50)

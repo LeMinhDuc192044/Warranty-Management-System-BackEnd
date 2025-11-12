@@ -31,9 +31,6 @@ public class PartsRequestCreateDTO {
     @NotBlank(message = "Part type ID is required")
     private String partTypeId;
 
-    @NotBlank(message = "VIN is required")
-    private String vin;
-
     @NotBlank(message = "Staff ID is required")
     private String requestedByStaffId;
 

@@ -1,10 +1,12 @@
 package com.warrantyclaim.warrantyclaim_api.repository;
 
 import com.warrantyclaim.warrantyclaim_api.entity.WarrantyClaim;
+import com.warrantyclaim.warrantyclaim_api.enums.WarrantyClaimStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +18,13 @@ public interface WarrantyClaimRepository extends JpaRepository<WarrantyClaim, St
 
     @Query("SELECT wc FROM WarrantyClaim wc LEFT JOIN FETCH wc.vehicle")
     Page<WarrantyClaim> findAllWithVehicle(Pageable pageable);
+
+    @Query("SELECT wc.officeBranch, COUNT(wc) " +
+            "FROM WarrantyClaim wc " +
+            "WHERE wc.status IN (:statuses) AND wc.officeBranch IS NOT NULL " +
+            "GROUP BY wc.officeBranch")
+    List<Object[]> getClaimCountByOfficeBranch(@Param("statuses") List<WarrantyClaimStatus> statuses);
+    
+    long countByStatusIn(List<WarrantyClaimStatus> statuses);
 
 }
