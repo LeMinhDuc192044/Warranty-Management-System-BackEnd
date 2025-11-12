@@ -21,6 +21,7 @@ public class ServiceCampaignsMapper {
         serviceCampaigns.setStartDate(requestDTO.getStartDate());
         serviceCampaigns.setEndDate(requestDTO.getEndDate());
         serviceCampaigns.setTypeName(requestDTO.getTypeName());
+        serviceCampaigns.setRequiredParts(requestDTO.getRequiredParts());
         serviceCampaigns.setNotificationSent(requestDTO.getNotificationSent() != null ? requestDTO.getNotificationSent() : false);
         serviceCampaigns.setStatus(requestDTO.getStatus());
         serviceCampaigns.setDescription(requestDTO.getDescription());

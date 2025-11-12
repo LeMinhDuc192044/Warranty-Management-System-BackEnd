@@ -5,20 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b90564b3-2003-4a78-aca2-c67d5c845ee2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/ProductsSparePartsEVMController.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/ProductsSparePartsEVMController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/ProductsSparePartsSCController.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/controller/ProductsSparePartsSCController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/mapper/ProductsSparePartsSCMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/mapper/ProductsSparePartsSCMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/ProductsSparePartsEVMRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/ProductsSparePartsEVMRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/ProductsSparePartsSCRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/ProductsSparePartsSCRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/ProductsSparePartsTypeEVMRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/repository/ProductsSparePartsTypeEVMRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ProductsSparePartsEVMServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ProductsSparePartsEVMServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ProductsSparePartsSCServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ProductsSparePartsSCServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ProductsSparePartsEVMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ProductsSparePartsEVMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ProductsSparePartsSCService.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/ProductsSparePartsSCService.java" afterDir="false" />
-
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/mapper/ServiceCampaignsMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/mapper/ServiceCampaignsMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ServiceCampaignsServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ServiceCampaignsServiceImp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,8 +72,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/failure-rate-by-branch",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/hoc-2025/SWP2/Warranty-Management-System-BackEnd",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0"
