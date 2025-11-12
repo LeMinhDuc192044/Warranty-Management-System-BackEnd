@@ -30,6 +30,9 @@ public class Report {
     @Column(columnDefinition = "LONGTEXT")
     private String image;
 
+    @Column(name = "Amount_of_car_done")
+    private Integer amountOfCar;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private ReportStatus status;

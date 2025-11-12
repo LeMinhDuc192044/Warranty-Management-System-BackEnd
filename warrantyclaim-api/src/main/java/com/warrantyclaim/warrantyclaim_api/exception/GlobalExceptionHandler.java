@@ -123,6 +123,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Xử lý lỗi WarrantyNotEligibleException - xe không đủ điều kiện bảo hành
+     */
+    @ExceptionHandler(WarrantyNotEligibleException.class)
+    public ResponseEntity<ApiResponse<Void>> handleWarrantyNotEligible(WarrantyNotEligibleException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(ex.getMessage(), null));
+    }
+
+    /**
      * Xử lý lỗi chung
      */
     @ExceptionHandler(Exception.class)

@@ -1,4 +1,5 @@
 package com.warrantyclaim.warrantyclaim_api.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,10 +28,12 @@ public class WarrantyPolicyProductsSparePartsTypeSC {
     @Column(name = "ID_Products_Part_Type_SC", length = 50)
     private String partTypeId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ID_Warranty_Policy", insertable = false, updatable = false)
     private WarrantyPolicy warrantyPolicy;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ID_Products_Part_Type_SC", insertable = false, updatable = false)
     private ProductsSparePartsTypeSC partType;

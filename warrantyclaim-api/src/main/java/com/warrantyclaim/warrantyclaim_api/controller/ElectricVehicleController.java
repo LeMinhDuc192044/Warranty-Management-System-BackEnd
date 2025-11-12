@@ -41,6 +41,17 @@ public class ElectricVehicleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Add new electric vehicle (JSON format)")
+    public ResponseEntity<VehicleDetailInfo> addElectricVehicleJson(
+            @RequestBody @Valid VehicleCreateDTO vehicleCreateDTO) throws IOException {
+
+        VehicleDetailInfo result = electricVehicleService
+                .addElectricVehicle(vehicleCreateDTO, null); // No file upload with JSON
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
     @PutMapping("/{id}/return-date")
     public ResponseEntity<ElectricVehicleResponseDTO> updateReturnDate(
             @PathVariable("id") String id,
