@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ElectricVehicleResponseDTO {
 
-    private String id;  // VIN
+    private String id; // VIN
     private String name;
     private Float totalKm;
     private String picture;
@@ -22,6 +22,7 @@ public class ElectricVehicleResponseDTO {
     private String phoneNumber;
     private String email;
     private VehicleStatus status;
+    private com.warrantyclaim.warrantyclaim_api.enums.UsageType usageType;
     private LocalDate returnDate;
 
     // Nested vehicle type info

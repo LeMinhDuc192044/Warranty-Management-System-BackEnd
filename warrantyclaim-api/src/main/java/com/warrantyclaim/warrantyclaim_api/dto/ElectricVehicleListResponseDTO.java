@@ -21,6 +21,7 @@ public class ElectricVehicleListResponseDTO {
     private String picture;
     private LocalDate purchaseDate;
     private VehicleStatus status;
+    private com.warrantyclaim.warrantyclaim_api.enums.UsageType usageType;
     private LocalDate returnDate;
 
     // Simplified vehicle type info

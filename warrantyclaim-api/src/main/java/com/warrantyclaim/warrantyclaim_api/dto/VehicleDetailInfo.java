@@ -17,10 +17,9 @@ public class VehicleDetailInfo {
     private String phoneNumber;
     private String email;
     private VehicleStatus status;
+    private com.warrantyclaim.warrantyclaim_api.enums.UsageType usageType;
+    private java.time.LocalDate purchaseDate;
     private String vehicleTypeName;
     private String modelName;
-
-
     private ElectricVehicleType electricVehicleType;
-
 }

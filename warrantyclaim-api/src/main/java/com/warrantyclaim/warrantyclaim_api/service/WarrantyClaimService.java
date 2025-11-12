@@ -25,10 +25,10 @@ public interface WarrantyClaimService {
 
     public WarrantyClaimResponseDTO assignScTech(String claimId, String scTechId);
 
-
-
     public WarrantyClaimResponseDTO updateReturnDate(String claimId, LocalDate returnDate);
 
+    public WarrantyClaimResponseDTO startWork(String claimId, String technicianUsername);
 
+    public void deleteClaim(String claimId);
 
 }

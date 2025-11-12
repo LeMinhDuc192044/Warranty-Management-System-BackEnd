@@ -4,6 +4,7 @@ import com.warrantyclaim.warrantyclaim_api.dto.NotificationDTO;
 import com.warrantyclaim.warrantyclaim_api.dto.WarrantyClaimNotificationRequest;
 import com.warrantyclaim.warrantyclaim_api.entity.Notification;
 import com.warrantyclaim.warrantyclaim_api.entity.User;
+import com.warrantyclaim.warrantyclaim_api.enums.OfficeBranch;
 import com.warrantyclaim.warrantyclaim_api.enums.Role;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.repository.NotificationRepository;
@@ -89,23 +90,35 @@ public class NotificationServiceImp implements NotificationService {
     }
 
     @Override
-    public void sendClaimApprovedNotificationToStaff(String claimId, String customerName, Long staffUserId) {
+    public void sendClaimApprovedNotificationToStaff(String claimId, String customerName, OfficeBranch branchOffice) {
+        // Tìm tất cả SC_STAFF trong cùng branch
+        List<User> scStaffs = userRepository.findByBranchOfficeAndRolesIn(
+                branchOffice.name(),
+                Set.of(Role.SC_STAFF));
+
+        if (scStaffs.isEmpty()) {
+            return;
+        }
+
         String title = "Yêu cầu bảo hành đã được duyệt";
         String message = String.format(
                 "Yêu cầu bảo hành %s (Khách hàng: %s) đã được SC_ADMIN duyệt. Bạn có thể phân công kỹ thuật viên để xử lý.",
                 claimId,
                 customerName);
 
-        Notification notification = new Notification();
-        notification.setUserId(String.valueOf(staffUserId));
-        notification.setType("WARRANTY_CLAIM_APPROVED");
-        notification.setTitle(title);
-        notification.setMessage(message);
-        notification.setRelatedEntityId(claimId);
-        notification.setIsRead(false);
-        notification.setCreatedAt(LocalDateTime.now());
+        // Tạo notification cho tất cả SC_STAFF trong branch
+        for (User staff : scStaffs) {
+            Notification notification = new Notification();
+            notification.setUserId(String.valueOf(staff.getId()));
+            notification.setType("WARRANTY_CLAIM_APPROVED");
+            notification.setTitle(title);
+            notification.setMessage(message);
+            notification.setRelatedEntityId(claimId);
+            notification.setIsRead(false);
+            notification.setCreatedAt(LocalDateTime.now());
 
-        notificationRepository.save(notification);
+            notificationRepository.save(notification);
+        }
     }
 
     @Override
@@ -131,7 +144,29 @@ public class NotificationServiceImp implements NotificationService {
     }
 
     @Override
-    public void sendPartsRequestCreatedNotificationToEVMStaff(String requestId, String scAdminName, 
+    public void sendClaimAssignedNotificationToTechnician(String claimId, String customerName, String vehicleName,
+            Long technicianUserId) {
+        String title = "🔧 Bạn được phân công xử lý yêu cầu bảo hành";
+        String message = String.format(
+                "Yêu cầu bảo hành %s cho xe %s của khách hàng %s đã được phân công cho bạn. Nhấn để xem chi tiết và bắt đầu công việc.",
+                claimId,
+                vehicleName,
+                customerName);
+
+        Notification notification = new Notification();
+        notification.setUserId(String.valueOf(technicianUserId));
+        notification.setType("CLAIM_ASSIGNED");
+        notification.setTitle(title);
+        notification.setMessage(message);
+        notification.setRelatedEntityId(claimId);
+        notification.setIsRead(false);
+        notification.setCreatedAt(LocalDateTime.now());
+
+        notificationRepository.save(notification);
+    }
+
+    @Override
+    public void sendPartsRequestCreatedNotificationToEVMStaff(String requestId, String scAdminName,
             String branchOffice, String partName, Integer quantity) {
         // Tìm tất cả EVM_STAFF và EVM_ADMIN
         List<User> evmStaffs = userRepository.findByRolesIn(Set.of(Role.EVM_STAFF, Role.EVM_ADMIN));
@@ -185,7 +220,7 @@ public class NotificationServiceImp implements NotificationService {
     }
 
     @Override
-    public void sendPartsRequestRejectedNotificationToSCAdmin(String requestId, String partName, 
+    public void sendPartsRequestRejectedNotificationToSCAdmin(String requestId, String partName,
             String rejectionReason, String scAdminUserId) {
         String title = "Yêu cầu phụ tùng bị từ chối";
         String message = String.format(

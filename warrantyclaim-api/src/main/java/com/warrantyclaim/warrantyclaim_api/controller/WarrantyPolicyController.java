@@ -30,7 +30,6 @@ public class WarrantyPolicyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<WarrantyPolicyResponseDTO> getById(@PathVariable String id) {
         WarrantyPolicyResponseDTO response = service.getWarrantyPolicyById(id);
@@ -51,7 +50,6 @@ public class WarrantyPolicyController {
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping
     public ResponseEntity<Page<WarrantyPolicyListDTO>> getAll(
             @RequestParam(defaultValue = "0") int page,
@@ -68,7 +66,7 @@ public class WarrantyPolicyController {
         return ResponseEntity.ok(policies);
     }
 
-//-------------------------vehicle-types----------------------------------------------
+    // -------------------------vehicle-types----------------------------------------------
     @DeleteMapping("/{id}/vehicle-types/{vehicleTypeId}")
     public ResponseEntity<WarrantyPolicyResponseDTO> removeVehicleType(
             @PathVariable String id,
@@ -76,14 +74,14 @@ public class WarrantyPolicyController {
         WarrantyPolicyResponseDTO response = service.removeVehicleType(id, vehicleTypeId);
         return ResponseEntity.ok(response);
     }
+
     @PutMapping("/{id}/vehicle-types")
     public ResponseEntity<WarrantyPolicyResponseDTO> assignVehicleTypes(
             @PathVariable String id,
-            @RequestParam  List<String> warrantyPolicyVehicleTypes) {
+            @RequestParam List<String> warrantyPolicyVehicleTypes) {
         WarrantyPolicyResponseDTO response = service.assignVehicleTypes(id, warrantyPolicyVehicleTypes);
         return ResponseEntity.ok(response);
     }
-
 
     @PostMapping("/{id}/vehicle-types/{vehicleTypeId}")
     public ResponseEntity<WarrantyPolicyResponseDTO> addVehicleType(
@@ -92,8 +90,7 @@ public class WarrantyPolicyController {
         WarrantyPolicyResponseDTO response = service.addVehicleType(id, vehicleTypeId);
         return ResponseEntity.ok(response);
     }
-// ---------------------------------spare-parts-sc-------------------------------------------------------
-
+    // ---------------------------------spare-parts-sc-------------------------------------------------------
 
     @PutMapping("/{id}/spare-parts-sc")
     public ResponseEntity<WarrantyPolicyResponseDTO> assignSparePartsTypeSC(
@@ -102,7 +99,6 @@ public class WarrantyPolicyController {
         WarrantyPolicyResponseDTO response = service.assignSparePartsTypeSC(id, warrantyPolicySparePartsTypeSCIds);
         return ResponseEntity.ok(response);
     }
-
 
     @PostMapping("/{id}/spare-parts-sc/{sparePartsTypeId}")
     public ResponseEntity<WarrantyPolicyResponseDTO> addSparePartsTypeSC(
@@ -119,7 +115,8 @@ public class WarrantyPolicyController {
         WarrantyPolicyResponseDTO response = service.removeSparePartsTypeSC(id, sparePartsTypeId);
         return ResponseEntity.ok(response);
     }
-// ---------------------------------spare-parts-evm-------------------------------------------------------
+
+    // ---------------------------------spare-parts-evm-------------------------------------------------------
     @PutMapping("/{id}/spare-parts-evm")
     public ResponseEntity<WarrantyPolicyResponseDTO> assignSparePartsTypeEVM(
             @PathVariable String id,
@@ -142,6 +139,40 @@ public class WarrantyPolicyController {
             @PathVariable String sparePartsTypeId) {
         WarrantyPolicyResponseDTO response = service.removeSparePartsTypeEVM(id, sparePartsTypeId);
         return ResponseEntity.ok(response);
+    }
+
+    // ============= Warranty Eligibility Check =============
+
+    /**
+     * GET /api/warranty-policies/check?vehicleTypeId=xxx
+     * Kiểm tra warranty policy cho một loại xe
+     */
+    @GetMapping("/check")
+    public ResponseEntity<com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO> checkWarrantyEligibility(
+            @RequestParam String vehicleTypeId) {
+        com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO response = service
+                .checkWarrantyByVehicleType(vehicleTypeId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * GET /api/warranty-policies/check-vin/{vehicleVIN}
+     * Kiểm tra warranty policy cho một xe cụ thể bằng VIN
+     */
+    @GetMapping("/check-vin/{vehicleVIN}")
+    public ResponseEntity<com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO> checkWarrantyByVIN(
+            @PathVariable String vehicleVIN) {
+        try {
+            com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO response = service
+                    .checkWarrantyEligibility(vehicleVIN);
+            return ResponseEntity.ok(response);
+        } catch (UnsupportedOperationException e) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+                    .body(com.warrantyclaim.warrantyclaim_api.dto.WarrantyPolicyCheckResponseDTO.builder()
+                            .isEligible(false)
+                            .message("VIN-based checking not yet implemented")
+                            .build());
+        }
     }
 
 }

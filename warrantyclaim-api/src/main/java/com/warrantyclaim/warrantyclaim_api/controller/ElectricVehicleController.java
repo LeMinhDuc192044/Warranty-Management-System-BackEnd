@@ -41,6 +41,17 @@ public class ElectricVehicleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Add new electric vehicle (JSON format)")
+    public ResponseEntity<VehicleDetailInfo> addElectricVehicleJson(
+            @RequestBody @Valid VehicleCreateDTO vehicleCreateDTO) throws IOException {
+
+        VehicleDetailInfo result = electricVehicleService
+                .addElectricVehicle(vehicleCreateDTO, null); // No file upload with JSON
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
     @PutMapping("/{id}/return-date")
     public ResponseEntity<ElectricVehicleResponseDTO> updateReturnDate(
             @PathVariable("id") String id,
@@ -77,8 +88,8 @@ public class ElectricVehicleController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ElectricVehicleResponseDTO> updateVehicle(
             @PathVariable String id,
-            @RequestParam ElectricVehicleUpdateRequestDTO request,
-            @ModelAttribute MultipartFile urlPicture) {
+            @ModelAttribute ElectricVehicleUpdateRequestDTO request,
+            @RequestParam(required = false) MultipartFile urlPicture) {
         System.out.println("✅ Update Controller reached for vehicle: " + id);
         System.out.println("📦 Update request data: " + request);
         System.out.println("📅 ProductionDate in request: " + request.getProductionDate());
@@ -92,7 +103,6 @@ public class ElectricVehicleController {
         electricVehicleService.deleteVehicle(id);
         return ResponseEntity.noContent().build();
     }
-
 
     @Operation(summary = "Kiểm tra trạng thái bảo hành của xe điện theo VIN")
     @GetMapping("/{vin}/warranty-status")
@@ -109,6 +119,5 @@ public class ElectricVehicleController {
         List<VehicleWarrantyStatusDTO> result = electricVehicleService.getVehiclesUnderWarranty();
         return ResponseEntity.ok(result);
     }
-
 
 }

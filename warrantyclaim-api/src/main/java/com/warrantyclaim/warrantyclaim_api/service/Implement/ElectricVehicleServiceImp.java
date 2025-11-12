@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -36,21 +35,24 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     private final ElectricVehicleTypeRepository electricVehicleTypeRepository;
     private final WarrantyPolicyElectricVehicleTypeRepository warrantyPolicyEVTRepository;
 
-
     @Override
     @Transactional
-    public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO, MultipartFile urlPicture) throws IOException {
-        //  Kiểm tra VIN hợp lệ
+    public VehicleDetailInfo addElectricVehicle(VehicleCreateDTO vehicleCreateDTO, MultipartFile urlPicture)
+            throws IOException {
+        // Kiểm tra VIN hợp lệ
         String vin = vehicleCreateDTO.getVehicleId();
         if (!VinUtils.isValidVin(vin)) {
-            throw new IllegalArgumentException("Số VIN không hợp lệ. Định dạng đúng: VF[Model][Year][H|T][Serial] (17 ký tự)");
+            throw new IllegalArgumentException(
+                    "Số VIN không hợp lệ. Định dạng đúng: VF[Model][Year][H|T][Serial] (17 ký tự)");
         }
         if (electricVehicleRepository.existsById(vin)) {
             throw new IllegalArgumentException("Số VIN đã tồn tại trong hệ thống");
         }
 
-//        ElectricVehicleType electricVehicleType = electricVehicleTypeRepository.findById(vehicleCreateDTO.getElectricVehicleTypeId())
-//                .orElseThrow(() -> new ResourceNotFoundException("No vehicle type with this Id"));
+        // ElectricVehicleType electricVehicleType =
+        // electricVehicleTypeRepository.findById(vehicleCreateDTO.getElectricVehicleTypeId())
+        // .orElseThrow(() -> new ResourceNotFoundException("No vehicle type with this
+        // Id"));
 
         ElectricVehicle electricVehicle = mapper.toEntityElectricVehicle(vehicleCreateDTO);
 
@@ -61,13 +63,23 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
             electricVehicle.setVehicleType(vehicleType);
         }
 
-        if(urlPicture != null && !urlPicture.isEmpty()) {
+        if (urlPicture != null && !urlPicture.isEmpty()) {
             String imageUrl = imageUploadServiceImp.uploadImage(urlPicture);
             electricVehicle.setPicture(imageUrl);
         }
 
-        if(vehicleCreateDTO.getStatus() != null) {
-            electricVehicle.setStatus(vehicleCreateDTO.getStatus());
+        // Validate vehicle status - không cho phép tạo xe với status không hợp lệ
+        if (vehicleCreateDTO.getStatus() != null) {
+            VehicleStatus requestedStatus = vehicleCreateDTO.getStatus();
+            // Chỉ cho phép tạo xe với status ACTIVE hoặc IN_WARRANTY
+            if (requestedStatus == VehicleStatus.RECALLED ||
+                    requestedStatus == VehicleStatus.RETIRED ||
+                    requestedStatus == VehicleStatus.INACTIVE) {
+                throw new IllegalArgumentException(
+                        "Không thể tạo xe mới với status " + requestedStatus.getDisplayName() +
+                                ". Chỉ cho phép status ACTIVE hoặc IN_WARRANTY.");
+            }
+            electricVehicle.setStatus(requestedStatus);
         } else {
             electricVehicle.setStatus(VehicleStatus.ACTIVE);
         }
@@ -91,7 +103,8 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
      */
     @Override
     @Transactional
-    public ElectricVehicleResponseDTO updateVehicle(String id, ElectricVehicleUpdateRequestDTO request, MultipartFile urlPicture) {
+    public ElectricVehicleResponseDTO updateVehicle(String id, ElectricVehicleUpdateRequestDTO request,
+            MultipartFile urlPicture) {
         // 1. Find vehicle
         ElectricVehicle vehicle = electricVehicleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Electric Vehicle not found with ID: " + id));
@@ -99,10 +112,10 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         // 2. Validate and fetch vehicle type if changed
         if (request.getVehicleTypeId() != null) {
             ElectricVehicleType vehicleType = electricVehicleTypeRepository.findById(request.getVehicleTypeId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Vehicle Type not found with ID: " + request.getVehicleTypeId()));
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Vehicle Type not found with ID: " + request.getVehicleTypeId()));
             vehicle.setVehicleType(vehicleType);
         }
-
 
         if (urlPicture != null && !urlPicture.isEmpty()) {
             try {
@@ -138,7 +151,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         ElectricVehicle vehicle = electricVehicleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Electric Vehicle not found with ID: " + id));
 
-        if(vehicle.getPurchaseDate().isBefore(returnDate)) {
+        if (vehicle.getPurchaseDate().isBefore(returnDate)) {
             throw new RuntimeException("Return date has to be after purchaseDate");
         }
 
@@ -154,7 +167,6 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         ElectricVehicle vehicle = electricVehicleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Electric Vehicle not found with ID: " + id));
 
-
         if (vehicle.getPicture() != null && !vehicle.getPicture().isEmpty()) {
             try {
                 imageUploadServiceImp.deleteImage(vehicle.getPicture());
@@ -167,6 +179,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
         // 2. Delete
         electricVehicleRepository.deleteById(id);
     }
+
     @Override
     @Transactional
     public Page<ElectricVehicleListResponseDTO> getAllVehicles(Pageable pageable) {
@@ -200,21 +213,20 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
             dto.setWarrantyEndDate(endDate);
             dto.setUnderWarranty(isValid);
 
-
             result.add(dto);
         }
 
         return result;
     }
 
-// xem danh sach xe con bao hanh
+    // xem danh sach xe con bao hanh
     public List<VehicleWarrantyStatusDTO> getVehiclesUnderWarranty() {
         List<ElectricVehicle> vehicles = electricVehicleRepository.findAll();
         List<VehicleWarrantyStatusDTO> result = new ArrayList<>();
 
         for (ElectricVehicle ev : vehicles) {
-            List<WarrantyPolicyElectricVehicleType> links =
-                    warrantyPolicyEVTRepository.findByVehicleType(ev.getVehicleType());
+            List<WarrantyPolicyElectricVehicleType> links = warrantyPolicyEVTRepository
+                    .findByVehicleType(ev.getVehicleType());
 
             for (WarrantyPolicyElectricVehicleType link : links) {
                 WarrantyPolicy policy = link.getWarrantyPolicy();
@@ -225,8 +237,7 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
                             ev.getName(),
                             ev.getPurchaseDate(),
                             endDate,
-                            true
-                    ));
+                            true));
                     break;
                 }
             }
@@ -234,6 +245,5 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
 
         return result;
     }
-
 
 }

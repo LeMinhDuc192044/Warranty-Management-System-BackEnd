@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class ElectricVehicleMapper {
 
     public ElectricVehicle toEntityElectricVehicle(VehicleCreateDTO vehicleCreateDTO) {
-        if(vehicleCreateDTO == null) {
+        if (vehicleCreateDTO == null) {
             return null;
         }
 
@@ -25,9 +25,10 @@ public class ElectricVehicleMapper {
         electricVehicle.setPhoneNumber(vehicleCreateDTO.getPhoneNumber());
         electricVehicle.setTotalKm(vehicleCreateDTO.getTotalKm());
         electricVehicle.setStatus(vehicleCreateDTO.getStatus());
+        electricVehicle.setUsageType(vehicleCreateDTO.getUsageType()); // Map usage type
 
         return electricVehicle;
-     }
+    }
 
     public ElectricVehicleListResponseDTO toListResponseDTO(ElectricVehicle vehicle) {
         if (vehicle == null) {
@@ -43,6 +44,7 @@ public class ElectricVehicleMapper {
         dto.setEmail(vehicle.getEmail());
         dto.setPurchaseDate(vehicle.getPurchaseDate());
         dto.setStatus(vehicle.getStatus());
+        dto.setUsageType(vehicle.getUsageType()); // Add usage type to response
         dto.setPicture(vehicle.getPicture());
         dto.setReturnDate(vehicle.getReturnDate());
         // Simplified vehicle type info
@@ -51,11 +53,10 @@ public class ElectricVehicleMapper {
             dto.setModelName(vehicle.getVehicleType().getModelName());
         }
 
-        if(vehicle.getProductsSparePartsSC() != null) {
+        if (vehicle.getProductsSparePartsSC() != null) {
             dto.setSparePartInfoScDTOList(
                     vehicle.getProductsSparePartsSC().stream()
-                            .map(this::toResponseDto).toList()
-            );
+                            .map(this::toResponseDto).toList());
         }
 
         return dto;
@@ -76,6 +77,7 @@ public class ElectricVehicleMapper {
         dto.setPhoneNumber(vehicle.getPhoneNumber());
         dto.setEmail(vehicle.getEmail());
         dto.setStatus(vehicle.getStatus());
+        dto.setUsageType(vehicle.getUsageType()); // Add usage type to response
         dto.setReturnDate(vehicle.getReturnDate());
 
         // Map vehicle type
@@ -83,11 +85,10 @@ public class ElectricVehicleMapper {
             dto.setVehicleType(toVehicleTypeInfo(vehicle.getVehicleType()));
         }
 
-        if(vehicle.getProductsSparePartsSC() != null) {
+        if (vehicle.getProductsSparePartsSC() != null) {
             dto.setSparePartInfoScDTOList(
                     vehicle.getProductsSparePartsSC().stream()
-                            .map(this::toResponseDto).toList()
-            );
+                            .map(this::toResponseDto).toList());
         }
 
         return dto;
@@ -109,9 +110,8 @@ public class ElectricVehicleMapper {
         return dto;
     }
 
-
     public void updateEntityElectricVehicle(ElectricVehicleUpdateRequestDTO updatedVehicle,
-                                            ElectricVehicle electricVehicle) {
+            ElectricVehicle electricVehicle) {
         if (updatedVehicle.getName() != null) {
             electricVehicle.setName(updatedVehicle.getName());
         }
@@ -134,6 +134,10 @@ public class ElectricVehicleMapper {
 
         if (updatedVehicle.getStatus() != null) {
             electricVehicle.setStatus(updatedVehicle.getStatus());
+        }
+
+        if (updatedVehicle.getUsageType() != null) {
+            electricVehicle.setUsageType(updatedVehicle.getUsageType());
         }
 
         if (updatedVehicle.getPurchaseDate() != null) {
@@ -161,6 +165,8 @@ public class ElectricVehicleMapper {
         info.setPhoneNumber(vehicle.getPhoneNumber());
         info.setEmail(vehicle.getEmail());
         info.setStatus(vehicle.getStatus());
+        info.setUsageType(vehicle.getUsageType());
+        info.setPurchaseDate(vehicle.getPurchaseDate());
 
         if (vehicle.getVehicleType() != null) {
             info.setModelName(vehicle.getVehicleType().getModelName());
@@ -172,7 +178,8 @@ public class ElectricVehicleMapper {
     }
 
     public SparePartInfoScDTO toResponseDto(ProductsSparePartsSC entity) {
-        if (entity == null) return null;
+        if (entity == null)
+            return null;
 
         SparePartInfoScDTO dto = new SparePartInfoScDTO();
         dto.setId(entity.getId());

@@ -145,7 +145,7 @@ public class WarrantyClaimMapper {
             claim.setRequiredParts(request.getRequiredParts());
         }
 
-        if(request.getOfficeBranch() != null) {
+        if (request.getOfficeBranch() != null) {
             claim.setOfficeBranch(request.getOfficeBranch());
         }
         // Staff should be updated in service layer
@@ -166,9 +166,13 @@ public class WarrantyClaimMapper {
         info.setPhoneNumber(vehicle.getPhoneNumber());
         info.setEmail(vehicle.getEmail());
         info.setStatus(vehicle.getStatus());
+        info.setUsageType(vehicle.getUsageType());
+        info.setPurchaseDate(vehicle.getPurchaseDate());
 
         if (vehicle.getVehicleType() != null) {
             info.setModelName(vehicle.getVehicleType().getModelName());
+            info.setVehicleTypeName(vehicle.getVehicleType().getModelName());
+            info.setElectricVehicleType(vehicle.getVehicleType());
         }
 
         return info;
@@ -204,8 +208,5 @@ public class WarrantyClaimMapper {
         info.setPhoneNumber(staff.getPhoneNumber());
         return info;
     }
-
-
-
 
 }

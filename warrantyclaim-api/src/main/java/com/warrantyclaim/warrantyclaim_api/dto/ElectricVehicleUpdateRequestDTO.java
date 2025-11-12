@@ -35,7 +35,8 @@ public class ElectricVehicleUpdateRequestDTO {
 
     private VehicleStatus status;
 
+    private com.warrantyclaim.warrantyclaim_api.enums.UsageType usageType;
+
     private String vehicleTypeId;
     private LocalDate productionDate;
 }
-

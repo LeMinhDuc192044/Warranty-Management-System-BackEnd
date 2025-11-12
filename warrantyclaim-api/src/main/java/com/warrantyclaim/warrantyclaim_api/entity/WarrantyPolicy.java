@@ -30,10 +30,13 @@ public class WarrantyPolicy {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Coverage_Type")
-    private CoverageTypeWarrantyPolicy  coverageTypeWarrantyPolicy;
+    private CoverageTypeWarrantyPolicy coverageTypeWarrantyPolicy;
 
     @Column(name = "Coverage_Duration_Months")
     private Integer coverageDurationMonths;
+
+    @Column(name = "Coverage_Mileage")
+    private Float coverageMileage;
 
     @OneToMany(mappedBy = "warrantyPolicy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WarrantyPolicyElectricVehicleType> warrantyPolicyElectricVehicleTypes = new ArrayList<>();
@@ -113,6 +116,5 @@ public class WarrantyPolicy {
     public void removeSparePartsTypeEVM(String sparePartsTypeId) {
         warrantyPoliciesEvmTypes.removeIf(wp -> wp.getPartTypeId().equals(sparePartsTypeId));
     }
-
 
 }

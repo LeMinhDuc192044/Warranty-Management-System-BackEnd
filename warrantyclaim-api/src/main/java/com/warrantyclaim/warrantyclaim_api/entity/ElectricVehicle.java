@@ -9,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +35,10 @@ public class ElectricVehicle {
 
     @Column(name = "Purchase_Date")
     private LocalDate purchaseDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Usage_Type", length = 20, nullable = false)
+    private com.warrantyclaim.warrantyclaim_api.enums.UsageType usageType;
 
     @Column(length = 100)
     private String owner;
