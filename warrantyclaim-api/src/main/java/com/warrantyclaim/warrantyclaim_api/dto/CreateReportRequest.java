@@ -8,4 +8,5 @@ public class CreateReportRequest {
     private String description;
     private String image;
     private String error;
+//    private Integer amountOfCar;
 }
