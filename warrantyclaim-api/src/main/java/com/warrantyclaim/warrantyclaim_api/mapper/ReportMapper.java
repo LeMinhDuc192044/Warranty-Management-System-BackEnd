@@ -18,6 +18,7 @@ public class ReportMapper {
         dto.setDescription(report.getDescription());
         dto.setStatus(report.getStatus());
         dto.setImage(report.getImage());
+//        dto.setAmountOfCar(report.getAmountOfCar());
         dto.setError(report.getError());
         
         if (report.getCampaign() != null) {

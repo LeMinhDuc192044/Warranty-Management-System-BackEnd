@@ -46,6 +46,34 @@ public class ImageUploadServiceImp implements ImageUploadService {
         return (String) uploadResult.get("secure_url");
     }
 
+    @Override
+    public String uploadImageReport(MultipartFile file) throws IOException {
+        // Validate file
+        validateImage(file);
+
+        // Generate unique filename
+        String originalFilename = file.getOriginalFilename();
+        String publicId = "reports/" + UUID.randomUUID().toString();
+
+        // Upload to Cloudinary
+        Map uploadResult = cloudinary.uploader().upload(
+                file.getBytes(),
+                ObjectUtils.asMap(
+                        "public_id", publicId,
+                        "folder", "Report",
+                        "resource_type", "image",
+                        "width", 800,              // ← Direct params, not nested
+                        "height", 600,             // ← Direct params
+                        "crop", "limit",           // ← Direct params
+                        "quality", "auto"
+
+                )
+        );
+
+        // Return secure URL
+        return (String) uploadResult.get("secure_url");
+    }
+
     public void deleteImage(String imageUrl) throws IOException {
         if (imageUrl != null && imageUrl.contains("cloudinary")) {
             // Extract public_id from URL

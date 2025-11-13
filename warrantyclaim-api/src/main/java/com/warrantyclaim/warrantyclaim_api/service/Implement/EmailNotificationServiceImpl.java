@@ -10,7 +10,11 @@ import com.warrantyclaim.warrantyclaim_api.repository.EmailNotificationRepositor
 import com.warrantyclaim.warrantyclaim_api.repository.WarrantyClaimRepository;
 import com.warrantyclaim.warrantyclaim_api.service.EmailNotificationService;
 import com.warrantyclaim.warrantyclaim_api.service.EmailService;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
