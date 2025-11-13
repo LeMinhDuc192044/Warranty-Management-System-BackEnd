@@ -10,4 +10,5 @@ public class UpdateReportRequest {
     private ReportStatus status;
     private String error;
     private String image;
+//    private Integer amountOfCar;
 }
