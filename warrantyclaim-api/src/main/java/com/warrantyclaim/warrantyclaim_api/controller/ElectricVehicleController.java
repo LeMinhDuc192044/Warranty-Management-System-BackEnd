@@ -3,9 +3,6 @@ package com.warrantyclaim.warrantyclaim_api.controller;
 import com.warrantyclaim.warrantyclaim_api.dto.*;
 import com.warrantyclaim.warrantyclaim_api.service.ElectricVehicleService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -120,6 +117,12 @@ public class ElectricVehicleController {
         List<VehicleWarrantyStatusDTO> result = electricVehicleService.getVehiclesUnderWarranty();
         return ResponseEntity.ok(result);
     }
+    @PatchMapping("/{vehicleId}/version/{version}")
+    public ResponseEntity<UpdateVersionDTO> updateVersion(
+            @PathVariable String vehicleId,
+            @PathVariable String version) {
 
-
+        UpdateVersionDTO updatedVehicle = electricVehicleService.updateVehicleVersion(vehicleId, version);
+        return ResponseEntity.ok(updatedVehicle);
+    }
 }

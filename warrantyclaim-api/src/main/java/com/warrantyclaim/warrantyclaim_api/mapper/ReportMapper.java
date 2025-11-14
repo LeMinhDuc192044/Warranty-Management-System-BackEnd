@@ -27,8 +27,8 @@ public class ReportMapper {
         if (report.getRecall() != null) {
             dto.setRecallId(report.getRecall().getId());
         }
-        if (report.getCampaign() != null) {
-            dto.setWarrantyClaimId(report.getCampaign().getId());
+        if (report.getWarrantyClaim() != null) {
+            dto.setWarrantyClaimId(report.getWarrantyClaim().getId());
         }
         
         return dto;

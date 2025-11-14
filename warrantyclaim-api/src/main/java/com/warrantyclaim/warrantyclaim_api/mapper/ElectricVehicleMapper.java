@@ -26,6 +26,7 @@ public class ElectricVehicleMapper {
         electricVehicle.setTotalKm(vehicleCreateDTO.getTotalKm());
         electricVehicle.setStatus(vehicleCreateDTO.getStatus());
 
+
         return electricVehicle;
      }
 
@@ -45,6 +46,7 @@ public class ElectricVehicleMapper {
         dto.setStatus(vehicle.getStatus());
         dto.setPicture(vehicle.getPicture());
         dto.setReturnDate(vehicle.getReturnDate());
+        dto.setVision(vehicle.getVersion());
         // Simplified vehicle type info
         if (vehicle.getVehicleType() != null) {
             dto.setVehicleTypeId(vehicle.getVehicleType().getId());
