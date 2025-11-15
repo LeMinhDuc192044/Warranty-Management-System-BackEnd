@@ -25,7 +25,11 @@ public final class VinUtils {
 
     /**
      * Tạo VIN theo chuẩn ISO 3779
+<<<<<<< HEAD
      * 
+=======
+     *
+>>>>>>> origin/main
      * @param wmiCode      3 ký tự WMI (VNA, VNB...)
      * @param modelCode    Mã model xe (VF3, VF5, VF6, VF7, VF8, VF9, E34, LMG, MNG,
      *                     HRG, NRG)
@@ -36,7 +40,11 @@ public final class VinUtils {
      * @param serialNumber Số thứ tự sản xuất (6-7 chữ số)
      */
     public static String generateVin(String wmiCode, String modelCode, char variant,
+<<<<<<< HEAD
             char motorType, char year, int serialNumber) {
+=======
+                                     char motorType, char year, int serialNumber) {
+>>>>>>> origin/main
         String wmi = wmiCode.trim().toUpperCase();
         String model = modelCode.trim().toUpperCase();
         char variantChar = Character.toUpperCase(variant);

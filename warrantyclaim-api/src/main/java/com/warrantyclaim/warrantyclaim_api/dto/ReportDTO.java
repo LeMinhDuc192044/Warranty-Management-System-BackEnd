@@ -13,6 +13,7 @@ public class ReportDTO {
     private String title;
     private String description;
     private String error;
+//    private Integer amountOfCar;
     private String image;
     private ReportStatus status;
     private String serviceCampaignId;

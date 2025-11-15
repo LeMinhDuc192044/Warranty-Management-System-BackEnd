@@ -2,8 +2,11 @@ package com.warrantyclaim.warrantyclaim_api.service.Implement;
 
 import com.warrantyclaim.warrantyclaim_api.dto.SerialNumberMappingRequestDTO;
 import com.warrantyclaim.warrantyclaim_api.dto.SerialNumberMappingResponseDTO;
+<<<<<<< HEAD
 import com.warrantyclaim.warrantyclaim_api.entity.ProductsSparePartsSC;
 import com.warrantyclaim.warrantyclaim_api.entity.SCTechnician;
+=======
+>>>>>>> origin/main
 import com.warrantyclaim.warrantyclaim_api.entity.SerialNumberMapping;
 import com.warrantyclaim.warrantyclaim_api.exception.ResourceNotFoundException;
 import com.warrantyclaim.warrantyclaim_api.repository.ProductsSparePartsSCRepository;

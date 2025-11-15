@@ -34,6 +34,10 @@ public class ProductsSparePartsTypeEVMWarrantyPolicy {
     @JoinColumn(name = "ID_Products_Part_Type_EVM", insertable = false, updatable = false)
     private ProductsSparePartsTypeEVM partType;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ID_Warranty_Policy", insertable = false, updatable = false)

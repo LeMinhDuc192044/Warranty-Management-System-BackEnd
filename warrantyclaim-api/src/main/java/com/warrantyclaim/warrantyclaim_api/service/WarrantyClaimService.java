@@ -32,6 +32,12 @@ public interface WarrantyClaimService {
 
     List<OfficeBranchFailureStatsDTO> getFailureStatsByOfficeBranch();
 
+<<<<<<< HEAD
     public void deleteClaim(String claimId);
 
+=======
+    public WarrantyClaimResponseDTO startWork(String claimId, String technicianUsername);
+
+    public void deleteClaim(String claimId);
+>>>>>>> origin/main
 }

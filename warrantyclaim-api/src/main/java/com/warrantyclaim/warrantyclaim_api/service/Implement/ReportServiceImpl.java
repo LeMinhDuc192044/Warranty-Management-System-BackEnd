@@ -42,6 +42,7 @@ public class ReportServiceImpl implements ReportService {
         report.setReportName(request.getTitle());
         report.setDescription(request.getDescription());
         report.setError(request.getError());
+//        report.setAmountOfCar(request.getAmountOfCar());
         report.setStatus(ReportStatus.PENDING);
         return reportMapper.toDTO(reportRepository.save(report));
     }
@@ -87,6 +88,10 @@ public class ReportServiceImpl implements ReportService {
         if(request.getImage() != null) {
             report.setImage(request.getImage());
         }
+
+//        if(request.getAmountOfCar() != null) {
+//            report.setAmountOfCar(request.getAmountOfCar());
+//        }
 
         return reportMapper.toDTO(reportRepository.save(report));
     }

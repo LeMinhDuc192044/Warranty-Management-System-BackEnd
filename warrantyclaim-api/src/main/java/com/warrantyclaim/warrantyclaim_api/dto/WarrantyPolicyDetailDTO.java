@@ -22,8 +22,11 @@ public class WarrantyPolicyDetailDTO {
 
     private Integer coverageDurationMonths;
 
+<<<<<<< HEAD
     private Float coverageMileage; // Coverage mileage in KM
 
+=======
+>>>>>>> origin/main
     @JsonProperty("isApplicable")
     private boolean isApplicable; // Policy này có áp dụng được cho xe này không
 

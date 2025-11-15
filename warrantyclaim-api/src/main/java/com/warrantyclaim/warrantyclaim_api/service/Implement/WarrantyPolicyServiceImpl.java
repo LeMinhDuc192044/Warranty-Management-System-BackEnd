@@ -391,6 +391,7 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
                 }
             }
 
+<<<<<<< HEAD
             // Usage type check - Filter policies based on vehicle usage type
             // Applies to ALL vehicle types: VF3, VF5, VF6, VF7, VF8, VF9, Limo Green, etc.
             boolean usageTypeCompatible = true;
@@ -434,6 +435,15 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
                 System.out.println("========================");
             }
 
+=======
+            // Usage type check removed - both personal and commercial vehicles have
+            // warranty policies
+            // No need to filter by usage type, just show applicable policies based on
+            // expiry and mileage
+            boolean usageTypeCompatible = true;
+            String usageTypeReason = null;
+
+>>>>>>> origin/main
             // Check mileage limit (if applicable) - Enhanced to check multiple limits
             boolean mileageExceeded = false;
             String mileageReason = null;
@@ -443,6 +453,7 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
                 // Check for different mileage limits in description
                 if ((desc.contains("200,000 km") || desc.contains("200.000 km")) && totalKm > 200000) {
                     mileageExceeded = true;
+<<<<<<< HEAD
                     mileageReason = "Vượt quá giới hạn 200,000 km (Hiện tại: " + String.format("%.0f", totalKm)
                             + " km)";
                 } else if ((desc.contains("160,000 km") || desc.contains("160.000 km")) && totalKm > 160000) {
@@ -457,6 +468,18 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
                     mileageExceeded = true;
                     mileageReason = "Vượt quá giới hạn 100,000 km (Hiện tại: " + String.format("%.0f", totalKm)
                             + " km)";
+=======
+                    mileageReason = "Vượt quá giới hạn 200,000 km (Hiện tại: " + String.format("%.0f", totalKm) + " km)";
+                } else if ((desc.contains("160,000 km") || desc.contains("160.000 km")) && totalKm > 160000) {
+                    mileageExceeded = true;
+                    mileageReason = "Vượt quá giới hạn 160,000 km (Hiện tại: " + String.format("%.0f", totalKm) + " km)";
+                } else if ((desc.contains("130,000 km") || desc.contains("130.000 km")) && totalKm > 130000) {
+                    mileageExceeded = true;
+                    mileageReason = "Vượt quá giới hạn 130,000 km (Hiện tại: " + String.format("%.0f", totalKm) + " km)";
+                } else if ((desc.contains("100,000 km") || desc.contains("100.000 km")) && totalKm > 100000) {
+                    mileageExceeded = true;
+                    mileageReason = "Vượt quá giới hạn 100,000 km (Hiện tại: " + String.format("%.0f", totalKm) + " km)";
+>>>>>>> origin/main
                 } else if ((desc.contains("80,000 km") || desc.contains("80.000 km")) && totalKm > 80000) {
                     mileageExceeded = true;
                     mileageReason = "Vượt quá giới hạn 80,000 km (Hiện tại: " + String.format("%.0f", totalKm) + " km)";
@@ -495,17 +518,25 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
                             ? policy.getCoverageTypeWarrantyPolicy().name()
                             : "UNKNOWN")
                     .coverageDurationMonths(policy.getCoverageDurationMonths())
+<<<<<<< HEAD
                     .coverageMileage(policy.getCoverageMileage())
+=======
+>>>>>>> origin/main
                     .isApplicable(isApplicable)
                     .reasons(policyReasons)
                     .build();
 
+<<<<<<< HEAD
             // Only add policies that pass usage type check
             // Usage type incompatible policies should be completely filtered out, not shown
             // as "not applicable"
             if (usageTypeCompatible) {
                 applicablePolicies.add(policyDetail);
             }
+=======
+            // Add ALL policies to response (both applicable and not applicable)
+            applicablePolicies.add(policyDetail);
+>>>>>>> origin/main
 
             // Track failure types for summary reasons
             if (!isApplicable) {
@@ -545,12 +576,17 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
             if (hasExpiredPolicies && earliestExpiry != null) {
                 reasons.add("⏰ Bảo hành đã hết hạn (sớm nhất: " + earliestExpiry + ")");
             }
+<<<<<<< HEAD
             if (hasUsageTypeMismatch && usageType != null) {
                 String usageTypeVi = (usageType == com.warrantyclaim.warrantyclaim_api.enums.UsageType.COMMERCIAL)
                         ? "thương mại"
                         : "cá nhân";
                 reasons.add("🚗 Một số chính sách không áp dụng cho xe " + usageTypeVi);
             }
+=======
+            // Removed usage type mismatch - both personal and commercial vehicles have
+            // warranties
+>>>>>>> origin/main
             if (hasMileageExceeded && totalKm != null) {
                 reasons.add("📊 Số km đã chạy (" + String.format("%.0f", totalKm) + " km) vượt quá giới hạn bảo hành");
             }
@@ -573,7 +609,11 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
         if (usageType != null) {
             vehicleInfo.add("  • Mục đích: "
                     + (usageType == com.warrantyclaim.warrantyclaim_api.enums.UsageType.COMMERCIAL ? "Thương mại"
+<<<<<<< HEAD
                             : "Cá nhân"));
+=======
+                    : "Cá nhân"));
+>>>>>>> origin/main
         }
 
         return responseBuilder
@@ -622,7 +662,10 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
                                 ? policy.getCoverageTypeWarrantyPolicy().name()
                                 : "UNKNOWN")
                         .coverageDurationMonths(policy.getCoverageDurationMonths())
+<<<<<<< HEAD
                         .coverageMileage(policy.getCoverageMileage())
+=======
+>>>>>>> origin/main
                         .isApplicable(true)
                         .build();
                 applicablePolicies.add(policyDetail);

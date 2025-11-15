@@ -12,6 +12,7 @@ public class ReportInfoDTO {
     String description;
     String image;
     String reportName;
+//    Integer amountOfCar;
     String error;
 
 }

@@ -44,7 +44,11 @@ public interface WarrantyPolicyService {
     // Warranty Eligibility Check
     /**
      * Kiểm tra warranty policy cho một xe dựa trên VIN
+<<<<<<< HEAD
      * 
+=======
+     *
+>>>>>>> origin/main
      * @param vehicleVIN Vehicle Identification Number
      * @return WarrantyPolicyCheckResponseDTO với thông tin policy và eligibility
      */
@@ -52,7 +56,11 @@ public interface WarrantyPolicyService {
 
     /**
      * Kiểm tra warranty policy dựa trên vehicle type
+<<<<<<< HEAD
      * 
+=======
+     *
+>>>>>>> origin/main
      * @param vehicleTypeId ID của loại xe
      * @return WarrantyPolicyCheckResponseDTO
      */
