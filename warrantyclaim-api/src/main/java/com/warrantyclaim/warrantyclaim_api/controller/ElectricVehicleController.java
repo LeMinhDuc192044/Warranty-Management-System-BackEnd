@@ -122,7 +122,7 @@ public class ElectricVehicleController {
             @PathVariable String vehicleId,
             @PathVariable String version) {
 
-        UpdateVersionDTO updatedVehicle = electricVehicleService.updateVehicleVersion(vehicleId, version);
+        UpdateVersionDTO updatedVehicle = electricVehicleService.updateVersion(vehicleId, version);
         return ResponseEntity.ok(updatedVehicle);
     }
 }

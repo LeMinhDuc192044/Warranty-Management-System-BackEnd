@@ -234,6 +234,20 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
 
         return result;
     }
+    @Override
+    @Transactional
+    public UpdateVersionDTO updateVersion(String vehicleId, String newVersion) {
+        ElectricVehicle vehicle = electricVehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + vehicleId));
 
+        vehicle.setVersion(newVersion);
+        ElectricVehicle updatedVehicle = electricVehicleRepository.save(vehicle);
+
+        // Convert to DTO
+        return new UpdateVersionDTO(
+                updatedVehicle.getId(),
+                updatedVehicle.getVersion()
+        );
+    }
 
 }

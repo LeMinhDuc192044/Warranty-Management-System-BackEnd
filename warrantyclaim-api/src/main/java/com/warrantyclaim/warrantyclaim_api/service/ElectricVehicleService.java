@@ -24,6 +24,6 @@ public interface ElectricVehicleService {
     List<WarrantyStatusDTO> getWarrantyStatus(String vin);
 
     public List<VehicleWarrantyStatusDTO> getVehiclesUnderWarranty();
-
+    public UpdateVersionDTO updateVersion(String vehicleId, String newVersion);
 
 }
