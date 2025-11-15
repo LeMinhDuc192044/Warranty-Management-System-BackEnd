@@ -26,7 +26,6 @@ public class ServiceCampaignsMapper {
         serviceCampaigns.setStatus(requestDTO.getStatus());
         serviceCampaigns.setDescription(requestDTO.getDescription());
         serviceCampaigns.setSpecialty(requestDTO.getSpecialty());
-        serviceCampaigns.setVersionSC(requestDTO.getVersionSC());
         // Note: relationships will be set in service layer
 
         return serviceCampaigns;
@@ -44,7 +43,6 @@ public class ServiceCampaignsMapper {
         responseDTO.setEndDate(serviceCampaigns.getEndDate());
         responseDTO.setTypeName(serviceCampaigns.getTypeName());
         responseDTO.setSpecialty(serviceCampaigns.getSpecialty());
-        responseDTO.setVersionSC(serviceCampaigns.getVersionSC());
         responseDTO.setRequiredParts(serviceCampaigns.getRequiredParts());
         responseDTO.setNotificationSent(responseDTO.getNotificationSent() != null ? serviceCampaigns.getNotificationSent() : false);
         responseDTO.setStatus(serviceCampaigns.getStatus());

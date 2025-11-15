@@ -28,16 +28,10 @@ public interface WarrantyClaimService {
 
     public WarrantyClaimResponseDTO updateReturnDate(String claimId, LocalDate returnDate);
 
-    public WarrantyClaimResponseDTO startWork(String claimId, String technicianUsername);
-
     List<OfficeBranchFailureStatsDTO> getFailureStatsByOfficeBranch();
 
-<<<<<<< HEAD
-    public void deleteClaim(String claimId);
 
-=======
     public WarrantyClaimResponseDTO startWork(String claimId, String technicianUsername);
 
     public void deleteClaim(String claimId);
->>>>>>> origin/main
 }

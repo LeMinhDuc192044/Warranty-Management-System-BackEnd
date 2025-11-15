@@ -16,14 +16,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class VehicleCreateDTO {
 
-<<<<<<< HEAD
-    @Pattern(regexp = "^VN[A-Z][0-9A-Z]{6}[0-9A-Z]{8}$", message = "VIN không đúng định dạng ISO 3779. Format: VN{A}{6 ký tự VDS}{8 ký tự VIS} (17 ký tự). Ví dụ: VNAVF3SE0SH123456")
-=======
     @Pattern(
             regexp = "^VN[A-Z][0-9A-Z]{6}[0-9A-Z]{8}$",
             message = "VIN không đúng định dạng ISO 3779. Format: VN{A}{6 ký tự VDS}{8 ký tự VIS} (17 ký tự). Ví dụ: VNAVF3SE0SH123456"
     )
->>>>>>> origin/main
     @NotBlank(message = "Vehicle must have a VIN")
     private String vehicleId;
 

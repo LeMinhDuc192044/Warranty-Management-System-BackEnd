@@ -40,11 +40,7 @@ public final class VinUtils {
      * @param serialNumber Số thứ tự sản xuất (6-7 chữ số)
      */
     public static String generateVin(String wmiCode, String modelCode, char variant,
-<<<<<<< HEAD
             char motorType, char year, int serialNumber) {
-=======
-                                     char motorType, char year, int serialNumber) {
->>>>>>> origin/main
         String wmi = wmiCode.trim().toUpperCase();
         String model = modelCode.trim().toUpperCase();
         char variantChar = Character.toUpperCase(variant);

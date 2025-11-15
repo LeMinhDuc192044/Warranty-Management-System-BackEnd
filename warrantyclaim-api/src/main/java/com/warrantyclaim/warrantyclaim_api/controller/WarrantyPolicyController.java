@@ -175,8 +175,4 @@ public class WarrantyPolicyController {
         }
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
 }

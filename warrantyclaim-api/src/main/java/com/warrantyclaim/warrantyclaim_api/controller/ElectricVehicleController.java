@@ -116,15 +116,5 @@ public class ElectricVehicleController {
         List<VehicleWarrantyStatusDTO> result = electricVehicleService.getVehiclesUnderWarranty();
         return ResponseEntity.ok(result);
     }
-    @PatchMapping("/{vehicleId}/version/{version}")
-    public ResponseEntity<UpdateVersionDTO> updateVersion(
-            @PathVariable String vehicleId,
-            @PathVariable String version) {
 
-<<<<<<< HEAD
-=======
-        UpdateVersionDTO updatedVehicle = electricVehicleService.updateVehicleVersion(vehicleId, version);
-        return ResponseEntity.ok(updatedVehicle);
-    }
->>>>>>> origin/main
 }
