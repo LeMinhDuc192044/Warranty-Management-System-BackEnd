@@ -23,7 +23,7 @@ public class ElectricVehicleResponseDTO {
     private String email;
     private VehicleStatus status;
     private LocalDate returnDate;
-
+    private String vision;
     // Nested vehicle type info
     private VehicleTypeInfoDTO vehicleType;
     private List<SparePartInfoScDTO> sparePartInfoScDTOList;

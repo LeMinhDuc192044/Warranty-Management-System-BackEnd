@@ -59,6 +59,9 @@ public class ElectricVehicle {
     @Column(length = 50)
     private VehicleStatus status;
 
+    @Column(name = "Version", length = 50)
+    private String version;
+
     @ManyToOne
     @JoinColumn(name = "ID_Electric_Vehicle_Type")
     private ElectricVehicleType vehicleType;

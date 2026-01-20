@@ -38,6 +38,9 @@ public class ServiceCampaigns {
     @Column(name = "Description", length = 500)
     private String description;
 
+    @Column(name = "Version", length = 50)
+    private String versionSC;
+
     @Column(name = "Specialty")
     private Specialty specialty;
 

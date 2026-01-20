@@ -62,14 +62,14 @@ public class ServiceCampaignsServiceImp implements ServiceCampaignsService {
             }
         }
 
-        if (requestDTO.getTechnicianIds() != null && !requestDTO.getTechnicianIds().isEmpty()) {
-            for (String technicianId : requestDTO.getTechnicianIds()) {
-                SCTechnician technician = scTechnicianRepository.findById(technicianId)
-                        .orElseThrow(
-                                () -> new ResourceNotFoundException("Technician not found with ID: " + technicianId));
-                serviceCampaigns.addTechnician(technician);
-            }
-        }
+//        if (requestDTO.getTechnicianIds() != null && !requestDTO.getTechnicianIds().isEmpty()) {
+//            for (String technicianId : requestDTO.getTechnicianIds()) {
+//                SCTechnician technician = scTechnicianRepository.findById(technicianId)
+//                        .orElseThrow(
+//                                () -> new ResourceNotFoundException("Technician not found with ID: " + technicianId));
+//                serviceCampaigns.addTechnician(technician);
+//            }
+//        }
 
         serviceCampaigns.setStatus(ServiceCampaignsStatus.PLANNED);
 

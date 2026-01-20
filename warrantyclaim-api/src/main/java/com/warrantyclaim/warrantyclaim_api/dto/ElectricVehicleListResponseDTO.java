@@ -22,6 +22,7 @@ public class ElectricVehicleListResponseDTO {
     private LocalDate purchaseDate;
     private VehicleStatus status;
     private LocalDate returnDate;
+    private String vision;
 
     // Simplified vehicle type info
     private String vehicleTypeId;
