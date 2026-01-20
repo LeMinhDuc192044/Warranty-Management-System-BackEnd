@@ -25,5 +25,6 @@ public interface ElectricVehicleService {
 
     public List<VehicleWarrantyStatusDTO> getVehiclesUnderWarranty();
 
+    public Page<ElectricVehicleListResponseDTO> getVehiclesByModelName(Pageable pageable, String modelName);
 
-}
+    }

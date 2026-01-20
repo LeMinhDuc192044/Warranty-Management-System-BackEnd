@@ -47,10 +47,11 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
                         .orElseThrow(() -> new ResourceNotFoundException(
                                 "Vehicle type not found with ID: " + vehicleTypeId));
                 policy.addVehicleType(vehicleType);
+                policy = warrantyPolicyRepository.save(policy); // if policy have electric vehicle types, it can not have part types
+                return mapper.toResponseDTO(policy);
             }
         }
 
-        // Associate SC spare parts types
         if (createDTO.getSparePartsTypeSCIds() != null && !createDTO.getSparePartsTypeSCIds().isEmpty()) {
             for (String sparePartsTypeId : createDTO.getSparePartsTypeSCIds()) {
                 ProductsSparePartsTypeSC sparePartsType = sparePartsTypeSCRepository.findById(sparePartsTypeId)
@@ -60,7 +61,6 @@ public class WarrantyPolicyServiceImpl implements WarrantyPolicyService {
             }
         }
 
-        // Associate EVM spare parts types
         if (createDTO.getSparePartsTypeEVMIds() != null && !createDTO.getSparePartsTypeEVMIds().isEmpty()) {
             for (String sparePartsTypeId : createDTO.getSparePartsTypeEVMIds()) {
                 ProductsSparePartsTypeEVM sparePartsType = sparePartsTypeEVMRepository.findById(sparePartsTypeId)

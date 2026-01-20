@@ -52,6 +52,24 @@ public class ElectricVehicleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @GetMapping("/model-name")
+    public ResponseEntity<Page<ElectricVehicleListResponseDTO>> getVehiclesByModelName(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir,
+            @RequestParam String modelName) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<ElectricVehicleListResponseDTO> vehicles = electricVehicleService.getVehiclesByModelName(pageable, modelName);
+        return ResponseEntity.ok(vehicles);
+
+    }
+
     @PutMapping("/{id}/return-date")
     public ResponseEntity<ElectricVehicleResponseDTO> updateReturnDate(
             @PathVariable("id") String id,

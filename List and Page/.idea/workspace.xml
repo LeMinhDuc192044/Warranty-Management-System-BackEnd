@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4c06ad75-d5b4-47fe-a7d6-184141452e34" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/CampaignEmailRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/dto/CampaignEmailRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ServiceCampaignEmailServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/ServiceCampaignEmailServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/WarrantyPolicyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../warrantyclaim-api/src/main/java/com/warrantyclaim/warrantyclaim_api/service/Implement/WarrantyPolicyServiceImpl.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;LeMinhDuc192044&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/LeMinhDuc192044/Warranty-Management-System-BackEnd.git&quot;,
+    &quot;accountId&quot;: &quot;1b675d01-0078-492f-b8a6-94dfe11cb24f&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="37rPSFTeL7bewRSJ33BqO8SOg8p" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Minh-Duc",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "D:/2026_Subject/SWP_Project/Project for work/github/Warranty-Management-System-BackEnd-ClaimWarranty/List and Page/src/main/java/com/mailx/fpt/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="List and Page" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="List and Page" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4c06ad75-d5b4-47fe-a7d6-184141452e34" name="Changes" comment="" />
+      <created>1767658216692</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1767658216692</updated>
+    </task>
+    <servers />
+  </component>
+</project>

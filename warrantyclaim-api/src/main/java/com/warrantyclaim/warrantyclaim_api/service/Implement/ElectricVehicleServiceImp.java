@@ -175,6 +175,13 @@ public class ElectricVehicleServiceImp implements ElectricVehicleService {
     }
 
     @Override
+    @Transactional
+    public Page<ElectricVehicleListResponseDTO> getVehiclesByModelName(Pageable pageable, String modelName) {
+        Page<ElectricVehicle> vehicles = electricVehicleRepository.findByVehicleTypeModelNameIgnoreCaseQuery(modelName, pageable);
+        return vehicles.map(mapper::toListResponseDTO);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<WarrantyStatusDTO> getWarrantyStatus(String vin) {
         ElectricVehicle vehicle = electricVehicleRepository.findById(vin)

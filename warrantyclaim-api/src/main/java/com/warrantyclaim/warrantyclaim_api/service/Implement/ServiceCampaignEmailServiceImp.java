@@ -24,8 +24,14 @@ public class ServiceCampaignEmailServiceImp implements ServiceCampaignEmailServi
         List<String> successEmails = new ArrayList<>();
         List<String> failedEmails = new ArrayList<>();
 
+        // Make sure that list of email is not duplicate
+        List<String> recipients = request.getRecipients()
+                .stream()
+                .distinct()
+                .toList();
+
         // Send to all recipients
-        for (String recipient : request.getRecipients()) {
+        for (String recipient : recipients) {
             try {
                 emailService.sendEmail(
                         recipient,
